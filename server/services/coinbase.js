@@ -5,8 +5,16 @@ var cbc = new CoinBaseClient({'apiKey': 'API KEY',
 /* Impoting & initializing Coinbase Client[End] */                         
 
 /* get Exchange rates from coinbase client[Start] */
-var exchangeRates ={};
+// For BTC
+var exchangeRatesBTC ={};
 cbc.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
+  exchangeRates = rates;    
+  console.log(rates);
+});
+
+// For ETH
+var exchangeRatesETH ={};
+cbc.getExchangeRates({'currency': 'ETH'}, function(err, rates) {
   exchangeRates = rates;    
   console.log(rates);
 });
@@ -14,7 +22,16 @@ cbc.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
 
 /* Exporting the exchange rates[Start] */
 module.exports={
-  getCurrencyExchangeRates: function(req,res){
+
+  // Function to export BTC exchange rates
+  getBTCCurrencyExchangeRates: function(req,res){
+     res.status(200).json({
+        result: exchangeRates
+    });
+  },
+
+  // Function to export ETH exchange rates
+  getETHCurrencyExchangeRates: function(req,res){
      res.status(200).json({
         result: exchangeRates
     });

@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 
 /* Initial Setup[Start] */
 var app = express();
+
+// Body Parser middleware
 app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
