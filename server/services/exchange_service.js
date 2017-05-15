@@ -13,7 +13,7 @@ var exchangeRatesETH = {};
 cbc.getExchangeRates({
   'currency': 'ETH'
 }, function (err, rates) {
-   console.log(rates)
+ //  console.log(rates)
    exchangeRatesETH = rates.data.rates;
 });
 /* get Exchange rates from coinbase client[End] */
@@ -25,16 +25,17 @@ module.exports = {
   convertToEther: function (req, res) {
     // Calling 3rd party api to get exchange rates
     request.get({
-      url: "http://apilayer.net/api/live?access_key=cc477401f6aeffcc0ceef97bc923441e&currencies=USD,INR&format=1"
+      url: "http://apilayer.net/api/live?access_key=cc477401f6aeffcc0ceef97bc923441e&currencies=USD,"+req.body.currencyType+"&format=1"
     }, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         // reading request(from client) paramters
         var amountToConvert = parseFloat(req.body.amount);
-        console.log(req.body.amount);
+      //  console.log(req.body.amount);
      
        // reading response body from 3rd party API
         var obj = JSON.parse(body);
-        var baseRate = obj.quotes.USDINR;
+        console.log(obj.quotes)
+        var baseRate = obj.quotes['USD' + req.body.currencyType];
 
         // converting to USD then to Ether
         var usdAmountAfterConversion = amountToConvert / baseRate;
