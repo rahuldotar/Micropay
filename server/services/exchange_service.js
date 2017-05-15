@@ -13,6 +13,7 @@ var exchangeRatesETH = {};
 cbc.getExchangeRates({
   'currency': 'ETH'
 }, function (err, rates) {
+   console.log(rates)
    exchangeRatesETH = rates.data.rates;
 });
 /* get Exchange rates from coinbase client[End] */

@@ -13,7 +13,7 @@ demo.controller('demoCtrl', function ($scope, $http) {
         var postData = $scope.data;
         var requestObj = {
             method: 'POST',
-            url: 'api/convertToEther',
+            url: 'api/convertToEther ',
             data: postData
         };
 

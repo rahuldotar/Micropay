@@ -17,10 +17,10 @@ app.use(bodyParser.json()); // for parsing application/json
 /* Initial Setup[End] */
 
 // Serving static file to browser
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/../client'));
 app.get('/*', function(req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
-    res.sendFile('demo.html', { root: __dirname + '/public' });
+    res.sendFile('demo.html', { root: __dirname + '/../client' });
 });
 
 require("./routes/routes.js")(app);
