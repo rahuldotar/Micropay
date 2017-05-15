@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="img/fav.ico">
+    <title>Alcon</title>
+</head>
+
+<body ng-app="demoApp">
+
+    <div ng-controller="demoCtrl" class="form_body">
+        <form>
+            Amount: <input type="text" ng-model="data.amount" name="amount"><br>
+            <input type="submit" ng-click="getEthConv()" value="Submit">
+        </form>
+
+     <span>Ether : {{data.ether}}</span>       
+    </div>
+    <script src="angular.min.js"></script>
+    <script src="demo.js"></script>
+</body>
+
+</html>

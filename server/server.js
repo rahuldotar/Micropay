@@ -16,6 +16,13 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(bodyParser.json()); // for parsing application/json
 /* Initial Setup[End] */
 
+// Serving static file to browser
+app.use(express.static(__dirname + '/public'));
+app.get('/*', function(req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile('demo.html', { root: __dirname + '/public' });
+});
+
 require("./routes/routes.js")(app);
 app.listen(8888);
 console.log("Server started at port 8888");
