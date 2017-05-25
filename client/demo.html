@@ -5,23 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" href="img/fav.ico">
-    <title>Alcon</title>
+    <title>Micropay</title>
 </head>
 
 <body ng-app="demoApp">
 
     <div ng-controller="demoCtrl" class="form_body">
         <form>
-            Amount: <input type="text" ng-model="reqData.amount" name="amount"><br> Currency:
-            <select class="form-control" ng-model="reqData.currencyType">
-                                         <option ng-repeat="(key, value) in model.currencyLists" value="{{key}}">{{value}} ({{key}})</option>
-                                    </select>
-            <input type="submit" ng-click="getEthConv()" value="Submit">
+            <div ng-if="!data.isPay">
+                First Name: <input type="text" ng-model="reqData.firstName" name="firstName"><br/> Last Name : <input type="text"
+                    ng-model="reqData.lastName" name="lastName"><br/> Email : <input type="text" ng-model="reqData.email" name="email"><br/>
+                <input type="submit" ng-click="getIavToken()" value="Submit">
+            </div>
+
+            <div ng-if="data.isPay">
+                Amount(USD) : <input type="text" ng-model="paymentData.amount" name="email"><br/>
+                <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
+                <span>Ether : {{data.ether}}</span>
+            </div>
         </form>
 
-        <span>Ether : {{respData.ether}}</span>
+        <!--<div id="mainContainer">
+            <input type="button" id="start" value="Add Bank">
+        </div>-->
+
+        <div id="iavContainer"></div>
     </div>
+    <script src="jquery-1.8.2.min.js"></script>
     <script src="angular.min.js"></script>
+    <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
     <script src="demo.js"></script>
 </body>
 
