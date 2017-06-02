@@ -28,11 +28,14 @@
                     <label>Last Name</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
                     <label>Email </label><input type="text" ng-model="reqData.email" name="email"><br/>
                     <label>Merchant</label>
-                    <select ng-model="reqData.merchant">
-                        <option value="">----select----</option>
-                        <option value="merchantx">Merchant X</option>
-                        <option value="merchanty">Merchant Y</option>
-                    </select><br/>
+                    <select ng-model="reqData.selectedMerchant"  ng-change = "refreshBalance()"
+                    ng-options="merchant.name for merchant in data.merchantAccounts"
+                    >
+
+                    </select>
+
+                    <br/>
+                    <p id="balance" style="display: none"></p>
                     <div class="btn_sub"><input type="submit" ng-click="getIavToken()" value="Submit"></div>
                 </div>
 
@@ -45,6 +48,8 @@
                     Amount(USD) <input type="text" ng-model="paymentData.amount" name="email"><br/>
                     <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
                     <span>Ether : {{data.ether}}</span>
+                    <span id="status"></span>
+                    <span id="balancee"> Balance : {{balance}}</span>
                 </div>
         </div>
         <!--<div id="mainContainer">

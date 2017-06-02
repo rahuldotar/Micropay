@@ -27,7 +27,8 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
         lastName: '',
         email: '',
         popularPartners: false,
-        preloader: false
+        preloader: false,
+        selectedMerchant:{}
     }
 
     $scope.respData = {
@@ -41,8 +42,11 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
 
     $scope.data = {
         ether: '',
-        isPay: false
+        isPay: false,
+        merchantAccounts : []
+
     }
+
 
     var validate = function () {
         if (!$scope.reqData.firstName) {
@@ -142,8 +146,21 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
             data: postData
         };
 
+        angular.element(document.querySelector('#status')).html('Loading....');
+        angular.element(document.querySelector('#balancee')).hide();
+
         $http(requestObj).success(function (data) {
             $scope.data.ether = data.result;
+            send( $scope.fromAccount ,$scope.reqData.selectedMerchant.accountNo,$scope.data.ether,function (result) {
+               $scope.transationId = result;
+               console.log("transaction id", $scope.transationId )
+                $scope.refreshBalance();
+               $scope.$apply();
+                angular.element(document.querySelector('#status')).html('Transaction complete');
+                angular.element(document.querySelector('#balancee')).show();
+            });
+
+
         }).error(function (data, err) {
             console.error('Error: while getting data');
         });
@@ -151,11 +168,38 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
     getCall();
     // getCurList();
 
-    // $scope.merchantAccounts = getMerchantAccounts()
+    getMerchantAccounts(function (result) { console.log("get merchant accounts",result);
+        $scope.data.merchantAccounts = result;
+        $scope.reqData.selectedMerchant =  $scope.data.merchantAccounts[0];
+        $scope.$apply()
+        getBalance($scope.reqData.selectedMerchant.accountNo,function (result) {
+            $scope.balance= result;
+            console.log(" $scope.balance", $scope.balance);
+            angular.element(document.querySelector('#balance')).html('Current Balance : ' + result );
+            angular.element(document.querySelector('#balance')).show();
+            $scope.$apply()
+        });
+
+    });
+
+    getAccounts(function (result) {
+       $scope.accounts = result;
+       $scope.fromAccount = $scope.accounts[3];
+    });
 
 
+    $scope.refreshBalance = function () {
+        angular.element(document.querySelector('#balance')).show();
+        getBalance($scope.reqData.selectedMerchant.accountNo,function (result) {
+            $scope.balance= result;
+            console.log(" $scope.balance", $scope.balance);
+            angular.element(document.querySelector('#balance')).html('Current Balance : ' + result );
+            angular.element(document.querySelector('#balance')).show();
+            $scope.$apply()
+        });
+    }
 
-});
+  });
 
 
 /*<script type="text/javascript">

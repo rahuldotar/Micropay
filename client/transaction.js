@@ -48,7 +48,7 @@ function getBalance(address,callBack) {
        }
        else
        {
-           callBack(result.toNumber());
+           callBack(web3.fromWei(result, 'ether'));
        }
     });
 
@@ -59,7 +59,7 @@ function send(from, to,value,callBack) {
     var transactionObject = {
         from : from,
         to : to,
-        value : web3.toWei(value, 'ether'),
+        value : web3.toWei(value,'ether'),
         gasPrice : web3.toWei(0.0000001, 'ether')
     };
 
@@ -80,14 +80,19 @@ function send(from, to,value,callBack) {
 // });
 //
 // getBalance("0x9e5816f4ef8807ae6813488118ad225b3ba4f41d",function (result) {
-//    console.log("2",result)
+//    console.log("before",result.toNumber())
 // });
 //
 //
 // send("0x8b16a121e5313a112c4f3af435671d629a367a79",
 //     "0x9e5816f4ef8807ae6813488118ad225b3ba4f41d",
-//     0.00000000000000000000000000001,function (result) {
-//         console.log(result)
+//     1,function (result) {
+//         console.log("dummy trans",result)
+//         getBalance("0x9e5816f4ef8807ae6813488118ad225b3ba4f41d",function (result) {
+//             console.log("2",result.toNumber())
+//         });
 //     }
 // )
+
+
 
