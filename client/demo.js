@@ -147,6 +147,10 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
     getCall();
     // getCurList();
 
+    // $scope.merchantAccounts = getMerchantAccounts()
+
+
+
 });
 
 
