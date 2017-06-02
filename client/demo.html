@@ -23,38 +23,41 @@
     <div ng-controller="demoCtrl" class="form_body">
         <div class="user_credential" ng-show="!reqData.popularPartners">
             <form>
-                <div ng-if="!data.isPay" class="user_fields">
-                    <label>First Name: </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
-                    <label>Last Name :</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
-                    <label>Email : </label><input type="text" ng-model="reqData.email" name="email"><br/>
+                <div class="user_fields">
+                    <label>First Name </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
+                    <label>Last Name</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
+                    <label>Email </label><input type="text" ng-model="reqData.email" name="email"><br/>
                     <label>Merchant</label>
-                    <select>
-                        <option>----select----</option>
-                        <option>abc</option>
-                        <option>abc</option>
-                        <option>abc</option>
+                    <select ng-model="reqData.merchant">
+                        <option value="">----select----</option>
+                        <option value="merchantx">Merchant X</option>
+                        <option value="merchanty">Merchant Y</option>
                     </select><br/>
                     <div class="btn_sub"><input type="submit" ng-click="getIavToken()" value="Submit"></div>
                 </div>
 
-                <div ng-if="data.isPay">
-                    Amount(USD) : <input type="text" ng-model="paymentData.amount" name="email"><br/>
+            </form>
+
+        </div>
+        <div ng-if="data.isPay" class="user_credential">
+            <form>
+                <div class="user_fields">
+                    Amount(USD) <input type="text" ng-model="paymentData.amount" name="email"><br/>
                     <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
                     <span>Ether : {{data.ether}}</span>
                 </div>
-            </form>
         </div>
         <!--<div id="mainContainer">
             <input type="button" id="start" value="Add Bank">
         </div>-->
 
-        <div id="iavContainer" class="partners_details" ng-show="reqData.popularPartners">
+        <div ng-if="!data.isPay" id="iavContainer" class="partners_details" ng-show="reqData.popularPartners">
             <div ng-show="reqData.preloader">
                 <img alt="Loading..." src="img/loading.svg" class="preloader">
             </div>
         </div>
     </div>
-  
+
 </body>
 
 </html>

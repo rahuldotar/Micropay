@@ -36,7 +36,8 @@ module.exports = self = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        ipAddress: '99.99.99.99'
+        ipAddress: '99.99.99.99',
+        merchant:''
       };
 
       accountToken
