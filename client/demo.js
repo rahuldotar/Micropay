@@ -60,13 +60,13 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
             return false;
         }
 
-         return true;
+        return true;
     };
 
     /* create IAV token by sending customer details[Start] */
     $scope.getIavToken = function () {
         var validated = validate();
-        if(!validated){
+        if (!validated) {
             return;
         }
         $scope.reqData.popularPartners = true;
@@ -131,6 +131,10 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http) {
 
     // get Currency list
     $scope.submitTransaction = function () {
+        if (!$scope.paymentData.amount) {
+            toastr.error('Enter amount', '');
+            return false;
+        }
         var postData = $scope.paymentData;
         var requestObj = {
             method: 'POST',
