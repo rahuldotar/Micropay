@@ -3,11 +3,13 @@
  */
 var demo = angular.module('demoApp', [])
 
-demo.controller('demoCtrl', function ($scope, $http) {
+demo.controller('demoCtrl', function ($scope,$timeout, $http) {
     $scope.reqData = {
         firstName: '',
         lastName: '',
         email: '',
+        popularPartners:false,
+        preloader:false
     }
     
     $scope.respData = {
@@ -26,6 +28,8 @@ demo.controller('demoCtrl', function ($scope, $http) {
     
     /* create IAV token by sending customer details[Start] */
     $scope.getIavToken = function () {
+        $scope.reqData.popularPartners = true;
+        $scope.reqData.preloader = true;
         var postData = $scope.reqData;
         var requestObj = {
             method: 'POST',
@@ -45,6 +49,8 @@ demo.controller('demoCtrl', function ($scope, $http) {
 
     /* render payment page[Start] */
     var renderPaymentPage = function () {
+        $timeout($scope.reqData.preloader = false, 4000);
+
         dwolla.configure('sandbox');
         dwolla.iav.start($scope.respData.iavToken, {
             container: 'iavContainer',
@@ -55,6 +61,7 @@ demo.controller('demoCtrl', function ($scope, $http) {
             microDeposits: 'false',
             fallbackToMicroDeposits: 'false'
         }, function (err, res) {
+            $scope.reqData.preloader = false;
             $scope.paymentData.fundingResrcURL = res._links["funding-source"]["href"]
             $scope.data.isPay = true;
             $scope.$apply();

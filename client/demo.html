@@ -6,31 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" href="img/fav.ico">
     <title>Micropay</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
 </head>
 
-<body ng-app="demoApp">
+<body ng-app="demoApp" class="main_body">
 
     <div ng-controller="demoCtrl" class="form_body">
-        <form>
-            <div ng-if="!data.isPay">
-                First Name: <input type="text" ng-model="reqData.firstName" name="firstName"><br/> Last Name : <input type="text"
-                    ng-model="reqData.lastName" name="lastName"><br/> Email : <input type="text" ng-model="reqData.email" name="email"><br/>
-                <input type="submit" ng-click="getIavToken()" value="Submit">
-            </div>
+        <div class="user_credential" ng-show="!reqData.popularPartners">
+            <form>
+                <div ng-if="!data.isPay" class="user_fields">
+                    <label>First Name: </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
+                    <label>Last Name :</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
+                    <label>Email : </label><input type="text" ng-model="reqData.email" name="email"><br/>
+                    <label>Merchant</label>
+                    <select>
+                        <option>----select----</option>
+                        <option>abc</option>
+                        <option>abc</option>
+                        <option>abc</option>
+                    </select><br/>
+                    <div class="btn_sub"><input type="submit" ng-click="getIavToken()" value="Submit"></div>
+                </div>
 
-            <div ng-if="data.isPay">
-                Amount(USD) : <input type="text" ng-model="paymentData.amount" name="email"><br/>
-                <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
-                <span>Ether : {{data.ether}}</span>
-            </div>
-        </form>
-
+                <div ng-if="data.isPay">
+                    Amount(USD) : <input type="text" ng-model="paymentData.amount" name="email"><br/>
+                    <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
+                    <span>Ether : {{data.ether}}</span>
+                </div>
+            </form>
+        </div>
         <!--<div id="mainContainer">
             <input type="button" id="start" value="Add Bank">
         </div>-->
 
-        <div id="iavContainer"></div>
+        <div id="iavContainer" class="partners_details" ng-show="reqData.popularPartners">
+            <div ng-show="reqData.preloader">
+                <img alt="Loading..." src="img/loading.svg" class="preloader">
+            </div>
+        </div>
     </div>
+
     <script src="jquery-1.8.2.min.js"></script>
     <script src="angular.min.js"></script>
     <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
