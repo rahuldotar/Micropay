@@ -8,7 +8,8 @@
     "coinbase": "^2.0.6",
     "dwolla-v2": "^1.3.2",
     "express": "^4.15.2",
-    "express-validator": "^3.2.0"
+    "express-validator": "^3.2.0",
+    "gemini-exchange-api": "^1.0.4"
   },
   "devDependencies": {},
   "scripts": {
