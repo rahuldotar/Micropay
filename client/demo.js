@@ -1,33 +1,74 @@
 /**
  * Created by Dell on 25-07-2016.
  */
-var demo = angular.module('demoApp', [])
+var demo = angular.module('demoApp', ['toastr'], function ($locationProvider) {
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
+});
 
-demo.controller('demoCtrl', function ($scope,$timeout, $http) {
+demo.config(function (toastrConfig) {
+    angular.extend(toastrConfig, {
+        //    maxOpened: 1,
+        closeButton: true,
+        //    preventOpenDuplicates: true,
+        tapToDismiss: false,
+        timeOut: 3000,
+        extendedTimeOut: 6000
+
+    });
+});
+
+
+demo.controller('demoCtrl', function ($scope, $timeout, $http) {
     $scope.reqData = {
         firstName: '',
         lastName: '',
         email: '',
-        popularPartners:false,
-        preloader:false
+        popularPartners: false,
+        preloader: false
     }
-    
+
     $scope.respData = {
         iavToken: ''
     }
 
     $scope.paymentData = {
         fundingResrcURL: '',
-        amount:''
+        amount: ''
     }
 
-    $scope.data={
-        ether:'',
-        isPay:false
+    $scope.data = {
+        ether: '',
+        isPay: false
     }
-    
+
+    var validate = function () {
+        if (!$scope.reqData.firstName) {
+            toastr.error('Enter first name', '');
+            return false;
+        }
+
+        if (!$scope.reqData.lastName) {
+            toastr.error('Enter last name', '');
+            return false;
+        }
+
+        if (!$scope.reqData.email) {
+            toastr.error('Enter email', '');
+            return false;
+        }
+
+         return true;
+    };
+
     /* create IAV token by sending customer details[Start] */
     $scope.getIavToken = function () {
+        var validated = validate();
+        if(!validated){
+            return;
+        }
         $scope.reqData.popularPartners = true;
         $scope.reqData.preloader = true;
         var postData = $scope.reqData;
@@ -47,18 +88,18 @@ demo.controller('demoCtrl', function ($scope,$timeout, $http) {
     /* create IAV token by sending customer details[End] */
 
     var getCall = function () {
-       // var postData = $scope.reqData;
+        // var postData = $scope.reqData;
         var requestObj = {
             method: 'GET',
             url: '/api/buyCrypto',
-         //   data: postData
+            //   data: postData
         };
 
         $http(requestObj).success(function (data) {
-          //  $scope.respData.iavToken = data.result;
-          //  renderPaymentPage();
+            //  $scope.respData.iavToken = data.result;
+            //  renderPaymentPage();
         }).error(function (data, err) {
-           // console.error('Error: while getting data');
+            // console.error('Error: while getting data');
         });
     };
     /* create IAV token by sending customer details[End] */
@@ -94,7 +135,7 @@ demo.controller('demoCtrl', function ($scope,$timeout, $http) {
         var requestObj = {
             method: 'POST',
             url: '/api/doPayment',
-            data:postData
+            data: postData
         };
 
         $http(requestObj).success(function (data) {
