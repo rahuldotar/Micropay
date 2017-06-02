@@ -22,15 +22,14 @@
         <div class="user_credential" ng-show="!reqData.popularPartners">
             <form>
                 <div class="user_fields">
-                    <label>First Name: </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
-                    <label>Last Name :</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
-                    <label>Email : </label><input type="text" ng-model="reqData.email" name="email"><br/>
+                    <label>First Name </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
+                    <label>Last Name</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
+                    <label>Email </label><input type="text" ng-model="reqData.email" name="email"><br/>
                     <label>Merchant</label>
-                    <select>
-                        <option>----select----</option>
-                        <option>abc</option>
-                        <option>abc</option>
-                        <option>abc</option>
+                    <select ng-model="reqData.merchant">
+                        <option value="">----select----</option>
+                        <option value="merchantx">Merchant X</option>
+                        <option value="merchanty">Merchant Y</option>
                     </select><br/>
                     <div class="btn_sub"><input type="submit" ng-click="getIavToken()" value="Submit"></div>
                 </div>
@@ -41,7 +40,7 @@
         <div ng-if="data.isPay" class="user_credential">
             <form>
                 <div class="user_fields">
-                    Amount(USD) : <input type="text" ng-model="paymentData.amount" name="email"><br/>
+                    Amount(USD) <input type="text" ng-model="paymentData.amount" name="email"><br/>
                     <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
                     <span>Ether : {{data.ether}}</span>
                 </div>
