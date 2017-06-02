@@ -42,6 +42,24 @@ demo.controller('demoCtrl', function ($scope, $http) {
     };
     /* create IAV token by sending customer details[End] */
 
+    var getCall = function () {
+       // var postData = $scope.reqData;
+        var requestObj = {
+            method: 'GET',
+            url: '/api/buyCrypto',
+         //   data: postData
+        };
+
+        $http(requestObj).success(function (data) {
+          //  $scope.respData.iavToken = data.result;
+          //  renderPaymentPage();
+        }).error(function (data, err) {
+           // console.error('Error: while getting data');
+        });
+    };
+    /* create IAV token by sending customer details[End] */
+
+
 
     /* render payment page[Start] */
     var renderPaymentPage = function () {
@@ -78,7 +96,7 @@ demo.controller('demoCtrl', function ($scope, $http) {
             console.error('Error: while getting data');
         });
     }
-
+    getCall();
     // getCurList();
 
 });
