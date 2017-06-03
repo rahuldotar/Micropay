@@ -21,7 +21,7 @@ demo.config(function (toastrConfig) {
 });
 
 
-demo.controller('demoCtrl', function ($scope, $timeout, $http) {
+demo.controller('demoCtrl', function ($scope, $timeout, $http,toastr) {
     $scope.reqData = {
         firstName: '',
         lastName: '',
