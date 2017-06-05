@@ -49,18 +49,18 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http,toastr) {
 
 
     var validate = function () {
-        if (!$scope.reqData.firstName) {
-            toastr.error('Enter first name', '');
+        if (!checkName($scope.reqData.firstName)) {
+            toastr.error('Enter Valid first name', '');
             return false;
         }
 
-        if (!$scope.reqData.lastName) {
-            toastr.error('Enter last name', '');
+        if (!checkName($scope.reqData.lastName)) {
+            toastr.error('Enter Valid last name', '');
             return false;
         }
 
-        if (!$scope.reqData.email) {
-            toastr.error('Enter email', '');
+        if (!checkEmail($scope.reqData.email)) {
+            toastr.error('Enter Valid email', '');
             return false;
         }
 
