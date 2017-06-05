@@ -11,7 +11,7 @@ const appSecret = 'CmjqeGkOoh5IQXnoRT8M5KiX2V9MVWdmUNzyKkBCfHMKvjbFOU';
 const client = new dwolla.Client({
   key: appKey,
   secret: appSecret,
-  environment: 'sandbox' // optional - defaults to production
+  environment: 'sandbox' // optional - defaults to ``production``
 });
 /* dwolla init [end] */
 
@@ -19,95 +19,102 @@ const client = new dwolla.Client({
 var accountToken = {};
 var iavToken = '';
 var customerURL = '';
-client.auth.client()
-  .then(function (appToken) {
-    accountToken = appToken
-    return appToken.get('webhook-subscriptions');
-  })
-  .then(function (res) {
-    console.log(JSON.stringify(res.body));
-  });
 
 module.exports = self = {
-    /* Creating a customer and get send IAV token(Instant account verification token)[Start] */
-    getIavToken: function (req, res) {
-      // creating a customer
-      var requestBody = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        ipAddress: '99.99.99.99',
-        merchant:''
-      };
-
-      accountToken
-        .post('customers', requestBody)
-        .then(function (resp) {
-          customerURL = resp.headers.get('location'); // => 'https://api-sandbox.dwolla.com/customers/247b1bd8-f5a0-4b71-a898-f62f67b8ae1c'
-          accountToken
-            .post(`${customerURL}/iav-token`)
-            .then(function (resp) {
-              iavToken = resp.body.token;
-              console.log(resp.body.token); // => 'lr0Ax1zwIpeXXt8sJDiVXjPbwEeGO6QKFWBIaKvnFG0Sm2j7vL'
-              res.status(200).json({
-                success: true,
-                result: iavToken
-              });
-            });
-        })
-    },
-    /* Create and send IAV token[End] */
-
-    /* Recieve payment[Start] */
-    doPayment: function (req, res) {
-      request({
-        url: 'https://api.gemini.com/v1/pubticker/ethusd', //URL to hit
-        method: 'GET', // specify the request type
-      }, function (error, response, body) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(response.statusCode, body);
-          var obj = JSON.parse(body);
-          var askRate = parseFloat(obj.ask);
-          // Preparing transfer object[Start]
-          var requestBody = {
-            _links: {
-              source: {
-                href: req.body.fundingResrcURL
-              },
-              destination: {
-                href: 'https://api-sandbox.dwolla.com/accounts/bca27f25-c809-4f4f-83e7-bd403a8f173b'
-              }
-            },
-            amount: {
-              currency: 'USD',
-              value: req.body.amount
-            },
-            metadata: {
-              foo: 'bar',
-              baz: 'boo'
-            }
-          };
-          // Preparing transfer object[End]
-
-          // transfer funding source and send ether
-          accountToken
-            .post('transfers', requestBody)
-            .then(function (resp) {
-              var tenPercOfAsk = (askRate*10)/100;
-              var askRateWithProfit = askRate +  tenPercOfAsk
-              var amountOFEth = req.body.amount / askRateWithProfit
-              res.status(200).json({
-                success: true,
-                result: amountOFEth
-              });
-              //  res.headers.get('location');
-              //gettrnsfrStatus(); // => 'https://api.dwolla.com/transfers/d76265cd-0951-e511-80da-0aa34a9b2388'
-            });
-        }
+  /* get Acces token on app init[Start] */
+  getAccessToken: function (req, res) {
+    client.auth.client()
+      .then(function (appToken) {
+        accountToken = appToken
+        console.log(accountToken);
+        return appToken.get('webhook-subscriptions');
+      })
+      .then(function (resp) {
+        console.log(JSON.stringify(resp.body));
       });
-    },
+  },
+
+  /* get Acces token on app init[End] */
+
+  /* Creating a customer and get send IAV token(Instant account verification token)[Start] */
+  getIavToken: function (req, res) {
+    // creating a customer
+    var requestBody = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      ipAddress: '99.99.99.99',
+      merchant: ''
+    };
+
+    accountToken
+      .post('customers', requestBody)
+      .then(function (resp) {
+        customerURL = resp.headers.get('location'); // => 'https://api-sandbox.dwolla.com/customers/247b1bd8-f5a0-4b71-a898-f62f67b8ae1c'
+        accountToken
+          .post(`${customerURL}/iav-token`)
+          .then(function (resp) {
+            iavToken = resp.body.token;
+            console.log(resp.body.token); // => 'lr0Ax1zwIpeXXt8sJDiVXjPbwEeGO6QKFWBIaKvnFG0Sm2j7vL'
+            res.status(200).json({
+              success: true,
+              result: iavToken
+            });
+          });
+      })
+  },
+  /* Create and send IAV token[End] */
+
+  /* Recieve payment[Start] */
+  doPayment: function (req, res) {
+    request({
+      url: 'https://api.gemini.com/v1/pubticker/ethusd', //URL to hit
+      method: 'GET', // specify the request type
+    }, function (error, response, body) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(response.statusCode, body);
+        var obj = JSON.parse(body);
+        var askRate = parseFloat(obj.ask);
+        // Preparing transfer object[Start]
+        var requestBody = {
+          _links: {
+            source: {
+              href: req.body.fundingResrcURL
+            },
+            destination: {
+              href: 'https://api-sandbox.dwolla.com/accounts/bca27f25-c809-4f4f-83e7-bd403a8f173b'
+            }
+          },
+          amount: {
+            currency: 'USD',
+            value: req.body.amount
+          },
+          metadata: {
+            foo: 'bar',
+            baz: 'boo'
+          }
+        };
+        // Preparing transfer object[End]
+
+        // transfer funding source and send ether
+        accountToken
+          .post('transfers', requestBody)
+          .then(function (resp) {
+            var tenPercOfAsk = (askRate * 10) / 100;
+            var askRateWithProfit = askRate + tenPercOfAsk
+            var amountOFEth = req.body.amount / askRateWithProfit
+            res.status(200).json({
+              success: true,
+              result: amountOFEth
+            });
+            //  res.headers.get('location');
+            //gettrnsfrStatus(); // => 'https://api.dwolla.com/transfers/d76265cd-0951-e511-80da-0aa34a9b2388'
+          });
+      }
+    });
+  },
 
   buyCrypto: function () {
     request({

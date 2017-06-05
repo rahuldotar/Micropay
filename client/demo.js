@@ -91,12 +91,12 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http,toastr) {
     };
     /* create IAV token by sending customer details[End] */
 
-    var getCall = function () {
+    var genAccess = function () {
         // var postData = $scope.reqData;
         var requestObj = {
-            method: 'GET',
-            url: '/api/buyCrypto',
-            //   data: postData
+            method: 'POST',
+            url: '/api/genAccess',
+            data: {}
         };
 
         $http(requestObj).success(function (data) {
@@ -165,8 +165,7 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http,toastr) {
             console.error('Error: while getting data');
         });
     }
-    getCall();
-    // getCurList();
+    
 
     getMerchantAccounts(function (result) { console.log("get merchant accounts",result);
         $scope.data.merchantAccounts = result;
@@ -198,6 +197,8 @@ demo.controller('demoCtrl', function ($scope, $timeout, $http,toastr) {
             $scope.$apply()
         });
     }
+
+    genAccess();
 
   });
 
