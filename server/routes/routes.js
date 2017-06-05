@@ -6,4 +6,5 @@ module.exports = function (app) {
     app.post("/api/getIavToken", paymentService.getIavToken)
     app.post("/api/doPayment", paymentService.doPayment)
     app.post("/api/buyCrypto", paymentService.buyCrypto)
+    app.post("/api/genAccess", paymentService.getAccessToken)
 }
