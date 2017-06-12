@@ -158,7 +158,7 @@ function placeOrder(type,lastPrice,side) {
     "request": "/v1/order/new",
     "nonce": nonce,
     "symbol": type,
-    "amount": "10.00",
+    "amount": "1.00",
     "price": lastPrice,
     "side": side,
     "type": "exchange limit",
