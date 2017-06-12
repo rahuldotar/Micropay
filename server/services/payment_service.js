@@ -119,7 +119,7 @@ module.exports = self = {
   buyCrypto: function (req,res) {
     console.log("check"+ req.body.type )
     request({
-      url: 'https://api.gemini.com/v1/pubticker/' +  req.body.type, //URL to hit
+      url: 'https://api.sandbox.gemini.com/v1/pubticker/' +  req.body.type, //URL to hit
       method: 'GET', // specify the request type
     }, function (error, response, body) {
       if (error) {
@@ -136,7 +136,7 @@ module.exports = self = {
  sellCrypto: function (req,res) {
     console.log("check"+ req.body.type )
     request({
-      url: 'https://api.gemini.com/v1/pubticker/' +  req.body.type, //URL to hit
+      url: 'https://api.sandbox.gemini.com/v1/pubticker/' +  req.body.type, //URL to hit
       method: 'GET', // specify the request type
     }, function (error, response, body) {
       if (error) {
