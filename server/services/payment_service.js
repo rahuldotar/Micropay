@@ -116,9 +116,10 @@ module.exports = self = {
     });
   },
 
-  buyCrypto: function () {
+  buyCrypto: function (req,res) {
+    console.log("check"+ req.body.type )
     request({
-      url: 'https://api.gemini.com/v1/pubticker/ethusd', //URL to hit
+      url: 'https://api.gemini.com/v1/pubticker/' +  req.body.type, //URL to hit
       method: 'GET', // specify the request type
     }, function (error, response, body) {
       if (error) {
@@ -126,21 +127,40 @@ module.exports = self = {
       } else {
         console.log(response.statusCode, body);
         var obj = JSON.parse(body);
-        placeOrder(obj.ask)
+        placeOrder( req.body.type,obj.ask, "buy")
+      }
+    });
+  },
+
+
+ sellCrypto: function (req,res) {
+    console.log("check"+ req.body.type )
+    request({
+      url: 'https://api.gemini.com/v1/pubticker/' +  req.body.type, //URL to hit
+      method: 'GET', // specify the request type
+    }, function (error, response, body) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(response.statusCode, body);
+        var obj = JSON.parse(body);
+        placeOrder( req.body.type,obj.bid, "sell")
       }
     });
   },
 };
 
-function placeOrder(lastPrice) {
+
+
+function placeOrder(type,lastPrice,side) {
   var nonce = moment().unix();
   var reqJson = {
     "request": "/v1/order/new",
     "nonce": nonce,
-    "symbol": "ethusd",
+    "symbol": type,
     "amount": "10.00",
     "price": lastPrice,
-    "side": "buy",
+    "side": side,
     "type": "exchange limit",
     "options": ["immediate-or-cancel"]
   };
