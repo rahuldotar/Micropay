@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "coinbase": "^2.0.6",
+    "cron": "^1.2.1",
     "crypto-js": "^3.1.9-1",
     "dwolla-v2": "^1.3.2",
     "express": "^4.15.2",
