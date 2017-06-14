@@ -52,7 +52,7 @@ mongoose.connection.on('disconnected', function () {
 
 /* Implementing cron Job for evaluating exchange rates[Start] */
 var job = new CronJob({
-  cronTime: '0 */1 * * * *',
+  cronTime: '*/10 * * * * *',
   onTick: function() {
    geminiExchangeService.saveCurrentExchangeRates();
   },
