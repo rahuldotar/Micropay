@@ -59,7 +59,7 @@ var job = new CronJob({
   start: false,
   timeZone: 'America/Los_Angeles'
 });
-job.start();
+//job.start();
 
 /* Implementing cron Job for evaluating exchange rates[Start] */
 

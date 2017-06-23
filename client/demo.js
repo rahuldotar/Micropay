@@ -1,7 +1,7 @@
 /**
  * Created by Dell on 25-07-2016.
  */
-var demo = angular.module('demoApp', ['toastr'], function ($locationProvider) {
+var demo = angular.module('miropayApp', ['toastr'], function ($locationProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false

@@ -2,7 +2,7 @@ var GeminiExchangeDB = require('../models/gemini_exchange_model')
 
 var geminiExchangeDAL = {};
 
-geminiExchangeDAL.saveExchangerates = function (btcUsd, ethUsd, ethBtc,investment,returns, callBack) {
+geminiExchangeDAL.saveExchangerates = function (userData, callBack) {
     var geminiExchangeDB = new GeminiExchangeDB({
         btcUsd: {
             ask: btcUsd.ask,
