@@ -28,7 +28,7 @@ gdaxFillSVC.getFillsFromGdax = function (req, res) {
             data.forEach(function (value) {
                 value.userKey = gdaxKey;
             });
-            gdaxFillsDAL.saveFills(data.reverse(), function (result) {
+            gdaxFillsDAL.saveFills(data, function (result) {
                 if (!result.success) {
                     console.log('Saving fils Error')
                 } else {

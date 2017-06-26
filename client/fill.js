@@ -62,17 +62,7 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
 
         $http(requestObj).success(function (data) {
             $scope.data.fills = data.result;
-            $timeout(function () {
-                $('#accordion-group-1').ariaAccordion({
-                    fadeSpeed: 800,
-                    expandOnPageLoad: true,
-                    expandOnlyOne: true
-                });
-                $('#accordion-group-2').ariaAccordion('test');
-
-
-            }, 3000)
-         
+                 
         }).error(function (data, err) {
             console.log(error)
         });

@@ -26,9 +26,9 @@
                             <div class="prd_st">All</div>
 
                             <div class="prd_optns">
-                                <div class="options">Bit Coin</div>
-                                <div class="options">Light Coin</div>
-                                <div class="options">Etherium</div>
+                                <div class="options">ETH-USD</div>
+                                <div class="options">BTC-USD</div>
+                                <div class="options">LTC-USD</div>
                                 <div class="options">All</div>
                             </div>
                             <div class="prd_all_bt">
@@ -166,7 +166,7 @@
                                {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) / ( item | sumByColumn: 'size'))| number: 4 }}
                             </div>
                             <div class="sb_hd">
-                               {{ item[0].created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}
+                               {{ item[0].created_at |  date:'yyyy-MM-dd HH:mm:ss'}}
                             </div>
                         </accordion-heading>
                         <div class="">
@@ -192,7 +192,7 @@
                                             <span></span>
                                         </div>
                                         <div class="sb_hd">
-                                            <span>  {{ data.created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}</span>
+                                            <span></span>
                                         </div>
                                     </div>
                                 </dl>
