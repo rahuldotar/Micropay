@@ -231,10 +231,9 @@ img
     margin-right: 5px;
     position: relative;
 }
-.prd_optns
-{
+.prd_optns {
     position: absolute;
-    width: 84%;
+    width: 100%;
     background-color: #656d70;
     left: 0;
     top: 29px;
@@ -242,6 +241,13 @@ img
     z-index: 2;
     padding: 8%;
     display: none;
+    list-style: none;
+    margin-top: 3px;
+    -webkit-transition: 0.5s ease all;
+    -moz-transition: 0.5s ease all;
+    -ms-transition: 0.5s ease all;
+    -o-transition: 0.5s ease all;
+    transition: 0.5s ease all;
 }
 .opt_wrp .prd_optns
 {
@@ -272,7 +278,7 @@ img
 }
 .prd_wrp_2
 {
-    width: 55px;
+    width: 97px;
 }
 .dtpckr_wrp
 {
