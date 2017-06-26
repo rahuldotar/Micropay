@@ -6,32 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" href="img/fav.ico">
     <title>Micropay</title>
+    <link type="text/css" rel="stylesheet" href="lib/toast/angular-toastr.min.css">
     <link type="text/css" rel="stylesheet" href="css/style.css">
+
+    <script src="lib/jquery-1.8.2.min.js"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
+    <script src="lib/toast/angular-toastr.tpls.min.js"></script>
+    <script src="lib/web3.js"></script>
+    <script src="transaction.js"></script>
+    <script src="lib/errorHandler.js"></script>
+    <script src="demo.js"></script>
 </head>
 
-<body ng-app="demoApp" class="main_body">
+<body ng-app="miropayApp" class="main_body">
 
     <div ng-controller="demoCtrl" class="form_body">
         <div class="user_credential" ng-show="!reqData.popularPartners">
             <form>
-                <div ng-if="!data.isPay" class="user_fields">
-                    <label>First Name: </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
-                    <label>Last Name :</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
-                    <label>Email : </label><input type="text" ng-model="reqData.email" name="email"><br/>
+                <div class="user_fields">
+                    <label>First Name </label><input type="text" ng-model="reqData.firstName" name="firstName"><br/>
+                    <label>Last Name</label> <input type="text" ng-model="reqData.lastName" name="lastName"><br/>
+                    <label>Email </label><input type="text" ng-model="reqData.email" name="email"><br/>
                     <label>Merchant</label>
-                    <select>
-                        <option>----select----</option>
-                        <option>abc</option>
-                        <option>abc</option>
-                        <option>abc</option>
-                    </select><br/>
+                    <select ng-model="reqData.selectedMerchant"  ng-change = "refreshBalance()"
+                    ng-options="merchant.name for merchant in data.merchantAccounts"
+                    >
+
+                    </select>
+
+                    <br/>
+                    <p id="balance" style="display: none"></p>
                     <div class="btn_sub"><input type="submit" ng-click="getIavToken()" value="Submit"></div>
                 </div>
 
-                <div ng-if="data.isPay">
-                    Amount(USD) : <input type="text" ng-model="paymentData.amount" name="email"><br/>
+            </form>
+
+        </div>
+        <div ng-if="data.isPay" class="user_credential">
+            <form>
+                <div class="user_fields">
+                    Amount(USD) <input type="text" ng-model="paymentData.amount" name="email"><br/>
                     <input type="submit" ng-click="submitTransaction()" value="Submit"><br/>
                     <span>Ether : {{data.ether}}</span>
+                    <br/>
+                    <span id="status"></span>
+                    <br/>
+                    <span id="balancee"> Balance : {{balance}}</span>
                 </div>
             </form>
         </div>
@@ -39,17 +60,13 @@
             <input type="button" id="start" value="Add Bank">
         </div>-->
 
-        <div id="iavContainer" class="partners_details" ng-show="reqData.popularPartners">
+        <div ng-if="!data.isPay" id="iavContainer" class="partners_details" ng-show="reqData.popularPartners">
             <div ng-show="reqData.preloader">
                 <img alt="Loading..." src="img/loading.svg" class="preloader">
             </div>
         </div>
     </div>
 
-    <script src="jquery-1.8.2.min.js"></script>
-    <script src="angular.min.js"></script>
-    <script src="https://cdn.dwolla.com/1/dwolla.js"></script>
-    <script src="demo.js"></script>
 </body>
 
 </html>

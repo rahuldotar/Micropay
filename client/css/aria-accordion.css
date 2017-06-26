@@ -1,0 +1,34 @@
+.accordion-group__accordion-btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; }
+
+.accordion-group__accordion-btn {
+  border: none; }
+
+.accordion-group__accordion-head, .accordion-group__accordion-heading {
+  margin: 0; }
+
+.accordion-group__accordion-head {
+  padding: 0; }
+
+.accordion-group__accordion-btn {
+  text-align: left; }
+
+.accordion-group__accordion-btn {
+  width: 100%; }
+
+/*.accordion-group__accordion {*/
+  /*border: 0.1rem solid #c41c1c;*/
+  /*border-radius: 0.2rem;*/
+  /*margin-top: 0.5rem; }*/
+
+/*.accordion-group__accordion-btn {*/
+  /*background-color: #d32222;*/
+  /*color: #fff;*/
+  /*padding: 0.5rem; }*/
+
+/*.accordion-group__accordion-collapse {*/
+  /*padding: 0.5rem; }*/
+
+/*# sourceMappingURL=aria-accordion.css.map */
