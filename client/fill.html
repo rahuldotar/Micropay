@@ -111,7 +111,14 @@
                     </div>
                 </div>
                 <div class="sb_hd">
-                    PROFIT/LOSS
+                   Effective Price
+
+                    <div class="tog_arrow">
+                        <img src="img/down-arrow.png">
+                    </div>
+                </div>
+                <div class="sb_hd">
+                   Created Date
 
                     <div class="tog_arrow">
                         <img src="img/down-arrow.png">
@@ -139,11 +146,20 @@
                         <div class="sb_hd">
                             {{ item | sumByColumn: 'fee' | number: 4}}
                         </div>
-                        <div class="sb_hd">
+                        <div class="sb_hd" ng-if="item[0].side =='sell'">
                            {{ (((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) -  (item | sumByColumn: 'fee' )) | number: 4 }}
                         </div>
+                        <div class="sb_hd" ng-if="item[0].side =='buy'">
+                           {{ (((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) | number: 4 }}
+                        </div>
+                        <div class="sb_hd" ng-if="item[0].side =='sell'">
+                           {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) -  (item | sumByColumn: 'fee' ))/  ( item | sumByColumn: 'size'))| number: 4 }}
+                        </div>
+                        <div class="sb_hd" ng-if="item[0].side =='buy'">
+                           {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) / ( item | sumByColumn: 'size'))| number: 4 }}
+                        </div>
                         <div class="sb_hd">
-                            1234
+                           {{ item[0].created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}
                         </div>
                     </accordion-heading>
                     <div class="">
@@ -167,6 +183,9 @@
                                     </div>
                                     <div class="sb_hd">
                                         <span></span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>  {{ data.created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}</span>
                                     </div>
                                 </div>
                             </dl>
