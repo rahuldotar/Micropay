@@ -39,8 +39,15 @@ micropayApp.filter('sumProductColumn', function () {
 
 micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
     $scope.data = {
-        fills: {}
-    }
+        fills: {},
+        fill_view:true
+    };
+    $scope.tabViewFills = function(){
+        $scope.data.fill_view = true;
+    };
+    $scope.tabViewPosition = function(){
+        $scope.data.fill_view = false;
+    };
 
     /* Getting All Fills from DB[Start] */
     var getFills = function () {
