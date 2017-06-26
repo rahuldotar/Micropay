@@ -73,275 +73,286 @@
                 <div style="clear: both;"></div>
             </div>
         </div>
-        <div class="gd_sb_head">
-            <div class="sb_hd_wrp">
-                <div class="sb_hd">
-                    ORDER ID
+        <div class="gd_tab_menu">
+            <ul>
+                <li>Fills</li>
+                <li>Position</li>
+            </ul>
+        </div>
+        <div ng-show="data.fill_view">
+            <div class="gd_sb_head">
+                <div class="sb_hd_wrp">
+                    <div class="sb_hd">
+                        ORDER ID
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
-                </div>
-                <div class="sb_hd">
-                    SIZE
+                    <div class="sb_hd">
+                        SIZE
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
-                </div>
-                <div class="sb_hd">
-                    PRICE
+                    <div class="sb_hd">
+                        PRICE
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
-                </div>
-                <div class="sb_hd">
-                    FEE
+                    <div class="sb_hd">
+                        FEE
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
-                </div>
-                <div class="sb_hd">
-                    TOTAL
+                    <div class="sb_hd">
+                        TOTAL
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
-                </div>
-                <div class="sb_hd">
-                   Effective Price
+                    <div class="sb_hd">
+                       Effective Price
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
-                </div>
-                <div class="sb_hd">
-                   Created Date
+                    <div class="sb_hd">
+                       Created Date
 
-                    <div class="tog_arrow">
-                        <img src="img/down-arrow.png">
+                        <div class="tog_arrow">
+                            <img src="img/down-arrow.png">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="sb_cn_wrp">
+            <div class="sb_cn_wrp">
 
-            <accordion>
-                <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen" ng-repeat="(name,item) in data.fills">
-                    <accordion-heading >
-                    
-                        <div class="sb_hd">
-                            <div ng-class="{sb_lft_line_sell: item[0].side =='sell', sb_lft_line_buy:  item[0].side =='buy'}" ></div>
-                            {{name}}
+                <accordion>
+                    <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen" ng-repeat="(name,item) in data.fills">
+                        <accordion-heading >
+
+                            <div class="sb_hd">
+                                <div ng-class="{sb_lft_line_sell: item[0].side =='sell', sb_lft_line_buy:  item[0].side =='buy'}" ></div>
+                                {{name}}
+                            </div>
+                            <div class="sb_hd">
+                                {{ item | sumByColumn: 'size' | number: 4 }}
+                            </div>
+                            <div class="sb_hd">
+                                {{ item | sumProductColumn:'size':'price' | number: 4}}
+                            </div>
+                            <div class="sb_hd">
+                                {{ item | sumByColumn: 'fee' | number: 4}}
+                            </div>
+                            <div class="sb_hd" ng-if="item[0].side =='sell'">
+                               {{ (((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) -  (item | sumByColumn: 'fee' )) | number: 4 }}
+                            </div>
+                            <div class="sb_hd" ng-if="item[0].side =='buy'">
+                               {{ (((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) | number: 4 }}
+                            </div>
+                            <div class="sb_hd" ng-if="item[0].side =='sell'">
+                               {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) -  (item | sumByColumn: 'fee' ))/  ( item | sumByColumn: 'size'))| number: 4 }}
+                            </div>
+                            <div class="sb_hd" ng-if="item[0].side =='buy'">
+                               {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) / ( item | sumByColumn: 'size'))| number: 4 }}
+                            </div>
+                            <div class="sb_hd">
+                               {{ item[0].created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}
+                            </div>
+                        </accordion-heading>
+                        <div class="">
+                            <ul class="list-group">
+                                <dl class="dl-horizontal list-group-item" ng-repeat="data in item">
+                                    <div class="tog_row">
+                                        <div class="sb_hd">
+                                            <span>{{data.product_id}}</span>
+                                        </div>
+                                        <div class="sb_hd">
+                                            <span>{{data.size | number: 4}}</span>
+                                        </div>
+                                        <div class="sb_hd">
+                                            <span>{{data.price | number: 4}}</span>
+                                        </div>
+                                        <div class="sb_hd">
+                                            <span>{{data.fee | number: 4}}</span>
+                                        </div>
+                                        <div class="sb_hd">
+                                            <span></span>
+                                        </div>
+                                        <div class="sb_hd">
+                                            <span></span>
+                                        </div>
+                                        <div class="sb_hd">
+                                            <span>  {{ data.created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}</span>
+                                        </div>
+                                    </div>
+                                </dl>
+
+
+                            </ul>
+
                         </div>
-                        <div class="sb_hd">
-                            {{ item | sumByColumn: 'size' | number: 4 }}
-                        </div>
-                        <div class="sb_hd">
-                            {{ item | sumProductColumn:'size':'price' | number: 4}}
-                        </div>
-                        <div class="sb_hd">
-                            {{ item | sumByColumn: 'fee' | number: 4}}
-                        </div>
-                        <div class="sb_hd" ng-if="item[0].side =='sell'">
-                           {{ (((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) -  (item | sumByColumn: 'fee' )) | number: 4 }}
-                        </div>
-                        <div class="sb_hd" ng-if="item[0].side =='buy'">
-                           {{ (((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) | number: 4 }}
-                        </div>
-                        <div class="sb_hd" ng-if="item[0].side =='sell'">
-                           {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) -  (item | sumByColumn: 'fee' ))/  ( item | sumByColumn: 'size'))| number: 4 }}
-                        </div>
-                        <div class="sb_hd" ng-if="item[0].side =='buy'">
-                           {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) / ( item | sumByColumn: 'size'))| number: 4 }}
-                        </div>
-                        <div class="sb_hd">
-                           {{ item[0].created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}
-                        </div>
-                    </accordion-heading>
-                    <div class="">
-                        <ul class="list-group">
-                            <dl class="dl-horizontal list-group-item" ng-repeat="data in item">
-                                <div class="tog_row">
+                    </accordion-group>
+                </accordion>
+                <!--<section class="accordion-group" id="accordion-group-1">
+                    <div class="accordion-group__accordion" >
+                        <header class="accordion-group__accordion-head">
+                            <div class="accordion-group__accordion-heading accordion-group__accordion-btn" >
+                                <div class="sb_hd">
+                                    {{name}}
+                                </div>
+                                <div class="sb_hd">
+                                   {{ item | sumByColumn: 'size' }}
+                                </div>
+                                <div class="sb_hd">
+                                   {{ item | sumByColumn: 'price' }}
+                                </div>
+                                <div class="sb_hd">
+                                   {{ item | sumByColumn: 'fee' }}
+                                </div>
+                                <div class="sb_hd">
+                                    4562351
+                                </div>
+                                <div class="sb_hd">
+                                    1234
+                                </div>
+                            </div>
+                        </header>
+                        <div class="accordion-group__accordion-collapse">
+                            <div class="accordion-group__accordion-content">
+                                <div class="tog_row"  ng-repeat="data in item">
                                     <div class="sb_hd">
                                         <span>{{data.product_id}}</span>
                                     </div>
                                     <div class="sb_hd">
-                                        <span>{{data.size | number: 4}}</span>
+                                        <span>{{data.size}}</span>
                                     </div>
                                     <div class="sb_hd">
-                                        <span>{{data.price | number: 4}}</span>
+                                        <span>{{data.price}}</span>
                                     </div>
                                     <div class="sb_hd">
-                                        <span>{{data.fee | number: 4}}</span>
-                                    </div>
-                                    <div class="sb_hd">
-                                        <span></span>
+                                        <span>{{data.fee}}</span>
                                     </div>
                                     <div class="sb_hd">
                                         <span></span>
                                     </div>
                                     <div class="sb_hd">
-                                        <span>  {{ data.created_at |  date:'yyyy-MM-dd HH:mm:ss Z' }}</span>
+                                        <span></span>
+                                    </div>
+                                </div>-->
+                <!--<div class="tog_row">
+                                    <div class="sb_hd">
+                                        <span>BIT COIN</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>300</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2014</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>4150</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2012</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2098</span>
                                     </div>
                                 </div>
-                            </dl>
+                                <div class="tog_row">
+                                    <div class="sb_hd">
+                                        <span>BIT COIN</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>300</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2014</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>4150</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2012</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2098</span>
+                                    </div>
+                                </div>
+                                <div class="tog_row">
+                                    <div class="sb_hd">
+                                        <span>BIT COIN</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>300</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2014</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>4150</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2012</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2098</span>
+                                    </div>
+                                </div>
+                                <div class="tog_row">
+                                    <div class="sb_hd">
+                                        <span>BIT COIN</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>300</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2014</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>4150</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2012</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2098</span>
+                                    </div>
+                                </div>
+                                <div class="tog_row">
+                                    <div class="sb_hd">
+                                        <span>BIT COIN</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>300</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2014</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>4150</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2012</span>
+                                    </div>
+                                    <div class="sb_hd">
+                                        <span>2098</span>
+                                    </div>
+                                </div>-->
+            </div>
+        </div>
+        <div  ng-show="!data.fill_view">
 
-
-                        </ul>
-
-                    </div>
-                </accordion-group>
-            </accordion>
-            <!--<section class="accordion-group" id="accordion-group-1">
-                <div class="accordion-group__accordion" >
-                    <header class="accordion-group__accordion-head">
-                        <div class="accordion-group__accordion-heading accordion-group__accordion-btn" >
-                            <div class="sb_hd">
-                                {{name}}
-                            </div>
-                            <div class="sb_hd">
-                               {{ item | sumByColumn: 'size' }}
-                            </div>
-                            <div class="sb_hd">
-                               {{ item | sumByColumn: 'price' }}
-                            </div>
-                            <div class="sb_hd">
-                               {{ item | sumByColumn: 'fee' }}
-                            </div>
-                            <div class="sb_hd">
-                                4562351
-                            </div>
-                            <div class="sb_hd">
-                                1234
-                            </div>
-                        </div>
-                    </header>
-                    <div class="accordion-group__accordion-collapse">
-                        <div class="accordion-group__accordion-content">
-                            <div class="tog_row"  ng-repeat="data in item">
-                                <div class="sb_hd">
-                                    <span>{{data.product_id}}</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>{{data.size}}</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>{{data.price}}</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>{{data.fee}}</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span></span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span></span>
-                                </div>
-                            </div>-->
-            <!--<div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>-->
         </div>
     </div>
 
