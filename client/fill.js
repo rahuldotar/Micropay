@@ -123,14 +123,14 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
     /* Using date Filter[Start] */
     $scope.filterByStrtDate = function () {
         $scope.data.filterStartDateTime = toDate($scope.data.filterStartDate);
-        $scope.data.filterStartDateTime.setHours(0, 0, 0, 0);
+        $scope.data.fill_view?$scope.data.filterStartDateTime.setHours(0, 0, 0, 0):$scope.data.filterStartDateTime.setHours(23, 59, 59, 999);
        // $scope.data.filterStartDateTime = toUTCDate($scope.data.filterStartDateTime)
         $scope.data.fill_view?searchFills() : getFillsForPosition();
     }
 
     $scope.filterByEndDate = function () {
         $scope.data.filterEndDateTime = toDate($scope.data.filterEndDate);
-        $scope.data.filterEndDateTime.setHours(23, 59, 59, 999);
+        $scope.data.fill_view?$scope.data.filterEndDateTime.setHours(23, 59, 59, 999):$scope.data.filterEndDateTime.setHours(0, 0, 0, 0);
        // $scope.data.filterEndDateTime = toUTCDate($scope.data.filterEndDateTime)
         $scope.data.fill_view?searchFills() : getFillsForPosition();
     }
