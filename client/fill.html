@@ -23,13 +23,12 @@
                         <div class="pr_nm">Product :</div>
                         <div class="prd_all_wrp">
                             <div class="prd_dt"></div>
-                            <div class="prd_st">All</div>
+                            <div class="prd_st">ETH-USD</div>
 
                             <ul class="prd_optns">
-                                <li class="options">ETH-USD</li>
-                                <li class="options">BTC-USD</li>
-                                <li class="options">LTC-USD</li>
-                                <li class="options">All</li>
+                                <li class="options" ng-click="productOnChange('ETH-USD')">ETH-USD</li>
+                                <li class="options" ng-click="productOnChange('BTC-USD')">BTC-USD</li>
+                                <li class="options" ng-click="productOnChange('LTC-USD')" >LTC-USD</li>
                             </ul>
                             <div class="prd_all_bt">
                                 <img src="img/down-arrow_white.png">
@@ -44,11 +43,11 @@
                             <div class="prd_st">All</div>
 
                             <ul class="prd_optns">
-                                <li class="options">Transfer In</li>
-                                <li class="options">Transfer Out</li>
-                                <li class="options">Buy</li>
-                                <li class="options">Sell</li>
-                                <li class="options">All</li>
+                                <!--<li class="options" ng-click=>Transfer In</li>
+                                <li class="options">Transfer Out</li>-->
+                                <li class="options"  ng-click="sideOnChange('buy')">Buy</li>
+                                <li class="options" ng-click="sideOnChange('sell')">Sell</li>
+                                <li class="options" ng-click="sideOnChange('all')" >All</li>
                             </ul>
                             <div class="prd_all_bt">
                                 <img src="img/down-arrow_white.png">
@@ -61,13 +60,13 @@
                     <div class="lft_wrp_1 lft_2">
                         <div class="pr_nm">Date(Start) :</div>
                         <div class="dtpckr_wrp">
-                            <input type="text" class="datepicker-here_bot" placeholder="Select" data-language="en" readonly data-language="en">
+                            <input type="text" class="datepicker-here_bot" airdatepicker placeholder="Select" ng-change="filterByStrtDate()" ng-model="data.filterStartDate" data-language="en" readonly data-language="en">
                         </div>
                     </div>
                     <div class="lft_wrp_1">
-                        <div class="pr_nm">Date(Start) :</div>
+                        <div class="pr_nm">Date(End) :</div>
                         <div class="dtpckr_wrp">
-                            <input type="text" class="datepicker-here_bot" placeholder="Select" data-language="en" readonly data-language="en">
+                            <input type="text" class="datepicker-here_bot" airdatepicker placeholder="Select"  ng-change="filterByEndDate()" ng-model="data.filterEndDate" data-language="en" readonly data-language="en">
                         </div>
                     </div>
                 </div>
@@ -168,7 +167,7 @@
                                {{ ((((item | sumProductColumn:'size':'price') * ( item | sumByColumn: 'size')) +  (item | sumByColumn: 'fee' )) / ( item | sumByColumn: 'size'))| number: 4 }}
                             </div>
                             <div class="sb_hd">
-                               {{ item[0].created_at |  date:'yyyy-MM-dd HH:mm:ss'}}
+                               {{ item[0].created_at_unix * 1000 |  date:'yyyy-MM-dd HH:mm:ss'}}
                             </div>
                         </accordion-heading>
                         <div class="">
@@ -354,6 +353,7 @@
             </div>
         </div>
         <div  ng-show="!data.fill_view">
+            
 
         </div>
     </div>
@@ -813,6 +813,7 @@
     </div>
 
     <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="lib/moment.js"></script>
     <script type="text/javascript" src="lib/aria-accordion.js"></script>
     <script type="text/javascript" src="lib/datepicker.min.js"></script>
     <script type="text/javascript" src="lib/datepicker.en.js"></script>

@@ -12,7 +12,23 @@ gdaxFillsDAL.saveFills = function (fillsData, callBack) {
 
     // Converting created at date to time stamp and store it new variable
     fillsData.forEach(function (value) {
-       value.created_at_unix = moment(value.created_at).unix();
+        value.created_at_unix = moment(value.created_at).unix();
+    });
+
+    saveToDb(gdaxFillsDB, gdaxUserDB, fillsData, function (result) {
+        callBack(result)
+    });
+}
+/* API Handler to save Fills[End]  */
+
+/* API Handler to save Latest Fills[Start]  */
+gdaxFillsDAL.saveLatestFills = function (fillsData, callBack) {
+    var gdaxFillsDB = new GdaxFillsDB();
+    var gdaxUserDB = new GdaxUserDB();
+
+    // Converting created at date to time stamp and store it new variable
+    fillsData.forEach(function (value) {
+        value.created_at_unix = moment(value.created_at).unix();
     });
 
 
@@ -24,37 +40,33 @@ gdaxFillsDAL.saveFills = function (fillsData, callBack) {
             return;
         }
 
-        // Checking if there is any last trade
-        if (!data.latestTrade) {
-            saveToDb(gdaxFillsDB, gdaxUserDB, fillsData, function (result) {
-                callBack(result)
-            });
-        } else {
-            var newFillData = []
+        var newFillData = []
 
-            // checking is there any new trade using created date
-            fillsData.forEach(function (value) {
-                if ((moment(value.created_at)).diff(moment(data.latestTrade.created_at)) > 0) {
-                    newFillData.push(value)
-                }
-            });
+        // checking is there any new trade using created date
+        fillsData.forEach(function (value) {
+            if ((moment(value.created_at)).diff(moment(data.latestTrade.created_at)) > 0) {
+                newFillData.push(value)
+            }
+        });
 
-            // Checking for new trade calling function accordingly
-            newFillData.length > 0 ? saveToDb(gdaxFillsDB, gdaxUserDB, newFillData, function (result) {
-                callBack(result)
-            }) : '';
-        }
+        // Checking for new trade calling function accordingly
+        newFillData.length > 0 ? saveToDb(gdaxFillsDB, gdaxUserDB, newFillData, function (result) {
+            callBack(result)
+        }) : '';
     })
 }
 /* API Handler to save Fills[End]  */
 
-/* API handler to get fills from DB[Start] */
-gdaxFillsDAL.getfillsFromDb = function (apiKey, callBack) {
-    var gdaxFillsDB = new GdaxFillsDB();
 
-    gdaxFillsDB.collection.find({
-        userKey: apiKey
-    }).toArray(function (err, data) {
+/* API handler to get fills from DB[Start] */
+gdaxFillsDAL.getfillsFromDb = function (reqParams, callBack) {
+    var gdaxFillsDB = new GdaxFillsDB();
+    var queryObj = {
+        userKey: reqParams.userKey,
+        product_id: reqParams.prodId
+    }
+
+    gdaxFillsDB.collection.find(queryObj).toArray(function (err, data) {
         if (err) {
             var result = {
                 'success': false,
@@ -75,12 +87,37 @@ gdaxFillsDAL.getfillsFromDb = function (apiKey, callBack) {
 
 /* API handler to search fills from DB[Start] */
 gdaxFillsDAL.searchFillsFromDb = function (searchFilter, callBack) {
-   
-    var gdaxFillsDB = new GdaxFillsDB();
 
-    gdaxFillsDB.collection.find({
-        userKey: apiKey
-    }).toArray(function (err, data) {
+    var gdaxFillsDB = new GdaxFillsDB();
+    var queryObj = {};
+
+    Object.keys(searchFilter).forEach(function (key) {
+        if (searchFilter[key] !== '') {
+            switch (key) {
+                case 'prodId':
+                    queryObj.product_id = searchFilter[key];
+                    break;
+                case 'side':
+                    queryObj.side = searchFilter[key];
+                    break;
+                case 'startDate':
+                    queryObj.created_at_unix = {};
+                    queryObj.created_at_unix.$gte = searchFilter[key];
+                    break;
+                case 'endDate':
+                    if (queryObj.created_at_unix) {
+                        queryObj.created_at_unix.$lte = searchFilter[key];
+                    } else {
+                        queryObj.created_at_unix = {};
+                        queryObj.created_at_unix.$lte = searchFilter[key];
+                    }
+
+                    break;
+            }
+        }
+    });
+
+    gdaxFillsDB.collection.find(queryObj).toArray(function (err, data) {
         if (err) {
             var result = {
                 'success': false,
@@ -98,6 +135,107 @@ gdaxFillsDAL.searchFillsFromDb = function (searchFilter, callBack) {
 };
 /* API handler to search fills from DB[End] */
 
+/* API handler to get fills from DB[Start] */
+gdaxFillsDAL.getfillsFromDb = function (reqParams, callBack) {
+    var gdaxFillsDB = new GdaxFillsDB();
+    var queryObj = {
+        userKey: reqParams.userKey,
+        product_id: reqParams.prodId
+    }
+
+    gdaxFillsDB.collection.find(queryObj).toArray(function (err, data) {
+        if (err) {
+            var result = {
+                'success': false,
+                'error': err
+            };
+            callBack(result);
+        } else {
+            var result = {
+                'success': true,
+                'data': data
+            };
+            callBack(result);
+        }
+    })
+};
+
+/* API handler to get fills from DB[End] */
+
+/* API handler to get data for trade positions from DB[Start] */
+gdaxFillsDAL.getDataForTradePositionsFromDb = function (searchFilter, callBack) {
+    var gdaxFillsDB = new GdaxFillsDB();
+    var queryObj = {};
+    Object.keys(searchFilter).forEach(function (key) {
+        if (searchFilter[key] !== '') {
+            switch (key) {
+                case 'prodId':
+                    queryObj.product_id = searchFilter[key];
+                    break;
+                case 'side':
+                    queryObj.side = searchFilter[key];
+                    break;
+                case 'startDate':
+                    queryObj.created_at_unix = {};
+                    queryObj.created_at_unix.$gte = searchFilter[key];
+                    break;
+                case 'endDate':
+                    if (queryObj.created_at_unix) {
+                        queryObj.created_at_unix.$lte = searchFilter[key];
+                    } else {
+                        queryObj.created_at_unix = {};
+                        queryObj.created_at_unix.$lte = searchFilter[key];
+                    }
+
+                    break;
+            }
+        }
+    });
+
+    gdaxFillsDB.collection.find(queryObj).toArray(function (err, data) {
+        if (err) {
+            var result = {
+                'success': false,
+                'error': err
+            };
+            callBack(result);
+        } else {
+            var dataOnTrade = data;
+            delete queryObj.created_at_unix;
+            queryObj.created_at_unix = {};
+            queryObj.created_at_unix.$lt = searchFilter.startDate;
+            gdaxFillsDB.collection.find(queryObj).toArray(function (err, data) {
+                if (err) {
+                    var result = {
+                        'success': false,
+                        'error': err
+                    };
+                    callBack(result);
+                } else {
+                    var dataBeforeTrade = data;
+                    var result = {
+                        'success': true,
+                        'data': {
+                            dataPosBefore:dataBeforeTrade,
+                            dataPosAfter:dataOnTrade
+                        }
+                    };
+                    callBack(result);
+                }
+
+            })
+
+            // var result = {
+            //     'success': true,
+            //     'data': data
+            // };
+            // callBack(result);
+        }
+    })
+};
+/* API handler to get data for trade positions from DB[End] */
+
+// Exporting module
 module.exports = gdaxFillsDAL;
 
 /* save to fills DB by preference[Start]  */

@@ -5,7 +5,7 @@ var gdaxUserService = require('../services/gdax_user_service')
 var gdaxFillsService = require('../services/gdax_fills_service')
 
 module.exports = function (app) {
-   // app.post("/api/convertToEther", exchangeService.convertToEther)
+    // app.post("/api/convertToEther", exchangeService.convertToEther)
     app.post("/api/getIavToken", paymentService.getIavToken)
     app.post("/api/doPayment", paymentService.doPayment)
     app.post("/api/buyCrypto", geminiExchngService.buyCrypto)
@@ -15,4 +15,7 @@ module.exports = function (app) {
     app.post("/api/gdaxUser", gdaxUserService.saveUser)
     app.post("/api/gdaxFills", gdaxFillsService.getFillsFromGdax)
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
+    app.post("/api/gdaxSearchFillsFromDb", gdaxFillsService.searchFillsFromDb)
+    app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
+    app.post("/api/gdaxPosition", gdaxFillsService.getGdaxPosition)
 }

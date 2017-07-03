@@ -18,9 +18,9 @@ $('body').mouseup(function(e)
 
 $('.datepicker-here_bot').datepicker({
     dateFormat: 'dd-mm-yyyy',
-    minDate: new Date(),
+   // minDate: new Date(),
     onSelect: function (formattedDate, date, inst) {
-
+       console.log('IN')     
     }
 });
 
