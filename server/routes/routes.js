@@ -17,5 +17,5 @@ module.exports = function (app) {
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
     app.post("/api/gdaxSearchFillsFromDb", gdaxFillsService.searchFillsFromDb)
     app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
-    app.post("/api/gdaxPosition", gdaxFillsService.getGdaxPosition)
+  //  app.post("/api/gdaxPosition", gdaxFillsService.getGdaxPosition)
 }

@@ -15,6 +15,25 @@ $('body').mouseup(function(e)
         $('.prd_all_wrp').removeClass('opt_wrp');
     }
 });
+$('body').mouseup(function(e)
+{
+    var subject = $(".gd_wrap");
+
+    if(e.target.id != subject.attr('id') && !subject.has(e.target).length)
+    {
+        $('.gd_wrap').removeClass('act');
+    }
+});
+
+$('body').mouseup(function(e)
+{
+    var subject = $(".display_filt");
+
+    if(e.target.id != subject.attr('id') && !subject.has(e.target).length)
+    {
+        $('.display_filt').removeClass('act');
+    }
+});
 
 $('.datepicker-here_bot').datepicker({
     dateFormat: 'dd-mm-yyyy',
@@ -39,6 +58,18 @@ function high_l()
 {
     $(this).toggleClass('tog');
 }
+function filter()
+{
+    $('.gd_wrap').addClass('act');
+}
+function cbx()
+{
+    $(this).toggleClass('act');
+}
+function dp_filter()
+{
+    $('.display_filt').addClass('act');
+}
 
 
 
@@ -47,6 +78,9 @@ function init()
     $('.prd_all_wrp').click(prd_fl);
     $('.options').click(apnd_cnt);
     $('.tog_arrow').click(high_l);
+    $('.resp_filt').click(filter);
+    $('.filt_chck').click(cbx);
+    $('.resp_disp').click(dp_filter);
 }
 $(document).ready(init);
 

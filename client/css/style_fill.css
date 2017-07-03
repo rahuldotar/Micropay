@@ -27,7 +27,7 @@ img
 {
     width: 80%;
     padding-top: 30px;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     margin: 0 auto;
 }
 .gd_sb_head
@@ -357,6 +357,7 @@ img
 .collapse.in
 {
     background-color: #f7f7f7;
+    padding-top: 25px;
 }
 .list-group-item
 {
@@ -381,8 +382,12 @@ img
     height: 28px;
     width: 3px;
     background-color: orange;
-    top: -5;
+    top: -5px;
     left: 0;
+}
+.resp_btn
+{
+    display: none;
 }
 
 .sb_lft_line_buy
@@ -392,12 +397,20 @@ img
     height: 28px;
     width: 3px;
     background-color: green;
-    top: -5;
+    top: -5px;
     left: 0;
 }
+.gd_tab_menu
+{
+    width: 80%;
+    margin: 0 auto;
+}
+
 .gd_tab_menu ul {
     list-style: none;
-    padding: 1% 2%;
+    padding: 1% 0%;
+    padding-bottom: 0%;
+    margin-bottom: 0px !important;
 }
 .gd_tab_menu ul li {
     display: inline-block;
@@ -414,6 +427,7 @@ img
     -ms-transition: 0.2s ease all;
     -o-transition: 0.2s ease all;
     transition: 0.2s ease all;
+    color: white;
 }
 .gd_tab_menu ul li:before {
     content: '';
@@ -421,7 +435,7 @@ img
     bottom: 0;
     height: 2px;
     width: 0px;
-    background: #000000;
+    background: #ed145b;
     -webkit-transition: 0.4s ease all;
     -moz-transition: 0.4s ease all;
     -ms-transition: 0.4s ease all;
@@ -434,7 +448,7 @@ img
     bottom: 0;
     height: 2px;
     width: 25px;
-    background: #000000;
+    background: #ed145b;
     -webkit-transition: 0.5s ease all;
     -moz-transition: 0.5s ease all;
     -ms-transition: 0.5s ease all;
@@ -478,6 +492,10 @@ img
     {
         width: 95%;
     }
+    .gd_tab_menu
+    {
+        width: 95%;
+    }
     .panel-heading
     {
         width: 95%;
@@ -500,7 +518,7 @@ img
     }
     .prd_all_wrp
     {
-        width: 78px;
+        width: 92px;
     }
     .lft_2 {
         margin-left: 25px;
@@ -561,7 +579,7 @@ img
     }
     .prd_all_wrp
     {
-        width: 78px;
+        width: 92px;
     }
     .lft_2 {
         margin-left: 25px;
@@ -581,4 +599,132 @@ img
         right: -13px;
     }
 
+}
+@media only screen and (max-width:758px)
+{
+    .tbl_wrp
+    {
+        width: 100%;
+        overflow-x:scroll;
+    }
+    .tbl_out
+    {
+        width: 900px;
+    }
+    .resp_btn
+    {
+        display: block;
+        position: relative;
+        width: 95%;
+        margin: 0 auto;
+        padding-top: 14px;
+        padding-bottom: 10px;
+    }
+    .resp_filt
+    {
+        display: inline-block;
+        color: white;
+        font-size: 12px;
+        padding: 1% 6%;
+        float: left;
+        background-color: #546066;
+        border-radius: 3px;
+    }
+    .resp_disp
+    {
+        display: inline-block;
+        color: white;
+        font-size: 12px;
+        padding: 1% 6%;
+        float: right;
+        background-color: #546066;
+        border-radius: 3px; position: relative;
+    }
+    .gd_wrap
+    {
+        display: none;
+        position: fixed;
+        background-color: #3e4e56;
+        z-index: 2;
+        top: 14px;
+        left: 2%;
+        width: 80%;
+        box-shadow: 0px 0px 18px 0px rgba(130, 130, 130, 0.72);
+        border-radius: 2px;
+    }
+    .gd_wrap.act
+    {
+        display: block;
+    }
+    .hd_lft_wrap {
+        width: 100%;
+    }
+    .lft_wrp_1
+    {
+        width: 80%;
+        padding: 2%;
+    }
+    .lft_2
+    {
+        margin-left: 0px;
+    }
+    .pr_nm
+    {
+        width: 81px;
+    }
+    .hd_rght_wrap
+    {
+        width: 100%;
+    }
+    .display_filt
+    {
+        position: fixed;
+        right: 3%;
+        background-color: white;
+        width: 50%;
+        z-index: 2;
+        padding: 5%;
+        box-shadow: 0px 0px 18px 0px rgba(130, 130, 130, 0.72);
+        border-radius: 2px;
+        display: none;
+    }
+    .display_filt.act
+    {
+        display: block;
+    }
+
+    .filt_chck
+    {
+        display: inline-block;
+        height: 12px;
+        width: 12px;
+        border: 1px solid #757575;
+        margin-right: 10px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    .filt_chck.act
+    {
+        background-image: url(../img/Layer%205.png);
+    }
+    .filt_ico
+    {
+        width: 13px;
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: top;
+    }
+
+    .filt_row
+    {
+        padding-top: 4%;
+        padding-bottom: 4%;
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width:355px) {
+    .datepickers-container {
+        left: -50px;
+    }
 }
