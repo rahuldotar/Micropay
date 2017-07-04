@@ -2,7 +2,8 @@
 var moment = require('moment');
 var Gdax = require('gdax');
 var groupArray = require('group-array');
-var gdaxFillsDAL = require('../DAL/gdax_fills_dal')
+var gdaxAccountDAL = require('../DAL/gdax_accounts_dal')
+var gdaxTransferDAL = require('../DAL/gdax_transfer_dal')
 var CronJob = require('cron').CronJob;
 /* Gdax init[Start]  */
 
@@ -17,34 +18,43 @@ var gdaxTransferSVC = {};
 var queryParamsTrsansfers = {};
 
 /* Getting Fills from Gdax API[Start] */
-gdaxFillSVC.getTransferFromGdax = function () {
+gdaxTransferSVC.getTransferFromGdax = function (req,res) {
     var authedClient = new Gdax.AuthenticatedClient(
         gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
 
-    queryParamsTrsansfers.limit = '100';
+    var currency = req.body.currency.split("-")[0];
 
-    authedClient.getAccountHistory(queryParamsFills, function (error, response, data) {
-        if (!error & response.statusCode === 200) {
-            data.forEach(function (value) {
-                value.userKey = gdaxKey;
-            });
-            gdaxFillsDAL.saveFills(data, function (result) {
-                if (!result.success) {
-                    console.log('Saving fils Error')
-                } else {
-                    if (data.length === 100) {
-                        queryParamsFills.after = response.headers['cb-after'];
-                        gdaxFillSVC.getFillsFromGdax();
-                    } else {
-                        job.start();
+    // getting account for the reqeusted currency    
+    gdaxAccountDAL.getAnAccount(currency, function (result) {
+        var accntID = result.data.id;
+        authedClient.getAccountHistory(accntID, function (error, response, data) {
+            if (!error & response.statusCode === 200) {
+                data.forEach(function (value) {
+                    value.userKey = gdaxKey;
+                    value.created_at_unix = moment(value.created_at).unix();
+                    if (!value.details.product_id) {
+                        value.details.product_id = req.body.currency;
                     }
+                });
 
-                    console.log('Saving Fills Success')
-                }
-
-            })
-
-        }
+                // saving Account history to the DB    
+                gdaxTransferDAL.saveAccountHistory(data, function (result) {
+                    if (!result.success) {
+                        console.log('Saving Account history Error')
+                    } else {
+                        if (data.length === 100) {
+                            queryParamsFills.after = response.headers['cb-after'];
+                            gdaxFillSVC.getFillsFromGdax(req,res);
+                        } else {
+                          //  job.start();
+                        }
+                        console.log('Saving Account History Success')
+                    }
+                })
+            }
+        })
     });
 }
 /* Getting Fills from Gdax API[End] */
+
+module.exports = gdaxTransferSVC;
