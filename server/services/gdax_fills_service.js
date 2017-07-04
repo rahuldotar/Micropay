@@ -1,26 +1,24 @@
 // importing required modules
-const crypto = require("crypto");
-var request = require('request');
 var moment = require('moment');
 var Gdax = require('gdax');
 var groupArray = require('group-array');
 var gdaxFillsDAL = require('../DAL/gdax_fills_dal')
 var CronJob = require('cron').CronJob;
 
-// /* Gdax init[Start]  */
-// // Authenticating with gdax app credentials
-// var apiURI = 'https://api.gdax.com';
-// var gdaxKey = 'd4fa46cb54128a56400886b9e9e2839a';
-// var gdaxSecret = '8ZYj4x07zChiiOnIc5v1aFQ8IA29G05ZGLEtjPPjn4XN0y8v0bMmlWkYWq1VFtCSlOuzREaFY57sabryVzlP1A==';
-// var gdaxPhrase = '1768eswbz29';
-// /* Gdax init [end] */
-
+/* Gdax init[Start]  */
 // Authenticating with gdax app credentials
 var apiURI = 'https://api.gdax.com';
-var gdaxKey = 'ffabb7b72d5b11b3bbe1a978ef011a55';
-var gdaxSecret = '0YvjBc4XqbI6f+vdnH7FyWRzuY7ms8co82K7ojf5m57oCcqiKFAGr9YcoTwoEIHCKW7Ka1m8LUd3o2rYbZC4Og==';
-var gdaxPhrase = 'qn2w4a5dw3f';
+var gdaxKey = 'd4fa46cb54128a56400886b9e9e2839a';
+var gdaxSecret = '8ZYj4x07zChiiOnIc5v1aFQ8IA29G05ZGLEtjPPjn4XN0y8v0bMmlWkYWq1VFtCSlOuzREaFY57sabryVzlP1A==';
+var gdaxPhrase = '1768eswbz29';
 /* Gdax init [end] */
+
+// // Authenticating with gdax app credentials
+// var apiURI = 'https://api.gdax.com';
+// var gdaxKey = 'ffabb7b72d5b11b3bbe1a978ef011a55';
+// var gdaxSecret = '0YvjBc4XqbI6f+vdnH7FyWRzuY7ms8co82K7ojf5m57oCcqiKFAGr9YcoTwoEIHCKW7Ka1m8LUd3o2rYbZC4Og==';
+// var gdaxPhrase = 'qn2w4a5dw3f';
+// /* Gdax init [end] */
 
 var gdaxFillSVC = {};
 var queryParamsFills = {};
@@ -278,13 +276,13 @@ gdaxFillSVC.getDataForTradePositions = function (req, res) {
                     sumEffectiveBefore += effectiveTotal
                 })
             }
-             var sumProduct = 0;
-                    var meanWeight = 0;
-                    var totalSize = 0;
-                    var totalFee = 0;
+            var sumProduct = 0;
+            var meanWeight = 0;
+            var totalSize = 0;
+            var totalFee = 0;
             if (groupByOrderIdPosNow) {
                 Object.keys(groupByOrderIdPosNow).forEach(function (key) {
-                   
+
                     groupByOrderIdPosNow[key].forEach(function (item) {
                         sumProduct += (parseFloat(item.size) * (parseFloat(item.price)));
                     });
@@ -318,25 +316,6 @@ gdaxFillSVC.getDataForTradePositions = function (req, res) {
     })
 }
 /* Getting Gdax Fills from database API[End] */
-
-/* Getting gdax position[Start] */
-gdaxFillSVC.getGdaxCurrentPosition = function (req, res) {
-    var authedClient = new Gdax.AuthenticatedClient(
-        gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
-
-      authedClient.getAccounts(function (error, response, data) {
-        if (!error & response.statusCode === 200) {
-            res.status(200).json({
-                success: true,
-                result: data
-
-            });
-
-        }
-    });
-}
-/* Getting gdax position[End] */
-
 
 /* Implementing cron Job for getting new gdax trades[Start] */
 var job = new CronJob({

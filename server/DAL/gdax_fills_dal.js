@@ -331,7 +331,7 @@ var saveToDb = function (gdaxFillsDB, gdaxUserDB, fillsData, callBack) {
                 // Updating in to gdax User
                 var gdaxUserDB = new GdaxUserDB();
                 gdaxUserDB.collection.findOneAndUpdate({
-                    apiKey: doc.userKey
+                    apiKey: 'd4fa46cb54128a56400886b9e9e2839a'
                 }, {
                     $set: {
                         latestTrade: doc

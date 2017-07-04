@@ -3,6 +3,7 @@ var paymentService = require('../services/payment_service')
 var geminiExchngService = require('../services/gemini_exchange_service')
 var gdaxUserService = require('../services/gdax_user_service')
 var gdaxFillsService = require('../services/gdax_fills_service')
+var gdaxAccountService = require('../services/gdax_accounts_service')
 
 module.exports = function (app) {
     // app.post("/api/convertToEther", exchangeService.convertToEther)
@@ -17,5 +18,9 @@ module.exports = function (app) {
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
     app.post("/api/gdaxSearchFillsFromDb", gdaxFillsService.searchFillsFromDb)
     app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
-    app.post("/api/gdaxPosition", gdaxFillsService.getGdaxCurrentPosition)
+    
+    // API Routes for Gdax transfers
+    app.post("/api/getGdaxAccounts", gdaxAccountService.getAccounts)
+
+
 }
