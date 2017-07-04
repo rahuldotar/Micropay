@@ -151,7 +151,8 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
         $http(requestObj).success(function (data) {
             $scope.data.fills = data.result;
         }).error(function (data, err) {
-            $scope.data.fills = data.result;
+
+               $scope.data.fills = data.result;
             console.log(error)
         });
     };
@@ -209,6 +210,11 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
 
     };
     /* Getting fills for calculating position[End] */
+
+
+    $scope.alertclick = function(){
+        $('.mob_cards').fadeIn();
+    }
 
    
     $scope.name = 'World';
