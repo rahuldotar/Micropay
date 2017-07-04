@@ -70,6 +70,10 @@ function dp_filter()
 {
     $('.display_filt').addClass('act');
 }
+function mob_cls()
+{
+    $('.mob_cards').fadeOut();
+}
 
 
 
@@ -81,6 +85,7 @@ function init()
     $('.resp_filt').click(filter);
     $('.filt_chck').click(cbx);
     $('.resp_disp').click(dp_filter);
+    $('.clos_mob').click(mob_cls);
 }
 $(document).ready(init);
 

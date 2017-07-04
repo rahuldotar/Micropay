@@ -348,14 +348,22 @@
 
 
 
-$(document).ready(function () {
-  'use strict';
-  $('#accordion-group-1, #accordion-group-2').ariaAccordion({
-    fadeSpeed: 800,
-    expandOnPageLoad: true,
-    expandOnlyOne: true
-  });
-$('#accordion-group-2').ariaAccordion('test');
+$(document).ready(function ()
+{
+  if($(window).width() >= 1024){
+    'use strict';
+    $('#accordion-group-1, #accordion-group-2').ariaAccordion({
+      fadeSpeed: 800,
+      expandOnPageLoad: true,
+      expandOnlyOne: true
+    });
+  }
+
+
+
+
+
+  $('#accordion-group-2').ariaAccordion('test');
   /*
   $('#accordion-group-2').ariaAccordion({
     expandOnPageLoad: false,

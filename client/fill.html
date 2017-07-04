@@ -18,6 +18,141 @@
 
 
     <div ng-controller="fillCtrl" class="gd_outer">
+
+        <div class="mob_cards">
+            <div class="mob_card_wrap">
+                <div class="clos_mob">
+                    <img src="img/close.png">
+                </div>
+                <div class="wht_wrp">
+                    <div class="card_blck_head">
+                        BC-2612Q3W25
+                    </div>
+
+                    <div class="in_block_table">
+                        <table>
+                            <tr class="tr_tab">
+                                <th>SIZE</th>
+                                <th>TOTAL</th>
+                                <th>PRICE</th>
+                            </tr>
+                            <tr>
+                                <td>1548</td>
+                                <td>1548</td>
+                                <td>621</td>
+                            </tr>
+
+                        </table>
+
+                        <table>
+                            <tr class="tr_tab">
+                                <th>FEE</th>
+                                <th>PROFIT/LOSS</th>
+                                <th>CREATED</th>
+                            </tr>
+                            <tr>
+                                <td>1548</td>
+                                <td>1548</td>
+                                <td>621</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+
+                <div class="ash_wrp">
+                    <div class="ash_wrp_tbl">
+                        <table class="ash_tab">
+                            <tr class="tr_tab">
+                                <th></th>
+                                <th>SIZE</th>
+                                <th>PRICE</th>
+                                <th>FEE</th>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+                            <tr>
+                                <td class="ash_thead">BIT COIN</td>
+                                <td>154</td>
+                                <td>158</td>
+                                <td>61</td>
+                            </tr>
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
         <div class="gd_head">
             <div class="gd_wrap">
                 <div class="hd_lft_wrap">
@@ -193,8 +328,9 @@
                 <div class="sb_cn_wrp">
 
                     <accordion>
-                        <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen" ng-repeat="(name,item) in data.fills">
-                            <accordion-heading >
+                        <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen;alertclick()" ng-repeat="(name,item) in data.fills">
+
+                            <accordion-heading>
 
                                 <div class="sb_hd">
                                     <div ng-class="{sb_lft_line_sell: item[0].side =='sell', sb_lft_line_buy:  item[0].side =='buy'}" ></div>
@@ -225,6 +361,7 @@
                                    {{ item[0].created_at_unix * 1000 |  date:'yyyy-MM-dd HH:mm:ss'}}
                                 </div>
                             </accordion-heading>
+
                             <div class="">
                                 <ul class="list-group">
                                     <dl class="dl-horizontal list-group-item" ng-repeat="data in item">
