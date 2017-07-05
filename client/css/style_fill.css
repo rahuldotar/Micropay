@@ -28,6 +28,7 @@ img
     padding-top: 30px;
     padding-bottom: 10px;
     margin: 0 auto;
+    width: 80%;
 }
 .gd_sb_head
 {
@@ -200,7 +201,7 @@ img
     position: absolute;
     width: 12px;
     top: -2px;
-    right: 61%;
+    right: 50%;
     cursor: pointer;
     transition: all ease 0.5s;
     -webkit-transition:all ease 0.5s ;
@@ -459,7 +460,21 @@ img
     transition: 0.5s ease all;
 }
 
-
+.transfer_view
+{
+    padding-top: 7px;
+    padding-bottom: 11px;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 13px;
+    cursor: pointer;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(158, 158, 158, 0.15) !important;
+    position: relative;
+}
 
 
 @media only screen and (max-width:1265px) {
@@ -492,7 +507,15 @@ img
     {
         width: 95%;
     }
+    .gd_wrap
+    {
+        width: 95%;
+    }
     .gd_tab_menu
+    {
+        width: 95%;
+    }
+    .transfer_view
     {
         width: 95%;
     }
@@ -740,6 +763,10 @@ img
         background-color: rgba(0, 0, 0, 0.43);
         z-index: 2;
         display: none;
+    }
+    .mob_cards.act
+    {
+        display: block;
     }
     .mob_card_wrap
     {

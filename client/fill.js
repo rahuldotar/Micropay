@@ -68,6 +68,8 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
     $scope.data = {
         fills: {},
         fill_view: true,
+        transfer_view: false,
+        position_view: false,
         selProduct: 'ETH-USD',
         selSide: 'all',
         filterStartDate: '',
@@ -78,9 +80,19 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
 
     $scope.tabViewFills = function () {
         $scope.data.fill_view = true;
+        $scope.data.position_view = false;
+        $scope.data.transfer_view = false;
     };
     $scope.tabViewPosition = function () {
         $scope.data.fill_view = false;
+        $scope.data.position_view = true;
+        $scope.data.transfer_view = false;
+    };
+
+    $scope.tabViewTrnsfr = function () {
+        $scope.data.fill_view = false;
+        $scope.data.position_view = false;
+        $scope.data.transfer_view = true;
     };
 
     /* Using product Filter[Start] */
@@ -123,16 +135,16 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
     /* Using date Filter[Start] */
     $scope.filterByStrtDate = function () {
         $scope.data.filterStartDateTime = toDate($scope.data.filterStartDate);
-        $scope.data.fill_view ? $scope.data.filterStartDateTime.setHours(0, 0, 0, 0) : $scope.data.filterStartDateTime.setHours(23, 59, 59, 999);
-        // $scope.data.filterStartDateTime = toUTCDate($scope.data.filterStartDateTime)
-        $scope.data.fill_view ? searchFills() : getPosition();
+        $scope.data.filterStartDateTime.setHours(0, 0, 0, 0);
+       // $scope.data.filterStartDateTime = toUTCDate($scope.data.filterStartDateTime)
+        $scope.data.fill_view?searchFills() : getFillsForPosition();
     }
 
     $scope.filterByEndDate = function () {
         $scope.data.filterEndDateTime = toDate($scope.data.filterEndDate);
-        $scope.data.fill_view ? $scope.data.filterEndDateTime.setHours(23, 59, 59, 999) : $scope.data.filterEndDateTime.setHours(0, 0, 0, 0);
-        // $scope.data.filterEndDateTime = toUTCDate($scope.data.filterEndDateTime)
-        $scope.data.fill_view ? searchFills() : getPosition();
+        $scope.data.filterEndDateTime.setHours(23, 59, 59, 999);
+       // $scope.data.filterEndDateTime = toUTCDate($scope.data.filterEndDateTime)
+        $scope.data.fill_view?searchFills() : getFillsForPosition();
     }
     /* Using date Filter[End] */
 
@@ -149,10 +161,10 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
         };
 
         $http(requestObj).success(function (data) {
-            $scope.data.fills = data.result;
-        }).error(function (data, err) {
 
             $scope.data.fills = data.result;
+        }).error(function (data, err) {
+           $scope.data.fills = data.result;
             console.log(error)
         });
     };
@@ -165,19 +177,19 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
             prodId: $scope.data.selProduct,
             side: $scope.data.selSide === 'all' ? '' : $scope.data.selSide,
             startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime).unix() : '',
-            endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : ''
+            endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : '', 
         }
 
         // var postData = $scope.reqData;
         var requestObj = {
             method: 'POST',
             url: '/api/gdaxSearchFillsFromDb',
-            data: postData
+            data:postData
 
         };
 
         $http(requestObj).success(function (data) {
-            $scope.data.fills = data.result;
+             $scope.data.fills = data.result;
         }).error(function (data, err) {
             console.log(error)
         });
@@ -185,22 +197,20 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
     /* search fills[End] */
 
     /* Getting fills for calculating position[Start] */
-    var getFillsForPosition = function () {
-        if(!$scope.data.filterStartDate){
-            return;
-        }
+    var getFillsForPosition = function(){
         var postData = {
             userKey: 'd4fa46cb54128a56400886b9e9e2839a',
             prodId: $scope.data.selProduct,
-            startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime).unix() : '',
-            endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : ''
+            side: $scope.data.selSide === 'all' ? '' : $scope.data.selSide,
+            startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix() : '',
+  //  endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix()
         }
 
         // var postData = $scope.reqData;
         var requestObj = {
             method: 'POST',
-            url: '/api/gdaxTradePosition',
-            data: postData
+            url: '/api/filterGdaxPosition',
+            data:postData
         };
 
         $http(requestObj).success(function (data) {
@@ -214,15 +224,11 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $http) {
     /* Getting fills for calculating position[End] */
 
 
-    $scope.alertclick = function () {
-        var mq = window.matchMedia("(min-width: 715px)");
-        if (!mq.matches) {
-            $('.mob_cards').fadeIn();
-        }
-
+    $scope.alertclick = function(){
+        $('.mob_cards').addClass('act');
     }
 
-
+   
     $scope.name = 'World';
     $scope.group = {
         isOpen: true

@@ -2,7 +2,7 @@
 var moment = require('moment');
 var Gdax = require('gdax');
 var groupArray = require('group-array');
-var gdaxAccountDAL = require('../DAL/gdax_accounts_dal')
+var gdaxpositionDAL = require('../DAL/gdax_position_dal')
 var gdaxTransferDAL = require('../DAL/gdax_transfer_dal')
 var CronJob = require('cron').CronJob;
 /* Gdax init[Start]  */
@@ -19,15 +19,20 @@ var queryParamsTrsansfers = {};
 
 /* Getting Fills from Gdax API[Start] */
 gdaxPositionSVC.getGdaxPosition = function (req,res) {
-      gdaxFillsDAL.getDataForTradePositionsFromDb(req.body, function (result) {
+      gdaxpositionDAL.getDataForTradePositionsFromDb(req.body, function (result) {
         if (!result.success) {
             res.status(512).json({
                 success: false,
                 result: result
             });
-        } else {}
+        } else {
+               res.status(200).json({
+                success: true,
+                result: result
+            });
+        }
 
-      })``
+      })
          
 }
 /* Getting Fills from Gdax API[End] */

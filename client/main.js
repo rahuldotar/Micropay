@@ -72,7 +72,7 @@ function dp_filter()
 }
 function mob_cls()
 {
-    $('.mob_cards').fadeOut();
+    $('.mob_cards').removeClass('act');
 }
 
 
