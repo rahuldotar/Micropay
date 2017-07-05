@@ -616,6 +616,9 @@ img
     {
         width: 98%;
     }
+    .transfer_view {
+        width: 98%;
+    }
     .accordion-group__accordion-heading
     {
         width: 98%;
@@ -727,6 +730,7 @@ img
     .hd_rght_wrap
     {
         width: 100%;
+        text-align: left;
     }
     .display_filt
     {
