@@ -262,10 +262,13 @@
                 <ul>
                     <li ng-click="tabViewFills();">Fills</li>
                     <li ng-click="tabViewPosition();">Position</li>
+                    <li ng-click="tabViewPosition();">Transfer</li>
                 </ul>
             </div>
 
         </div>
+
+
 
         <div ng-show="data.fill_view">
             <div class="tbl_wrp">
@@ -326,6 +329,31 @@
 
 
                 <div class="sb_cn_wrp">
+
+                    <div class="transfer_view">
+                        <div class="sb_hd">
+                            <div class="sb_lft_line_buy"></div>
+                            Transfer-Test
+                        </div>
+                        <div class="sb_hd">
+                            3872
+                        </div>
+                        <div class="sb_hd">
+                            000000
+                        </div>
+                        <div class="sb_hd">
+                            000000
+                        </div>
+                        <div class="sb_hd">
+                            000000
+                        </div>
+                        <div class="sb_hd">
+                            000000
+                        </div>
+                        <div class="sb_hd">
+                            000000
+                        </div>
+                    </div>
 
                     <accordion>
                         <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen;alertclick()" ng-repeat="(name,item) in data.fills">
