@@ -235,6 +235,7 @@ gdaxFillsDAL.getfillsFromDb = function (reqParams, callBack) {
 // };
 // /* API handler to get data for trade positions from DB[End] */
 
+
 /* API handler to get data for trade positions from DB[Start] */
 gdaxFillsDAL.getDataForTradePositionsFromDb = function (searchFilter, callBack) {
     var gdaxFillsDB = new GdaxFillsDB();
@@ -307,7 +308,6 @@ gdaxFillsDAL.getDataForTradePositionsFromDb = function (searchFilter, callBack) 
     })
 };
 /* API handler to get data for trade positions from DB[End] */
-
 // Exporting module
 module.exports = gdaxFillsDAL;
 
