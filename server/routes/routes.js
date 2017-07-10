@@ -24,7 +24,11 @@ module.exports = function (app) {
     // API Routes for Gdax transfers
     app.post("/api/getGdaxAccounts", gdaxAccountService.getAccounts)
     app.post("/api/getGdaxTransfers", gdaxTransferService.getTransferFromGdax)
+    app.post("/api/getGdaxTransfersFromDB", gdaxTransferService.getTransferFromDB)
+    app.post("/api/searchGdaxTransfersFromDB", gdaxTransferService.searchTransferFromDB)
+    app.post("/api/getLatestETHTransferFromGdax", gdaxTransferService.getLatestETHTransferFromGdax)
     app.post("/api/filterGdaxPosition", gdaxPositionService.getGdaxPosition)
+    app.post("/api/getCurrentPosition", gdaxPositionService.getCurrentPosition)
 
 
 }

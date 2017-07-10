@@ -30,6 +30,23 @@ img
     margin: 0 auto;
     width: 80%;
 }
+.position_wrap
+{
+    padding-top: 30px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+    width: 80%;
+}
+.eth_head
+{
+    font-size: 12px;
+    font-weight: 900;
+    color: #bdbdbd;
+}
+.eth_wrap
+{
+    margin-bottom: 25px;
+}
 .gd_sb_head
 {
     padding-top: 15px;
@@ -275,6 +292,7 @@ img
 {
     width: 50%;
     float: right;
+    text-align: right;
 }
 .prd_wrp_2
 {
@@ -419,9 +437,9 @@ img
 .gd_tab_menu ul li {
     display: inline-block;
     vertical-align: top;
-    padding: 2px 5px;
+    padding: 6px 9px;
     font-size: 13px;
-    width: 10%;
+    /*width: 10%;*/
     margin: 0 auto;
     text-align: center;
     cursor: pointer;
@@ -439,12 +457,12 @@ img
     bottom: 0;
     height: 2px;
     width: 0px;
-    background: #ed145b;
-    -webkit-transition: 0.4s ease all;
-    -moz-transition: 0.4s ease all;
-    -ms-transition: 0.4s ease all;
-    -o-transition: 0.4s ease all;
-    transition: 0.4s ease all;
+    /*background: #ed145b;*/
+    /*-webkit-transition: 0.4s ease all;*/
+    /*-moz-transition: 0.4s ease all;*/
+    /*-ms-transition: 0.4s ease all;*/
+    /*-o-transition: 0.4s ease all;*/
+    /*transition: 0.4s ease all;*/
 }
 .gd_tab_menu ul li:hover:before {
     content: '';
@@ -452,12 +470,12 @@ img
     bottom: 0;
     height: 2px;
     width: 25px;
-    background: #ed145b;
-    -webkit-transition: 0.5s ease all;
-    -moz-transition: 0.5s ease all;
-    -ms-transition: 0.5s ease all;
-    -o-transition: 0.5s ease all;
-    transition: 0.5s ease all;
+    /*background: #ed145b;*/
+    /*-webkit-transition: 0.5s ease all;*/
+    /*-moz-transition: 0.5s ease all;*/
+    /*-ms-transition: 0.5s ease all;*/
+    /*-o-transition: 0.5s ease all;*/
+    /*transition: 0.5s ease all;*/
 }
 
 .transfer_view
@@ -475,7 +493,35 @@ img
     border-bottom: 1px solid rgba(158, 158, 158, 0.15) !important;
     position: relative;
 }
-
+.rght_li
+{
+    float: right;
+}
+.legends
+{
+    display: inline-block;
+    margin-left: 20px;
+}
+.leg_buy
+{
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: inherit;
+    margin-right: 1px;
+}
+.leg_sell
+{
+    width: 10px;
+    height: 10px;
+    background-color: #ffa500;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: inherit;
+    margin-right: 1px;
+}
 
 @media only screen and (max-width:1265px) {
     .sb_hd:nth-child(6) .tog_arrow {
@@ -502,7 +548,6 @@ img
     {
        right:-42%
     }
-
     .sb_hd_wrp
     {
         width: 95%;
@@ -512,6 +557,10 @@ img
         width: 95%;
     }
     .gd_tab_menu
+    {
+        width: 95%;
+    }
+    .position_wrap
     {
         width: 95%;
     }
@@ -763,8 +812,10 @@ img
         background-color: rgba(0, 0, 0, 0.43);
         z-index: 2;
         display: none;
+        top: 0;
+        left: 0;
     }
-    .mob_cards.act
+    .mob_cards.activate
     {
         display: block;
     }
@@ -786,13 +837,22 @@ img
         position: absolute;
         right: 16px;
         top: 8px;
+        cursor: pointer;
     }
-    .card_blck_head
+    .card_blck_head_buy
     {
         line-height: 23px;
-        border-left: 2px solid red;
+        border-left: 2px solid green;
         padding-left: 1%;
     }
+
+      .card_blck_head_sell
+    {
+        line-height: 23px;
+        border-left: 2px solid orange;
+        padding-left: 1%;
+    }
+
     .in_block_table table
     {
         width: 100%;
@@ -932,5 +992,13 @@ img
 @media only screen and (max-width:355px) {
     .datepickers-container {
         left: -50px;
+    }
+    .gd_tab_menu ul li
+    {
+        padding: 6px 6px;
+    }
+    .legends
+    {
+        margin-left: 10px;
     }
 }

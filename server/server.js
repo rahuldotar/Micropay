@@ -11,6 +11,7 @@ var CronJob = require('cron').CronJob;
 var config = require('./config/config.js')
 var geminiExchangeService = require('./services/gemini_exchange_service')
 var gdaxFillsService = require('./services/gdax_fills_service')
+var gdaxTransferService = require('./services/gdax_transfer_service')
 
 /* Importing required modules[End] */
 
@@ -56,7 +57,9 @@ var job = new CronJob({
   cronTime: '*/100 * * * * *',
   onTick: function() {
   // geminiExchangeService.saveCurrentExchangeRates();
-   gdaxFillsService.getLatestFillsFromGdax ()
+   gdaxFillsService.getLatestFillsFromGdax ();
+   gdaxTransferService.getLatestBTCTransferFromGdax();
+   gdaxTransferService.getLatestETHTransferFromGdax();
   },
   start: false,
   timeZone: 'America/Los_Angeles'

@@ -4,6 +4,7 @@ var Gdax = require('gdax');
 var groupArray = require('group-array');
 var gdaxpositionDAL = require('../DAL/gdax_position_dal')
 var gdaxTransferDAL = require('../DAL/gdax_transfer_dal')
+var gdaxAccountDAL = require('../DAL/gdax_accounts_dal')
 var CronJob = require('cron').CronJob;
 /* Gdax init[Start]  */
 
@@ -18,22 +19,47 @@ var gdaxPositionSVC = {};
 var queryParamsTrsansfers = {};
 
 /* Getting Fills from Gdax API[Start] */
-gdaxPositionSVC.getGdaxPosition = function (req,res) {
-      gdaxpositionDAL.getDataForTradePositionsFromDb(req.body, function (result) {
+gdaxPositionSVC.getGdaxPosition = function (req, res) {
+    var currency = req.body.prodId.split("-")[0];
+
+    // getting account for the reqeusted currency    
+    gdaxAccountDAL.getAnAccount(currency, function (result) {
+        var accntID = result.data.id;
+        var profileID = result.data.profile_id;
+        gdaxpositionDAL.getDataForTradePositionsFromDb(req.body,accntID,profileID, function (result) {
+            if (!result.success) {
+                res.status(512).json({
+                    success: false,
+                    result: result
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    result: result.data
+                });
+            }
+        })
+    })
+}
+/* Getting Fills from Gdax API[End] */
+
+/* Getting Fills from Gdax API[Start] */
+gdaxPositionSVC.getCurrentPosition = function (req, res) {
+    gdaxpositionDAL.getCurrentPosFromDb(req.body, function (result) {
         if (!result.success) {
             res.status(512).json({
                 success: false,
                 result: result
             });
         } else {
-               res.status(200).json({
+            res.status(200).json({
                 success: true,
-                result: result
+                result: result.data
             });
         }
 
-      })
-         
+    })
+
 }
 /* Getting Fills from Gdax API[End] */
 

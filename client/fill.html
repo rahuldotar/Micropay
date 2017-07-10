@@ -19,144 +19,14 @@
 
     <div ng-controller="fillCtrl" class="gd_outer">
 
-        <div class="mob_cards">
-            <div class="mob_card_wrap">
-                <div class="clos_mob">
-                    <img src="img/close.png">
-                </div>
-                <div class="wht_wrp">
-                    <div class="card_blck_head">
-                        BC-2612Q3W25
-                    </div>
 
-                    <div class="in_block_table">
-                        <table>
-                            <tr class="tr_tab">
-                                <th>SIZE</th>
-                                <th>TOTAL</th>
-                                <th>PRICE</th>
-                            </tr>
-                            <tr>
-                                <td>1548</td>
-                                <td>1548</td>
-                                <td>621</td>
-                            </tr>
-
-                        </table>
-
-                        <table>
-                            <tr class="tr_tab">
-                                <th>FEE</th>
-                                <th>PROFIT/LOSS</th>
-                                <th>CREATED</th>
-                            </tr>
-                            <tr>
-                                <td>1548</td>
-                                <td>1548</td>
-                                <td>621</td>
-                            </tr>
-
-                        </table>
-                    </div>
-                </div>
-
-                <div class="ash_wrp">
-                    <div class="ash_wrp_tbl">
-                        <table class="ash_tab">
-                            <tr class="tr_tab">
-                                <th></th>
-                                <th>SIZE</th>
-                                <th>PRICE</th>
-                                <th>FEE</th>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-                            <tr>
-                                <td class="ash_thead">BIT COIN</td>
-                                <td>154</td>
-                                <td>158</td>
-                                <td>61</td>
-                            </tr>
-
-
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
 
 
 
         <div class="gd_head">
             <div class="gd_wrap">
                 <div class="hd_lft_wrap">
-                    <div class="lft_wrp_1">
+                    <div class="lft_wrp_1" ng-hide="data.position_view">
                         <div class="pr_nm">Product :</div>
                         <div class="prd_all_wrp">
                             <div class="prd_dt"></div>
@@ -173,18 +43,26 @@
                         </div>
                     </div>
 
-                    <div class="lft_wrp_1 lft_2">
+                    <div class="lft_wrp_1 lft_2" ng-hide="data.position_view">
                         <div class="pr_nm">Status :</div>
                         <div class="prd_all_wrp prd_wrp_2">
                             <div class="prd_dt"></div>
                             <div class="prd_st">All</div>
 
-                            <ul class="prd_optns">
+                            <ul class="prd_optns" ng-if="data.fill_view">
                                 <!--<li class="options" ng-click=>Transfer In</li>
                                 <li class="options">Transfer Out</li>-->
                                 <li class="options" ng-click="sideOnChange('buy')">Buy</li>
                                 <li class="options" ng-click="sideOnChange('sell')">Sell</li>
                                 <li class="options" ng-click="sideOnChange('all')">All</li>
+                            </ul>
+
+                            <ul class="prd_optns" ng-if="data.transfer_view">
+                                <!--<li class="options" ng-click=>Transfer In</li>
+                                <li class="options">Transfer Out</li>-->
+                                <li class="options" ng-click="trnsfrTypeOnChange('deposit')">Deposit</li>
+                                <li class="options" ng-click="trnsfrTypeOnChange('withdraw')">Withdraw</li>
+                                <li class="options" ng-click="trnsfrTypeOnChange('all')">All</li>
                             </ul>
                             <div class="prd_all_bt">
                                 <img src="img/down-arrow_white.png">
@@ -195,13 +73,14 @@
 
                 <div class="hd_rght_wrap">
                     <div class="lft_wrp_1 lft_2">
-                        <div class="pr_nm">Date(Start) :</div>
+                        <div class="pr_nm" ng-if="data.fill_view || data.transfer_view">Date(Start) :</div>
+                        <div class="pr_nm" ng-if="data.position_view">Date :</div>
                         <div class="dtpckr_wrp">
                             <input type="text" class="datepicker-here_bot" airdatepicker placeholder="Select" ng-change="filterByStrtDate()" ng-model="data.filterStartDate"
                                 data-language="en" readonly data-language="en">
                         </div>
                     </div>
-                    <div class="lft_wrp_1">
+                    <div class="lft_wrp_1" ng-hide="data.position_view">
                         <div class="pr_nm">Date(End) :</div>
                         <div class="dtpckr_wrp">
                             <input type="text" class="datepicker-here_bot" airdatepicker placeholder="Select" ng-change="filterByEndDate()" ng-model="data.filterEndDate"
@@ -263,8 +142,33 @@
             <div class="gd_tab_menu">
                 <ul>
                     <li ng-click="tabViewFills();">Fills</li>
+                    <li ng-click="tabViewTrnsfr();">Transfers</li>
                     <li ng-click="tabViewPosition();">Position</li>
-                    <li ng-click="tabViewTrnsfr();">Transfer</li>
+                    <li class="rght_li" ng-if="data.fill_view">
+                        <div class="legends">
+                            <div class="leg_buy">
+                            </div>
+                            Buy
+                        </div>
+                        <div class="legends">
+                            <div class="leg_sell">
+                            </div>
+                            Sell
+                        </div>
+                    </li>
+                    <li class="rght_li" ng-if="data.transfer_view">
+                        <div class="legends">
+                            <div class="leg_buy">
+                            </div>
+                            Deposit
+                        </div>
+                        <div class="legends">
+                            <div class="leg_sell">
+                            </div>
+                            Withdraw
+                        </div>
+                    </li>
+                    <div style="clear: both"></div>
                 </ul>
             </div>
 
@@ -357,8 +261,77 @@
                             </div>
                         </div>
 
+                        <div class="mob_cards">
+                            <div class="mob_card_wrap">
+                                <div class="clos_mob" ng-click="closeMobCards();">
+                                    <img src="img/close.png">
+                                </div>
+                                <div class="wht_wrp">
+                                    <div ng-class="{card_blck_head_sell: mobView.details[0].side =='sell', card_blck_head_buy:  mobView.details[0].side =='buy'}">
+                                        {{mobView.name}}
+                                    </div>
+
+                                    <div class="in_block_table">
+                                        <table>
+                                            <tr class="tr_tab">
+                                                <th>SIZE</th>
+                                                <th>PRICE</th>
+                                                <th>TOTAL</th>
+                                            </tr>
+                                            <tr>
+                                                <td> {{ mobView.details | sumByColumn: 'size' | number: 4 }}</td>
+                                                <td> {{ mobView.details | sumProductColumn:'size':'price' | number: 4}}</td>
+                                                <td> {{ (((mobView.details | sumProductColumn:'size':'price') * ( mobView.details | sumByColumn:
+                                                    'size')) - (mobView.details | sumByColumn: 'fee' )) | number: 4 }}</td>
+                                            </tr>
+
+                                        </table>
+
+                                        <table>
+                                            <tr class="tr_tab">
+                                                <th>FEE</th>
+                                                <th>EFFECTIVE PRICE</th>
+                                                <th>CREATED DATE</th>
+                                            </tr>
+                                            <tr>
+                                                <td> {{ mobView.details | sumByColumn: 'fee' | number: 4}}</td>
+                                                <td> {{ ((((mobView.details | sumProductColumn:'size':'price') * ( mobView.details
+                                                    | sumByColumn: 'size')) + (mobView.details | sumByColumn: 'fee' )) /
+                                                    ( mobView.details | sumByColumn: 'size'))| number: 4 }}</td>
+                                                <td> {{ mobView.details[0].created_at_unix * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="ash_wrp">
+                                    <div class="ash_wrp_tbl">
+                                        <table class="ash_tab">
+                                            <tr class="tr_tab">
+                                                <th></th>
+                                                <th>SIZE</th>
+                                                <th>PRICE</th>
+                                                <th>FEE</th>
+                                            </tr>
+                                            <tr ng-repeat="data in mobView.details">
+                                                <td class="ash_thead">{{data.product_id}}</td>
+                                                <td>{{data.size | number: 4}}</td>
+                                                <td>{{data.price | number: 4}}</td>
+                                                <td>{{data.fee | number: 4}}</td>
+                                            </tr>
+
+
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
                         <accordion>
-                            <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen;alertclick()" ng-repeat="(name,item) in data.fills">
+                            <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen;mobViewOpen(sumFilter(item,'size'),sumProductFilter(item,'size','price'),name,item)" ng-repeat="(name,item) in data.fills">
 
                                 <accordion-heading>
 
@@ -586,50 +559,35 @@
                     <div class="gd_sb_head">
                         <div class="sb_hd_wrp">
                             <div class="sb_hd">
-                                ORDER ID
+                                Transfer ID
 
                                 <div class="tog_arrow">
                                     <img src="img/down-arrow.png">
                                 </div>
                             </div>
                             <div class="sb_hd">
-                                SIZE
+                                Amount
 
                                 <div class="tog_arrow">
                                     <img src="img/down-arrow.png">
                                 </div>
                             </div>
                             <div class="sb_hd">
-                                PRICE
+                                Balance
 
                                 <div class="tog_arrow">
                                     <img src="img/down-arrow.png">
                                 </div>
                             </div>
                             <div class="sb_hd">
-                                FEE
+                                Type
 
                                 <div class="tog_arrow">
                                     <img src="img/down-arrow.png">
                                 </div>
                             </div>
                             <div class="sb_hd">
-                                TOTAL
-
-                                <div class="tog_arrow">
-                                    <img src="img/down-arrow.png">
-                                </div>
-                            </div>
-                            <div class="sb_hd">
-                                Effective Price
-
-                                <div class="tog_arrow">
-                                    <img src="img/down-arrow.png">
-                                </div>
-                            </div>
-                            <div class="sb_hd">
-                                Created Date
-
+                                CREATED DATE
                                 <div class="tog_arrow">
                                     <img src="img/down-arrow.png">
                                 </div>
@@ -639,491 +597,55 @@
 
 
                     <div class="sb_cn_wrp">
-
-                        <div class="transfer_view" >
+                        <div class="transfer_view" ng-repeat="item in data.transfers">
                             <div class="sb_hd">
-                                <div class="sb_lft_line_buy"></div>
-                                Transfer-Test
+                                <div ng-class="{sb_lft_line_sell: item.details.transfer_type =='withdraw', sb_lft_line_buy:  item.details.transfer_type =='deposit'}"></div>
+                                {{item.details.transfer_id}}
                             </div>
                             <div class="sb_hd">
-                                3872
+                                {{item.amount | number: 4}}
                             </div>
                             <div class="sb_hd">
-                                000000
+                                {{item.balance | number: 4 }}
                             </div>
                             <div class="sb_hd">
-                                000000
+                                {{item.details.transfer_type}}
                             </div>
                             <div class="sb_hd">
-                                000000
-                            </div>
-                            <div class="sb_hd">
-                                000000
-                            </div>
-                            <div class="sb_hd">
-                                000000
+                                {{item.created_at_unix * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div ng-show="data.position_view">
+
+        </div>
+
+        <div ng-show="data.position_view">
+            <div class="position_wrap">
+                <!--<div ng-if="data.selProduct=='ETH-USD'">
+                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.positionDetails.reqCurr.balance}}</div>
+
+                    <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.positionDetails.USD.balance}}</div>
+                </div>
+                <div ng-if="data.selProduct=='BTC-USD'">
+                    <div class="eth_wrap"><span class="eth_head">BTC</span><br>{{data.positionDetails.reqCurr.balance}}</div>
+                    <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.positionDetails.USD.balance}}</div>
+                </div>-->
+
+                  <div >
+                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
+
+                    <div class="eth_wrap"><span class="eth_head">USD</span><br>500</div>
+                </div>
+                <div ng-if="data.selProduct=='BTC-USD'">
+                
 
 
             </div>
         </div>
 
-
-
-        <!--<div class="accordion-group__accordion">
-                    <header class="accordion-group__accordion-head">
-                        <div class="accordion-group__accordion-heading accordion-group__accordion-btn">
-                            <div class="sb_hd">
-                                B6-B219854
-                            </div>
-                            <div class="sb_hd">
-                                1548
-                            </div>
-                            <div class="sb_hd">
-                                5643
-                            </div>
-                            <div class="sb_hd">
-                                123455
-                            </div>
-                            <div class="sb_hd">
-                                4562351
-                            </div>
-                            <div class="sb_hd">
-                                1234
-                            </div>
-                        </div>
-                    </header>
-                    <div class="accordion-group__accordion-collapse">
-                        <div class="accordion-group__accordion-content">
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-
-
-        <!--<div class="accordion-group__accordion">
-                    <header class="accordion-group__accordion-head">
-                        <div class="accordion-group__accordion-heading accordion-group__accordion-btn">
-                            <div class="sb_hd">
-                                B6-B219854
-                            </div>
-                            <div class="sb_hd">
-                                1548
-                            </div>
-                            <div class="sb_hd">
-                                5643
-                            </div>
-                            <div class="sb_hd">
-                                123455
-                            </div>
-                            <div class="sb_hd">
-                                4562351
-                            </div>
-                            <div class="sb_hd">
-                                1234
-                            </div>
-                        </div>
-                    </header>
-                    <div class="accordion-group__accordion-collapse">
-                        <div class="accordion-group__accordion-content">
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-
-        <!--<div class="accordion-group__accordion">
-                    <header class="accordion-group__accordion-head">
-                        <div class="accordion-group__accordion-heading accordion-group__accordion-btn">
-                            <div class="sb_hd">
-                                B6-B219854
-                            </div>
-                            <div class="sb_hd">
-                                1548
-                            </div>
-                            <div class="sb_hd">
-                                5643
-                            </div>
-                            <div class="sb_hd">
-                                123455
-                            </div>
-                            <div class="sb_hd">
-                                4562351
-                            </div>
-                            <div class="sb_hd">
-                                1234
-                            </div>
-                        </div>
-                    </header>
-                    <div class="accordion-group__accordion-collapse">
-                        <div class="accordion-group__accordion-content">
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                            <div class="tog_row">
-                                <div class="sb_hd">
-                                    <span>BIT COIN</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>300</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2014</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>4150</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2012</span>
-                                </div>
-                                <div class="sb_hd">
-                                    <span>2098</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
-        <!--</section>-->
     </div>
     </div>
     </div>

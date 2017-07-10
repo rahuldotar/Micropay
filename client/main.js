@@ -72,10 +72,17 @@ function dp_filter()
 }
 function mob_cls()
 {
-    $('.mob_cards').removeClass('act');
+  //  $('.mob_cards').removeClass('act');
 }
 
-
+// $(document).mouseup(function(e)
+// {
+//     var pop = $(".mob_cards");
+//     if (!pop.is(e.target) && pop.has(e.target).length === 0)
+//     {
+//         $('.mob_cards').fadeOut();
+//     }
+// });
 
 function init()
 {
