@@ -141,9 +141,9 @@
             </div>
             <div class="gd_tab_menu">
                 <ul>
-                    <li ng-click="tabViewFills();">Fills</li>
-                    <li ng-click="tabViewTrnsfr();">Transfers</li>
-                    <li ng-click="tabViewPosition();">Position</li>
+                    <li ng-click="tabViewFills();" class="act_tab">Fills</li>
+                    <li ng-click="tabViewTrnsfr();" class="act_tab">Transfers</li>
+                    <li ng-click="tabViewPosition();" class="act_tab">Position</li>
                     <li class="rght_li" ng-if="data.fill_view">
                         <div class="legends">
                             <div class="leg_buy">
@@ -634,17 +634,27 @@
                     <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.positionDetails.USD.balance}}</div>
                 </div>-->
 
-                  <div >
+                  <div class="pos_cards">
                     <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
 
-                    <div class="eth_wrap"><span class="eth_head">USD</span><br>500</div>
-                </div>
-                <div ng-if="data.selProduct=='BTC-USD'">
-                
+                    <div class=""><span class="eth_head">USD</span><br>500</div>
+                  </div>
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
 
+                    <div class=""><span class="eth_head">USD</span><br>500</div>
+                </div>
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
+
+                    <div class=""><span class="eth_head">USD</span><br>500</div>
+                </div>
+                    <div ng-if="data.selProduct=='BTC-USD'">
+                    </div>
+
+                <div style="clear: both"></div>
 
             </div>
-        </div>
 
     </div>
     </div>

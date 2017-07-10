@@ -37,6 +37,17 @@ img
     margin: 0 auto;
     width: 80%;
 }
+.pos_cards
+{
+    width: 30%;
+    text-align: left;
+    padding: 20px;
+    box-shadow: 0px 0px 15px 0px #c1c0c0;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 2%;
+    margin-bottom: 6%;
+}
 .eth_head
 {
     font-size: 12px;
@@ -460,36 +471,47 @@ img
     transition: 0.2s ease all;
     color: white;
 }
+
+
 .gd_tab_menu ul li:before {
     content: '';
     position: absolute;
     bottom: 0;
-    height: 2px;
+    height: 4px;
     width: 0px;
-    /*background: #ed145b;*/
-    /*-webkit-transition: 0.4s ease all;*/
-    /*-moz-transition: 0.4s ease all;*/
-    /*-ms-transition: 0.4s ease all;*/
-    /*-o-transition: 0.4s ease all;*/
-    /*transition: 0.4s ease all;*/
+    background: #ed145b;
+    -webkit-transition: 0.4s ease all;
+    -moz-transition: 0.4s ease all;
+    -ms-transition: 0.4s ease all;
+    -o-transition: 0.4s ease all;
+    transition: 0.4s ease all;
 }
 .gd_tab_menu ul li:hover:before {
     content: '';
     position: absolute;
     bottom: 0;
-    height: 2px;
+    height: 4px;
     width: 25px;
-    /*background: #ed145b;*/
-    /*-webkit-transition: 0.5s ease all;*/
-    /*-moz-transition: 0.5s ease all;*/
-    /*-ms-transition: 0.5s ease all;*/
-    /*-o-transition: 0.5s ease all;*/
-    /*transition: 0.5s ease all;*/
+    background: #ed145b;
+    -webkit-transition: 0.5s ease all;
+    -moz-transition: 0.5s ease all;
+    -ms-transition: 0.5s ease all;
+    -o-transition: 0.5s ease all;
+    transition: 0.5s ease all;
+}
+.actv_tab:before
+{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 4px !important;
+    width: 25px !important;
+    background: #ed145b !important;
 }
 
 .transfer_view
 {
-    padding-top: 7px;
+     padding-top: 7px;
     padding-bottom: 11px;
     padding-left: 0px;
     padding-right: 0px;
@@ -983,6 +1005,10 @@ img
     }
     .sb_hd:nth-child(5) {
         width: 24%;
+    }
+    .pos_cards
+    {
+        width: 47%;
     }
 }
 @media only screen and (max-width:383px)

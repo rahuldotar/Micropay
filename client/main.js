@@ -84,6 +84,12 @@ function mob_cls()
 //     }
 // });
 
+function tab_act()
+{
+    $('.act_tab').removeClass('actv_tab');
+    $(this).addClass('actv_tab');
+}
+
 function init()
 {
     $('.prd_all_wrp').click(prd_fl);
@@ -93,6 +99,7 @@ function init()
     $('.filt_chck').click(cbx);
     $('.resp_disp').click(dp_filter);
     $('.clos_mob').click(mob_cls);
+    $('.act_tab').click(tab_act);
 }
 $(document).ready(init);
 
