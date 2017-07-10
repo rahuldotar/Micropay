@@ -304,7 +304,7 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
             prodId: $scope.data.selProduct,
             side: $scope.data.selSide === 'all' ? '' : $scope.data.selSide,
             startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix() : '',
-            //  endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix()
+           //  endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix()
         }
 
         // var postData = $scope.reqData;

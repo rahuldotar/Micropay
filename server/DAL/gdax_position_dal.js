@@ -8,62 +8,6 @@ var async = require("async");
 var gdaxPositionDAL = {};
 
 /* API handler to get data for trade positions from DB[Start] */
-// gdaxPositionDAL.getDataForTradePositionsFromDb = function (searchFilter, accntID, profileID, callBack) {
-//     var gdaxTransferDB = new GdaxTransferDB();
-//     var queryObj = {};
-//     searchFilter.accntID = accntID;
-//     Object.keys(searchFilter).forEach(function (key) {
-//         if (searchFilter[key] !== '') {
-//             switch (key) {
-//                 case 'accntID':
-//                     queryObj.account_id = searchFilter[key]
-
-//                     break;
-//                 case 'startDate':
-//                     queryObj.created_at_unix = {};
-//                     queryObj.created_at_unix.$lte = searchFilter[key];
-//                     break;
-//                 case 'endDate':
-//                     if (queryObj.created_at_unix) {
-//                         queryObj.created_at_unix.$lte = searchFilter[key];
-//                     } else {
-//                         queryObj.created_at_unix = {};
-//                         queryObj.created_at_unix.$lte = searchFilter[key];
-//                     }
-
-//                     break;
-//             }
-//         }
-//     });
-
-//     gdaxTransferDB.collection.find(queryObj).toArray(function (err, data) {
-//         if (err) {
-//             var result = {
-//                 'success': false,
-//                 'error': err
-//             };
-//             callBack(result);
-//         } else {
-//             var reqCurrPosition = data[0];
-//             getUSDAccountDetails(queryObj, profileID, function (data) {
-//                 var usdPosition = data;
-//                 var result = {
-//                     'success': true,
-//                     'data': {
-//                         reqCurr: reqCurrPosition,
-//                         USD: usdPosition
-//                     }
-//                 };
-//                 callBack(result);
-
-//             })
-//         }
-//     });
-// };
-/* API handler to get data for trade positions from DB[End] */
-
-
-/* API handler to get data for trade positions from DB[Start] */
 gdaxPositionDAL.getDataForTradePositionsFromDb = function (searchFilter, accntID, profileID, callBack) {
     var gdaxTransferDB = new GdaxTransferDB();
     var queryObj = {};
@@ -101,24 +45,21 @@ gdaxPositionDAL.getDataForTradePositionsFromDb = function (searchFilter, accntID
             callBack(result);
         } else {
             var reqCurrPosition = data[0];
-            var usdPosition = 0;
-            var approximateValue = 0;
-
-            async.parallel([
-                getUSDAccountDetails(queryObj, profileID, function (data) {
-                    usdPosition = data;
-                }),
-                getApproximatePrice(queryObj.created_at_unix, function (data) {
+            getUSDAccountDetails(queryObj, profileID, function (data) {
+                var usdPosition = data;
+                getApproximatePrice(searchFilter.startDate, function (data) {
                     approximateValue = data
                 })
-            ], function (err) {
-                if (err) {
-                    //Handle the error in some way. Here we simply throw it
-                    //Other options: pass it on to an outer callback, log it etc.
-                    throw err;
-                }
-                console.log('Both a and b are saved now');
-            });
+                // var result = {
+                //     'success': true,
+                //     'data': {
+                //         reqCurr: reqCurrPosition,
+                //         USD: usdPosition
+                //     }
+                // };
+                // callBack(result);
+
+            })
         }
     });
 };
@@ -231,13 +172,18 @@ var getUSDAccountDetails = function (query, profile_id, callBack) {
 /* Get the corresponding usd account details[End] */
 
 var getApproximatePrice = function (date, callBack) {
+    // Initializing Gdax public client
     var publicClient = new Gdax.PublicClient('ETH-USD');
-    var endDate = new Date(date * 1000).toISOString();
-    var startDate = endDate.setHours(0, 0, 0, 0);
-    publicClient.getProductHistoricRates({'start':startDate,'end':endDate, 'granularity': 3000}, function(err,data){
 
+    // Creatting iso start and and end using time stamp
+    var  dateString= moment.unix(date).format("MM-DD-YYYY");
+    var startDate = new Date(dateString).setHours(0,0,0,0);
+    var endDate = new Date(dateString).setHours(23,59,59,999);
+    var startDateISO = new Date(startDate).toISOString();
+    var endDateISO = new Date(endDate).toISOString();
+
+    publicClient.getProductHistoricRates({'start':startDateISO,'end':endDateISO, 'granularity': 3000}, function(err,res,data){
+        
 
     });
-
-
 };
