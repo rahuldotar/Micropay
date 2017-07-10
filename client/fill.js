@@ -64,7 +64,7 @@ micropayApp.filter('sumProductColumn', function () {
 /* Area For Filters[End] */
 
 
-micropayApp.controller('fillCtrl', function ($scope, $timeout,$filter, $http) {
+micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
 
     /* INIT scope valiables[Start] */
     var reset = function () {
@@ -82,33 +82,33 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout,$filter, $http) {
             positionDetails: '',
             transfers: [],
             selTrnsfrtype: 'all',
-         //   selRow:-1
+            //   selRow:-1
             //clsMbl: true
         };
     };
 
-    $scope.sumFilter  = $filter("sumByColumn");
-    $scope.sumProductFilter  = $filter("sumProductColumn");
-  
-    var resetMobView = function(){
-       $scope.mobView = {
-           name:'',
-           details:[]
-       }
+    $scope.sumFilter = $filter("sumByColumn");
+    $scope.sumProductFilter = $filter("sumProductColumn");
+
+    var resetMobView = function () {
+        $scope.mobView = {
+            name: '',
+            details: []
+        }
     };
 
     //  $scope.data.clsMbl = false;
     /* INIT scope valiables[End] */
 
     $scope.closeMobCards = function () {
-         $('.mob_cards').removeClass('activate');
-          resetMobView();
+        $('.mob_cards').removeClass('activate');
+        resetMobView();
     };
 
-    $scope.mobViewOpen = function(filter1,filter2,name,item) {
+    $scope.mobViewOpen = function (filter1, filter2, name, item) {
         $('.mob_cards').addClass('activate');
         $scope.mobView.name = name;
-        $scope.mobView.details =  item;
+        $scope.mobView.details = item;
     };
 
 
@@ -139,7 +139,7 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout,$filter, $http) {
     /* Using product Filter[Start] */
     $scope.productOnChange = function (pdt) {
         $scope.data.selProduct = pdt;
-        $scope.data.fill_view ? searchFills() : getCurrentPosition();
+        searchFills();
     };
     /* Using product Filter[End] */
 
@@ -201,6 +201,7 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout,$filter, $http) {
 
         if ($scope.data.position_view) {
             filterPosition();
+            return;
         }
     }
 
@@ -215,11 +216,6 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout,$filter, $http) {
 
         if ($scope.data.transfer_view) {
             searchTransfers();
-            return;
-        }
-
-        if ($scope.data.position_view) {
-            filterPosition();
             return;
         }
     }
