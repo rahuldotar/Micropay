@@ -8,6 +8,7 @@
     <title>GDAX</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/angular-toastr.min.css" rel="stylesheet" type="text/css" />
     <link href="css/aria-accordion.css" rel="stylesheet" type="text/css" />
     <link href="css/datepicker.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/style_fill.css" rel="stylesheet" type="text/css" />
@@ -114,12 +115,12 @@
                     <div class="filt_row">
                         <div class="filt_chck">
                         </div>
-                        FEE
+                        PRICE
                     </div>
                     <div class="filt_row">
                         <div class="filt_chck">
                         </div>
-                        PRICE
+                        FEE
                     </div>
                     <div class="filt_row">
                         <div class="filt_chck">
@@ -129,12 +130,12 @@
                     <div class="filt_row">
                         <div class="filt_chck">
                         </div>
-                        PROFIT/LOSS
+                        EFFECTIVE PRICE
                     </div>
                     <div class="filt_row">
                         <div class="filt_chck">
                         </div>
-                        CREATED
+                        CREATED DATE
                     </div>
                 </div>
                 <div style="clear: both"></div>
@@ -281,8 +282,9 @@
                                             <tr>
                                                 <td> {{ mobView.details | sumByColumn: 'size' | number: 4 }}</td>
                                                 <td> {{ mobView.details | sumProductColumn:'size':'price' | number: 4}}</td>
-                                                <td> {{ (((mobView.details | sumProductColumn:'size':'price') * ( mobView.details | sumByColumn:
-                                                    'size')) - (mobView.details | sumByColumn: 'fee' )) | number: 4 }}</td>
+                                                <td> {{ (((mobView.details | sumProductColumn:'size':'price') * ( mobView.details
+                                                    | sumByColumn: 'size')) - (mobView.details | sumByColumn: 'fee' )) |
+                                                    number: 4 }}</td>
                                             </tr>
 
                                         </table>
@@ -331,7 +333,8 @@
                         </div>
 
                         <accordion>
-                            <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen;mobViewOpen(sumFilter(item,'size'),sumProductFilter(item,'size','price'),name,item)" ng-repeat="(name,item) in data.fills">
+                            <accordion-group is-open="session.isOpen" ng-click="isopen=!isopen;mobViewOpen(sumFilter(item,'size'),sumProductFilter(item,'size','price'),name,item)"
+                                ng-repeat="(name,item) in data.fills">
 
                                 <accordion-heading>
 
@@ -634,29 +637,34 @@
                     <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.positionDetails.USD.balance}}</div>
                 </div>-->
 
-                  <div class="pos_cards">
-                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
-
-                    <div class=""><span class="eth_head">USD</span><br>500</div>
-                  </div>
                 <div class="pos_cards">
-                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
+                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.currPosETH}}</div>
 
-                    <div class=""><span class="eth_head">USD</span><br>500</div>
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['ETH-USD']}}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['ETH-USD'] * data.currPosETH}}</div>
                 </div>
                 <div class="pos_cards">
-                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>300</div>
+                    <div class="eth_wrap"><span class="eth_head">BTC</span><br>{{data.currPosBTC}}</div>
 
-                    <div class=""><span class="eth_head">USD</span><br>500</div>
+            <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['BTC-USD']}}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['BTC-USD'] * data.currPosBTC}}</div>
                 </div>
-                    <div ng-if="data.selProduct=='BTC-USD'">
-                    </div>
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">LTC</span><br>{{data.currPosLTC}}</div>
 
+                      <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['LTC-USD']}}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['LTC-USD'] * data.currPosLTC}}</div>
+                </div>
+
+                 <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.currPosUSD}}</div>
+          
+                </div>
                 <div style="clear: both"></div>
 
             </div>
 
-    </div>
+        </div>
     </div>
     </div>
 
@@ -668,6 +676,7 @@
     <script type="text/javascript" src="lib/angular.min.js"></script>
     <script type="text/javascript" src="lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="lib/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="lib/angular-toastr.tpls.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="fill.js"></script>
 

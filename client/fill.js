@@ -1,7 +1,22 @@
 /**
  * Created by Dell on 25-07-2016.
  */
-var micropayApp = angular.module('miropayApp', ['ngSanitize', 'ui.bootstrap'])
+var micropayApp = angular.module('miropayApp', ['ngSanitize', 'toastr', 'ui.bootstrap'])
+
+/* config for toastr[Start] */
+micropayApp.config(function (toastrConfig) {
+    angular.extend(toastrConfig, {
+        maxOpened: 1,
+        closeButton: true,
+        preventOpenDuplicates: true,
+        tapToDismiss: false,
+        timeOut: 7000,
+        extendedTimeOut: 7000,
+        positionClass: 'toast-bottom-right',
+
+    });
+});
+/* config for toastr[End] */
 
 /* Area For Directives[Start] */
 micropayApp.directive("airdatepicker", function () {
@@ -19,7 +34,8 @@ micropayApp.directive("airdatepicker", function () {
                 dateFormat: "yyyy-mm-dd",
                 onSelect: function (dateText) {
                     updateModel(dateText);
-                }
+                },
+                maxDate: new Date()
             };
             elem.datepicker(options);
         }
@@ -64,7 +80,7 @@ micropayApp.filter('sumProductColumn', function () {
 /* Area For Filters[End] */
 
 
-micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
+micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, $http) {
 
     /* INIT scope valiables[Start] */
     var reset = function () {
@@ -82,6 +98,11 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
             positionDetails: '',
             transfers: [],
             selTrnsfrtype: 'all',
+            currPosBTC: 0,
+            currPosETH: 0,
+            currPosLTC: 0,
+            currPosUSD: 0,
+            priceDetails: {}
             //   selRow:-1
             //clsMbl: true
         };
@@ -120,11 +141,11 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
         getFills();
     };
     $scope.tabViewPosition = function () {
-        reset();
+        //    reset();
         $scope.data.fill_view = false;
         $scope.data.position_view = true;
         $scope.data.transfer_view = false;
-        getCurrentPosition();
+        filterPosition();
     };
 
     $scope.tabViewTrnsfr = function () {
@@ -139,7 +160,15 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
     /* Using product Filter[Start] */
     $scope.productOnChange = function (pdt) {
         $scope.data.selProduct = pdt;
-        searchFills();
+        if ($scope.data.fill_view) {
+            searchFills();
+            return;
+        }
+
+        if ($scope.data.transfer_view) {
+            searchTransfers();
+            return;
+        }
     };
     /* Using product Filter[End] */
 
@@ -264,20 +293,22 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
         $http(requestObj).success(function (data) {
             $scope.data.fills = data.result;
         }).error(function (data, err) {
-            console.log(error)
+            if (err === 404) {
+                $scope.data.fills = [];
+            }
+            toastr.error(data.error, '');
         });
     }
     /* search fills[End] */
 
     /* Getting fills for calculating position[Start] */
     var getCurrentPosition = function () {
-        if ($scope.data.filterStartDateTime) {
+        if ($scope.data.filterStartDateTime && (moment($scope.data.filterStartDateTime).format("DD/MM/YYYY") !== moment(new Date()).format("DD/MM/YYYY"))) {
             filterPosition();
             return;
         }
         var postData = {
             userKey: 'd4fa46cb54128a56400886b9e9e2839a',
-            prodId: $scope.data.selProduct,
         }
 
         // var postData = $scope.reqData;
@@ -288,7 +319,12 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
         };
 
         $http(requestObj).success(function (data) {
-            $scope.data.positionDetails = data.result;
+            var posDetails = data.result.currPos;
+            $scope.data.currPosBTC = posDetails.BTC[0].balance;
+            $scope.data.currPosETH = posDetails.ETH[0].balance;
+            $scope.data.currPosLTC = posDetails.LTC[0].balance;
+            $scope.data.currPosUSD = posDetails.USD[0].balance;
+            $scope.data.priceDetails = data.result.currPrices
 
         }).error(function (data, err) {
             console.log(error)
@@ -297,14 +333,19 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
     };
     /* Getting fills for calculating position[End] */
 
-    /* Getting fills for calculating position[Start] */
+    /* Filter position[Start] */
     var filterPosition = function () {
+        if (!$scope.data.filterStartDateTime || (moment($scope.data.filterStartDateTime).format("DD/MM/YYYY") === moment(new Date()).format("DD/MM/YYYY"))) {
+            getCurrentPosition()
+            return;
+        }
+
         var postData = {
             userKey: 'd4fa46cb54128a56400886b9e9e2839a',
             prodId: $scope.data.selProduct,
             side: $scope.data.selSide === 'all' ? '' : $scope.data.selSide,
             startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix() : '',
-           //  endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix()
+            //  endDate: $scope.data.filterEndDateTime ? moment($scope.data.filterEndDateTime).unix() : moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix()
         }
 
         // var postData = $scope.reqData;
@@ -315,16 +356,18 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
         };
 
         $http(requestObj).success(function (data) {
-            $scope.data.positionDetails = data.result;
-
+            var posDetails = data.result.currPos;
+            $scope.data.currPosBTC = posDetails.BTC ? posDetails.BTC[0].balance : 0;
+            $scope.data.currPosETH = posDetails.ETH ? posDetails.ETH[0].balance : 0;
+            $scope.data.currPosLTC = posDetails.LTC ? posDetails.LTC[0].balance : 0;
+            $scope.data.currPosUSD = posDetails.USD ? posDetails.USD[0].balance : 0;
+            $scope.data.priceDetails = data.result.currPrices;
         }).error(function (data, err) {
             console.log(error)
         });
 
     };
-    /* Getting fills for calculating position[End] */
-
-
+    /* Filter position[End] */
 
 
     /* AREA OF TRANSFER TAB[START] */
@@ -375,7 +418,10 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
         $http(requestObj).success(function (data) {
             $scope.data.transfers = data.result;
         }).error(function (data, err) {
-            console.log(error)
+            if (err === 404) {
+                $scope.data.transfers = [];
+            }
+            toastr.error(data.error, '');
         });
     };
     /* Getting Transfers[END] */
@@ -415,4 +461,5 @@ micropayApp.controller('fillCtrl', function ($scope, $timeout, $filter, $http) {
     reset();
     getFills();
     resetMobView();
+    //getCurrentPosition();
 });

@@ -18,15 +18,9 @@ var gdaxPhrase = '1768eswbz29';
 var gdaxPositionSVC = {};
 var queryParamsTrsansfers = {};
 
-/* Getting Fills from Gdax API[Start] */
+/* Getting Position history from Gdax API[Start] */
 gdaxPositionSVC.getGdaxPosition = function (req, res) {
-    var currency = req.body.prodId.split("-")[0];
-
-    // getting account for the reqeusted currency    
-    gdaxAccountDAL.getAnAccount(currency, function (result) {
-        var accntID = result.data.id;
-        var profileID = result.data.profile_id;
-        gdaxpositionDAL.getDataForTradePositionsFromDb(req.body,accntID,profileID, function (result) {
+     gdaxpositionDAL.getDataForTradePositionsFromDb(req.body, function (result) {
             if (!result.success) {
                 res.status(512).json({
                     success: false,
@@ -39,11 +33,10 @@ gdaxPositionSVC.getGdaxPosition = function (req, res) {
                 });
             }
         })
-    })
 }
-/* Getting Fills from Gdax API[End] */
+/* Getting Position history Gdax API[End] */
 
-/* Getting Fills from Gdax API[Start] */
+/* Getting current position from Gdax API[Start] */
 gdaxPositionSVC.getCurrentPosition = function (req, res) {
     gdaxpositionDAL.getCurrentPosFromDb(req.body, function (result) {
         if (!result.success) {
@@ -61,6 +54,6 @@ gdaxPositionSVC.getCurrentPosition = function (req, res) {
     })
 
 }
-/* Getting Fills from Gdax API[End] */
+/* Getting current position from Gdax API[End] */
 
 module.exports = gdaxPositionSVC;

@@ -46,4 +46,25 @@ gdaxAccountsDAL.getAnAccount = function (currType, callBack) {
 }
 /* API Handler to get an Account[End]  */
 
+/* API Handler to get an Account[Start]  */
+gdaxAccountsDAL.getAccounts = function (callBack) {
+    var gdaxAccountsDB = new GdaxAccountsDB();
+    gdaxAccountsDB.collection.find({userKey: 'd4fa46cb54128a56400886b9e9e2839a'}).toArray(function (err, data) {
+        if (err) {
+            var result = {
+                'success': false,
+                'error': err
+            };
+            callBack(result);
+        } else {
+                var result = {
+                'success': true,
+                'data':data
+            };
+            callBack(result);
+        }
+    })
+}
+/* API Handler to get an Account[End]  */
+
 module.exports = gdaxAccountsDAL;

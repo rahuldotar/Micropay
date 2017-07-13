@@ -83,121 +83,6 @@ gdaxFillSVC.getLatestFillsFromGdax = function () {
 /* Getting latest from Gdax API[End] */
 
 
-// /* Getting Gdax fills from database[Start] */
-// gdaxFillSVC.getfillsFromDb = function (req, res) {
-//     gdaxFillsDAL.getfillsFromDb(req.body, function (result) {
-//         if (!result.success) {
-//             res.status(512).json({
-//                 success: false,
-//                 result: result
-//             });
-//         } else {
-//             var groupByOrderId = groupArray(result.data, 'order_id')
-//             res.status(200).json({
-//                 success: true,
-//                 result: groupByOrderId
-//             });
-//         }
-
-//     })
-// }
-// /* Getting Gdax Fills from database API[End] */
-
-// /* search Gdax fills from database[Start] */
-// gdaxFillSVC.searchFillsFromDb = function (req, res) {
-//     gdaxFillsDAL.searchFillsFromDb(req.body, function (result) {
-//         if (!result.success) {
-//             res.status(512).json({
-//                 success: false,
-//                 result: result
-//             });
-//         } else {
-//             var groupByOrderId = groupArray(result.data, 'order_id')
-//             res.status(200).json({
-//                 success: true,
-//                 result: groupByOrderId
-//             });
-//         }
-
-//     })
-// }
-// /* search Gdax Fills from database API[End] */
-
-// /* Getting Gdax fills from database[Start] */
-// gdaxFillSVC.getDataForTradePositions = function (req, res) {
-//     gdaxFillsDAL.getDataForTradePositionsFromDb(req.body, function (result) {
-//         if (!result.success) {
-//             res.status(512).json({
-//                 success: false,
-//                 result: result
-//             });
-//         } else {
-//             var groupByOrderIdPosBefore = groupArray(result.data.dataPosBefore, 'order_id')
-//             var groupByOrderIdPosNow = groupArray(result.data.dataPosAfter, 'order_id')
-//             var sumEffectiveBefore = 0;
-//             var sumEffectiveNow = 0;
-//             Object.keys(groupByOrderIdPosBefore).forEach(function (key) {
-//                 var sumProduct = 0;
-//                 var meanWeight = 0;
-//                 var totalSize = 0;
-//                 var totalFee = 0;
-
-//                 groupByOrderIdPosBefore[key].forEach(function (item) {
-//                     sumProduct += (parseFloat(item.size) * (parseFloat(item.price)));
-//                 });
-
-//                 groupByOrderIdPosBefore[key].forEach(function (item) {
-//                     totalSize += parseFloat(item.size);
-//                 });
-
-//                 groupByOrderIdPosBefore[key].forEach(function (item) {
-//                     totalFee += parseFloat(item.fee);
-//                 });
-
-//                 meanWeight = sumProduct / totalSize;
-
-//                 var effectiveTotal = groupByOrderIdPosBefore[key][0].side === 'buy' ? (totalSize * meanWeight) + totalFee : (totalSize * meanWeight) - totalFee
-//                 sumEffectiveBefore += effectiveTotal
-//             })
-
-//             Object.keys(groupByOrderIdPosNow).forEach(function (key) {
-//                 var sumProduct = 0;
-//                 var meanWeight = 0;
-//                 var totalSize = 0;
-//                 var totalFee = 0;
-
-//                 groupByOrderIdPosNow[key].forEach(function (item) {
-//                     sumProduct += (parseFloat(item.size) * (parseFloat(item.price)));
-//                 });
-
-//                 groupByOrderIdPosNow[key].forEach(function (item) {
-//                     totalSize += parseFloat(item.size);
-//                 });
-
-//                 groupByOrderIdPosNow[key].forEach(function (item) {
-//                     totalFee += parseFloat(item.fee);
-//                 });
-
-//                 meanWeight = sumProduct / totalSize;
-
-//                 var effectiveTotal = groupByOrderIdPosNow[key][0].side === 'buy' ? (totalSize * meanWeight) + totalFee : (totalSize * meanWeight) - totalFee
-//                 sumEffectiveNow += effectiveTotal
-//             })
-
-//             res.status(200).json({
-//                 success: true,
-//                 result: {
-//                     dataBefore: sumEffectiveBefore,
-//                     dataNow: sumEffectiveNow
-//                 }
-//             });
-//         }
-
-//     })
-// }
-// /* Getting Gdax Fills from database API[End] */
-
-
 /* Getting Gdax fills from database[Start] */
 gdaxFillSVC.getfillsFromDb = function (req, res) {
     gdaxFillsDAL.getfillsFromDb(req.body, function (result) {
@@ -222,9 +107,9 @@ gdaxFillSVC.getfillsFromDb = function (req, res) {
 gdaxFillSVC.searchFillsFromDb = function (req, res) {
     gdaxFillsDAL.searchFillsFromDb(req.body, function (result) {
         if (!result.success) {
-            res.status(512).json({
+            res.status(result.status).json({
                 success: false,
-                result: result
+                error: result.error
             });
         } else {
             var groupByOrderId = groupArray(result.data, 'order_id')
@@ -238,84 +123,6 @@ gdaxFillSVC.searchFillsFromDb = function (req, res) {
 }
 /* search Gdax Fills from database API[End] */
 
-/* Getting Gdax fills from database[Start] */
-gdaxFillSVC.getDataForTradePositions = function (req, res) {
-    gdaxFillsDAL.getDataForTradePositionsFromDb(req.body, function (result) {
-        if (!result.success) {
-            res.status(512).json({
-                success: false,
-                result: result
-            });
-        } else {
-            var groupByOrderIdPosBefore = groupArray(result.data.dataPosBefore, 'order_id')
-            var groupByOrderIdPosNow = groupArray(result.data.dataPosAfter, 'order_id')
-            var sumEffectiveBefore = 0;
-            var sumEffectiveNow = 0;
-            if (groupByOrderIdPosBefore) {
-                Object.keys(groupByOrderIdPosBefore).forEach(function (key) {
-                    var sumProduct = 0;
-                    var meanWeight = 0;
-                    var totalSize = 0;
-                    var totalFee = 0;
-
-                    groupByOrderIdPosBefore[key].forEach(function (item) {
-                        sumProduct += (parseFloat(item.size) * (parseFloat(item.price)));
-                    });
-
-                    groupByOrderIdPosBefore[key].forEach(function (item) {
-                        totalSize += parseFloat(item.size);
-                    });
-
-                    groupByOrderIdPosBefore[key].forEach(function (item) {
-                        totalFee += parseFloat(item.fee);
-                    });
-
-                    meanWeight = sumProduct / totalSize;
-
-                    var effectiveTotal = groupByOrderIdPosBefore[key][0].side === 'buy' ? (totalSize * meanWeight) + totalFee : (totalSize * meanWeight) - totalFee
-                    sumEffectiveBefore += effectiveTotal
-                })
-            }
-            var sumProduct = 0;
-            var meanWeight = 0;
-            var totalSize = 0;
-            var totalFee = 0;
-            if (groupByOrderIdPosNow) {
-                Object.keys(groupByOrderIdPosNow).forEach(function (key) {
-
-                    groupByOrderIdPosNow[key].forEach(function (item) {
-                        sumProduct += (parseFloat(item.size) * (parseFloat(item.price)));
-                    });
-
-                    groupByOrderIdPosNow[key].forEach(function (item) {
-                        totalSize += parseFloat(item.size);
-                    });
-
-                    groupByOrderIdPosNow[key].forEach(function (item) {
-                        totalFee += parseFloat(item.fee);
-                    });
-
-                    meanWeight = sumProduct / totalSize;
-
-                    var effectiveTotal = groupByOrderIdPosNow[key][0].side === 'buy' ? (totalSize * meanWeight) + totalFee : (totalSize * meanWeight) - totalFee
-                    sumEffectiveNow += effectiveTotal
-                })
-
-            }
-
-
-            res.status(200).json({
-                success: true,
-                result: {
-                    dataBefore: sumEffectiveBefore,
-                    dataNow: sumEffectiveNow
-                }
-            });
-        }
-
-    })
-}
-/* Getting Gdax Fills from database API[End] */
 
 /* Implementing cron Job for getting new gdax trades[Start] */
 var job = new CronJob({

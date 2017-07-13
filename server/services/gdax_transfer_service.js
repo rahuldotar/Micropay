@@ -29,14 +29,15 @@ gdaxTransferSVC.getTransferFromGdax = function (req, res) {
     gdaxAccountDAL.getAnAccount(currency, function (result) {
         var accntID = result.data.id;
         authedClient.getAccountHistory(accntID, queryParamsTrsansfers, function (error, response, data) {
+            if (data.length === 0) {
+                return;
+            }
             if (!error & response.statusCode === 200) {
                 data.forEach(function (value) {
                     value.userKey = gdaxKey;
                     value.created_at_unix = moment(value.created_at).unix();
                     value.account_id = accntID
-                    if (!value.details.product_id) {
-                        value.details.product_id = req.body.currency;
-                    }
+                    value.account_currency = result.data.currency;
                 });
 
                 // saving Account history to the DB    
@@ -70,7 +71,7 @@ gdaxTransferSVC.getLatestETHTransferFromGdax = function () {
     gdaxAccountDAL.getAnAccount(currency, function (result) {
         var accntID = result.data.id;
         authedClient.getAccountHistory(accntID, queryParamsTrsansfers, function (error, response, data) {
-            if (!error & response.statusCode === 200) {
+            if (!error) {
                 data.forEach(function (value) {
                     value.userKey = gdaxKey;
                     value.created_at_unix = moment(value.created_at).unix();
@@ -81,7 +82,7 @@ gdaxTransferSVC.getLatestETHTransferFromGdax = function () {
                 });
 
                 // saving Account history to the DB    
-                gdaxTransferDAL.saveLatestETHAccountHistory(data,accntID, function (result) {
+                gdaxTransferDAL.saveLatestETHAccountHistory(data, accntID, function (result) {
                     if (!result.success) {
                         console.log('Saving Account history Error')
                     } else {
@@ -105,7 +106,7 @@ gdaxTransferSVC.getLatestBTCTransferFromGdax = function () {
     gdaxAccountDAL.getAnAccount(currency, function (result) {
         var accntID = result.data.id;
         authedClient.getAccountHistory(accntID, queryParamsTrsansfers, function (error, response, data) {
-            if (!error & response.statusCode === 200) {
+            if (!error) {
                 data.forEach(function (value) {
                     value.userKey = gdaxKey;
                     value.created_at_unix = moment(value.created_at).unix();
@@ -116,7 +117,7 @@ gdaxTransferSVC.getLatestBTCTransferFromGdax = function () {
                 });
 
                 // saving Account history to the DB    
-                gdaxTransferDAL.saveLatestBTCAccountHistory(data,accntID, function (result) {
+                gdaxTransferDAL.saveLatestBTCAccountHistory(data, accntID, function (result) {
                     if (!result.success) {
                         console.log('Saving Account history Error')
                     } else {
@@ -131,7 +132,7 @@ gdaxTransferSVC.getLatestBTCTransferFromGdax = function () {
 
 /* API Handler to  Getting transfers from DB[Start] */
 gdaxTransferSVC.getTransferFromDB = function (req, res) {
-     var currency = req.body.prodId.split("-")[0];
+    var currency = req.body.prodId.split("-")[0];
 
     // getting account for the reqeusted currency    
     gdaxAccountDAL.getAnAccount(currency, function (result) {
@@ -140,12 +141,12 @@ gdaxTransferSVC.getTransferFromDB = function (req, res) {
         // Getting trnsfers for respective currency     
         gdaxTransferDAL.getTransfers(accntID, function (result) {
             if (!result.success) {
-                res.status(512).json({
+                res.status(result.status).json({
                     success: false,
-                    result: result
+                    error: result.error
                 });
             } else {
-               res.status(200).json({
+                res.status(200).json({
                     success: true,
                     result: result.data
                 });
@@ -165,14 +166,14 @@ gdaxTransferSVC.searchTransferFromDB = function (req, res) {
         var accntID = result.data.id;
 
         // Getting trnsfers for respective currency     
-        gdaxTransferDAL.searchTransfers(accntID,req.body, function (result) {
+        gdaxTransferDAL.searchTransfers(accntID, req.body, function (result) {
             if (!result.success) {
-                res.status(512).json({
+                res.status(result.status).json({
                     success: false,
-                    result: result
+                    error: result.error
                 });
             } else {
-               res.status(200).json({
+                res.status(200).json({
                     success: true,
                     result: result.data
                 });

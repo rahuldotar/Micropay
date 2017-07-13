@@ -74,7 +74,6 @@ gdaxTransferDAL.saveLatestETHAccountHistory = function (trnsfrData, accountid, c
     });
 
 }
-
 /* DAL Handler to save latest ETH Account History[End]  */
 
 /* DAL to save latest BTC Account History[Start]  */
@@ -129,7 +128,6 @@ gdaxTransferDAL.saveLatestBTCAccountHistory = function (trnsfrData, accountid, c
 
 /* DAL Handler to save latest BTC Account History[End]  */
 
-
 /* DAL to get Account History[Start]  */
 gdaxTransferDAL.getTransfers = function (accountId, callBack) {
     var gdaxTransferDB = new GdaxTransferDB();
@@ -141,10 +139,19 @@ gdaxTransferDAL.getTransfers = function (accountId, callBack) {
         if (err) {
             var result = {
                 'success': false,
-                'error': err
+                'error': err,
+                'status': 512
             };
             callBack(result);
         } else {
+            if (data.length === 0) {
+                var result = {
+                    'success': false,
+                    'error': 'No result found',
+                    'status': 404
+                };
+                return callBack(result);
+            }
             var result = {
                 'success': true,
                 'data': data
@@ -190,10 +197,19 @@ gdaxTransferDAL.searchTransfers = function (accountId, searchFilter, callBack) {
         if (err) {
             var result = {
                 'success': false,
-                'error': err
+                'error': err,
+                'status': 512
             };
             callBack(result);
         } else {
+            if (data.length === 0) {
+                var result = {
+                    'success': false,
+                    'error': 'No result found',
+                    'status': 404
+                };
+                return callBack(result);
+            }
             var result = {
                 'success': true,
                 'data': data

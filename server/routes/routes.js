@@ -19,7 +19,7 @@ module.exports = function (app) {
     app.post("/api/gdaxFills", gdaxFillsService.getFillsFromGdax)
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
     app.post("/api/gdaxSearchFillsFromDb", gdaxFillsService.searchFillsFromDb)
-    app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
+   // app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
     
     // API Routes for Gdax transfers
     app.post("/api/getGdaxAccounts", gdaxAccountService.getAccounts)
