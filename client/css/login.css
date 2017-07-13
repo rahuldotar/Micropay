@@ -1,0 +1,108 @@
+.form_part {
+    width: 400px;
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+   /* padding: 10% 0 0;*/
+}
+.bg_part
+{
+    width: calc(100% - 403px);
+    display: inline-block;
+    vertical-align: top;
+    background-image: url("../img/sign_in.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: left;
+    height: 100%;
+}
+.logo {
+    width: 68%;
+    margin: 25% auto;
+    height: 40px;
+    background-image: url(../img/gDax_logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left;
+}
+form {
+    width: 68%;
+    margin: 0 auto;
+}
+.form_field.log_in {
+    width: 100%;
+    display: block;
+    padding: 7% 0;
+}
+.log_btn
+{
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+}
+input[type='submit'].input_field {
+    display: inline-block;
+    width: 100px;
+    padding: 15% 10%;
+    background-color: #0f75bc;
+    border-radius: 3px;
+    margin-top: -5px;
+}
+.forgt_pass.inline {
+    color: #666;
+    vertical-align: -webkit-baseline-middle;
+}
+.not_user {
+    display: block;
+    width: 75%;
+    padding: 6% 0;
+    margin: 19% auto;
+    text-align: center;
+    border-top: 1px dashed #666;
+}
+input.input_field {
+    padding: 2% 2% 2% 13%;
+    font-size: 13px;
+    height: 45px;
+}
+.form_field
+{
+    position: relative;
+}
+.form_field.api_key:before {
+    content: '';
+    width: 20px;
+    height: 35px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url("../img/key.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    top: 5px;
+    left: 9px;
+}
+.form_field.purchase:before {
+    content: '';
+    width: 22px;
+    height: 35px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url("../img/id-card.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    top: 5px;
+    left: 8px;
+}
+a
+{
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+.not_user p a {
+    color: #0f75bc;
+}
