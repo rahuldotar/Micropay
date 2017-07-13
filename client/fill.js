@@ -107,16 +107,44 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             //clsMbl: true
         };
     };
+    $scope.view = {};
+    $scope.view.showLoader = false;
+
+    /* AREA FOR MOBILE VIEW[START] */
+    var resetTabview = function () {
+        angular.element('#chkSize').addClass('act');
+        angular.element('#chkPrice').addClass('act');
+        angular.element('#chkFee').addClass('act');
+        angular.element('#chkTotal').addClass('act');
+        angular.element('#chkEffcprice').addClass('act');
+    };
+
+    var mq = window.matchMedia("(min-width: 639px)");
+    if (!mq.matches) {
+        resetTabview();
+    }
+
+    $scope.diplayColumn = function (clmId) {
+        if (mq.media = "(min-width: 639px)") {
+            // if(angular.element('#' + clmId).hasClass('act')){
+            //     angular.element('#' + clmId).removeClass('act')
+            //     return;
+            // }
+            if(angular.element('#' + clmId).hasClass('act')) {
+                if (angular.element('.filt_chck.act').length > 5) {
+                    angular.element('#' + clmId).removeClass('act')
+                    toastr.error('Only 5 fields are allowed in display', '');
+                }
+            }
+
+
+        }
+
+    };
+    /* AREA FOR MOBILE VIEW[END] */
 
     $scope.sumFilter = $filter("sumByColumn");
     $scope.sumProductFilter = $filter("sumProductColumn");
-
-    var resetMobView = function () {
-        $scope.mobView = {
-            name: '',
-            details: []
-        }
-    };
 
     //  $scope.data.clsMbl = false;
     /* INIT scope valiables[End] */
@@ -134,6 +162,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
 
     $scope.tabViewFills = function () {
+        //show Loader
+        $scope.view.showLoader = true;
         reset();
         $scope.data.fill_view = true;
         $scope.data.position_view = false;
@@ -142,6 +172,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     };
     $scope.tabViewPosition = function () {
         //    reset();
+        //show Loader
+        $scope.view.showLoader = true;
         $scope.data.fill_view = false;
         $scope.data.position_view = true;
         $scope.data.transfer_view = false;
@@ -150,6 +182,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
     $scope.tabViewTrnsfr = function () {
         reset();
+        //show Loader
+        $scope.view.showLoader = true;
         $scope.data.fill_view = false;
         $scope.data.position_view = false;
         $scope.data.transfer_view = true;
@@ -192,12 +226,14 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     };
     /* Using side Filter[End] */
 
+    /* DATE MANAGEMENT AREA[START] */
     /* UTC Conversion [Start] */
     var toUTCDate = function (date) {
         var _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
         return _utc;
     };
     /* UTC Conversion [End] */
+
 
     function toDate(dateStr) {
         var dt = dateStr.split("-")
@@ -249,10 +285,15 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         }
     }
     /* Using date Filter[End] */
+    /* DATE MANAGEMENT AREA[END   ] */
+
+    /* AREA FOR FILLS TAB[START] */
 
     /* Getting All Fills from DB[Start] */
     var getFills = function () {
-        // var postData = $scope.reqData;
+        //show Loader
+        $scope.view.showLoader = true;
+
         var requestObj = {
             method: 'POST',
             url: '/api/gdaxFillsFromDb',
@@ -263,9 +304,12 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         };
 
         $http(requestObj).success(function (data) {
-
+            //hide Loader
+            $scope.view.showLoader = false;
             $scope.data.fills = data.result;
         }).error(function (data, err) {
+            //hide Loader
+            $scope.view.showLoader = false;
             $scope.data.fills = data.result;
             console.log(error)
         });
@@ -274,6 +318,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
     /* search fills[Start] */
     var searchFills = function () {
+        //show Loader
+        $scope.view.showLoader = true;
         var postData = {
             userKey: 'd4fa46cb54128a56400886b9e9e2839a',
             prodId: $scope.data.selProduct,
@@ -291,8 +337,12 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         };
 
         $http(requestObj).success(function (data) {
+            //hide Loader
+            $scope.view.showLoader = false;
             $scope.data.fills = data.result;
         }).error(function (data, err) {
+            //hide Loader
+            $scope.view.showLoader = false;
             if (err === 404) {
                 $scope.data.fills = [];
             }
@@ -301,14 +351,20 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     }
     /* search fills[End] */
 
-    /* Getting fills for calculating position[Start] */
+    /* AREA FOR FILLS TAB[END] */
+
+    /* AREA FOR POSITION TAB[START] */
+
+    /* Getting current Position position[Start] */
     var getCurrentPosition = function () {
+        //show Loader
+        $scope.view.showLoader = true;
         if ($scope.data.filterStartDateTime && (moment($scope.data.filterStartDateTime).format("DD/MM/YYYY") !== moment(new Date()).format("DD/MM/YYYY"))) {
             filterPosition();
             return;
         }
         var postData = {
-            userKey: 'd4fa46cb54128a56400886b9e9e2839a',
+            userKey: 'd4fa46cb54128a56400886b9e9e2839a'
         }
 
         // var postData = $scope.reqData;
@@ -324,17 +380,22 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             $scope.data.currPosETH = posDetails.ETH[0].balance;
             $scope.data.currPosLTC = posDetails.LTC[0].balance;
             $scope.data.currPosUSD = posDetails.USD[0].balance;
-            $scope.data.priceDetails = data.result.currPrices
-
+            $scope.data.priceDetails = data.result.currPrices;
+            //hide Loader
+            $scope.view.showLoader = false;
         }).error(function (data, err) {
+            //hide Loader
+            $scope.view.showLoader = false;
             console.log(error)
         });
 
     };
-    /* Getting fills for calculating position[End] */
+    /* Getting current  position[End] */
 
     /* Filter position[Start] */
     var filterPosition = function () {
+        //show Loader
+        $scope.view.showLoader = true;
         if (!$scope.data.filterStartDateTime || (moment($scope.data.filterStartDateTime).format("DD/MM/YYYY") === moment(new Date()).format("DD/MM/YYYY"))) {
             getCurrentPosition()
             return;
@@ -362,12 +423,18 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             $scope.data.currPosLTC = posDetails.LTC ? posDetails.LTC[0].balance : 0;
             $scope.data.currPosUSD = posDetails.USD ? posDetails.USD[0].balance : 0;
             $scope.data.priceDetails = data.result.currPrices;
+            //hide Loader
+            $scope.view.showLoader = false;
         }).error(function (data, err) {
+            //hide Loader
+            $scope.view.showLoader = false;
             console.log(error)
         });
 
     };
     /* Filter position[End] */
+
+    /* AREA FOR POSITION TAB[END] */
 
 
     /* AREA OF TRANSFER TAB[START] */
@@ -381,7 +448,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     };
 
     var getTransfers = function () {
-        // var postData = $scope.reqData;
+        //show Loader
+        $scope.view.showLoader = true;
         var requestObj = {
             method: 'POST',
             url: '/api/getGdaxTransfersFromDB',
@@ -392,8 +460,12 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         };
 
         $http(requestObj).success(function (data) {
+            //hide Loader
+            $scope.view.showLoader = false;
             $scope.data.transfers = data.result;
         }).error(function (data, err) {
+            //hide Loader
+            $scope.view.showLoader = false;
             console.log(error)
         });
     };
@@ -401,6 +473,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
     /* Getting Transfers[Start] */
     var searchTransfers = function () {
+        //show Loader
+        $scope.view.showLoader = true;
         var postData = {
             userKey: 'd4fa46cb54128a56400886b9e9e2839a',
             prodId: $scope.data.selProduct,
@@ -416,8 +490,12 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         };
 
         $http(requestObj).success(function (data) {
+            //hide Loader
+            $scope.view.showLoader = false;
             $scope.data.transfers = data.result;
         }).error(function (data, err) {
+            //hide Loader
+            $scope.view.showLoader = false;
             if (err === 404) {
                 $scope.data.transfers = [];
             }
@@ -428,38 +506,9 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
     /*  AREA OF TRANSFER TAB[END] */
 
-
-    $scope.name = 'World';
-    $scope.group = {
-        isOpen: true
-    };
-
-    $scope.sessions = {
-        list: [{
-                title: 'foo',
-                description: 'fooooo',
-                time_from: new Date(),
-                time_to: new Date(),
-                isOpen: false,
-            },
-            {
-                title: 'bar',
-                description: 'barrrr',
-                time_from: new Date(),
-                time_to: new Date(),
-                isOpen: true,
-            },
-            {
-                title: 'baz',
-                description: 'bazzzz',
-                time_from: new Date(),
-                time_to: new Date(),
-                isOpen: false,
-            },
-        ]
-    };
+    /* Initial Execution [Start] */
     reset();
     getFills();
-    resetMobView();
-    //getCurrentPosition();
+    //    resetMobView();
+    /* Initial Execution [End] */
 });
