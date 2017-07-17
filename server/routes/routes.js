@@ -15,6 +15,9 @@ module.exports = function (app) {
     app.post("/api/sellCrypto", geminiExchngService.sellCrypto)
     app.post("/api/saveCrypto", geminiExchngService.saveCurrentExchangeRates)
     app.post("/api/genAccess", paymentService.getAccessToken)
+ 
+    // API routes for GDAx user
+    app.post("/api/gdaxUserSignUp", gdaxUserService.userSignUp)
     app.post("/api/gdaxUser", gdaxUserService.saveUser)
     app.post("/api/gdaxFills", gdaxFillsService.getFillsFromGdax)
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
