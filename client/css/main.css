@@ -29,7 +29,7 @@ body {
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 6px;
     border-radius: 6px;
-    background-color: rgba(117, 116, 116, 0.4);
+    background-color: rgb(15, 117, 188);
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
