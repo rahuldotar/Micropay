@@ -4,32 +4,30 @@ var Gdax = require('gdax');
 var groupArray = require('group-array');
 var gdaxAccountsDAL = require('../DAL/gdax_accounts_dal')
 var CronJob = require('cron').CronJob;
-
-/* Gdax init[Start]  */
-// Authenticating with gdax app credentials
-var apiURI = 'https://api.gdax.com';
-var gdaxKey = 'd4fa46cb54128a56400886b9e9e2839a';
-var gdaxSecret = '8ZYj4x07zChiiOnIc5v1aFQ8IA29G05ZGLEtjPPjn4XN0y8v0bMmlWkYWq1VFtCSlOuzREaFY57sabryVzlP1A==';
-var gdaxPhrase = '1768eswbz29';
-/* Gdax init [end] */
+var config = require('../config/config.js')
+var gdaxTrnsfrService = require('./gdax_transfer_service')
 
 var gdaxAccountSvc = {}
 
 /* Getting gdax Accounts For a profile[Start] */
-gdaxAccountSvc.getAccounts = function (req, res) {
+gdaxAccountSvc.getAccounts = function (apiData) {
     var authedClient = new Gdax.AuthenticatedClient(
-        gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
+         apiData.apiKey, apiData.apiSecret, apiData.passphrase, config.gdaxApiUrl);
 
       authedClient.getAccounts(function (error, response, data) {
         if (!error & response.statusCode === 200) {
             data.forEach(function (value) {
-                value.userKey = gdaxKey;
+                value.userKey = apiData.apiKey;
             });
             gdaxAccountsDAL.saveAccounts(data, function (result) {
                 if (!result.success) {
                     console.log('Saving Accounts Error')
                 } else {
-                  console.log('Saving Accounts Success')
+                  gdaxTrnsfrService.getTransferFromGdax(apiData,'ETH');
+                  gdaxTrnsfrService.getTransferFromGdax(apiData,'LTC')
+                  gdaxTrnsfrService.getTransferFromGdax(apiData,'BTC')
+                  gdaxTrnsfrService.getTransferFromGdax(apiData,'USD')
+
                }
 
             })

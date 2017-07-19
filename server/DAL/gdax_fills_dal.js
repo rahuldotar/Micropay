@@ -6,16 +6,13 @@ var moment = require('moment');
 var gdaxFillsDAL = {};
 
 /* API Handler to save Fills[Start]  */
-gdaxFillsDAL.saveFills = function (fillsData, callBack) {
-    var gdaxFillsDB = new GdaxFillsDB();
-    var gdaxUserDB = new GdaxUserDB();
-
+gdaxFillsDAL.saveFills = function (apiKey, fillsData, callBack) {
     // Converting created at date to time stamp and store it new variable
     fillsData.forEach(function (value) {
         value.created_at_unix = moment(value.created_at).unix();
     });
 
-    saveToDb(gdaxFillsDB, gdaxUserDB, fillsData, function (result) {
+    saveToDb(apiKey, fillsData, function (result) {
         callBack(result)
     });
 }
@@ -122,7 +119,7 @@ gdaxFillsDAL.searchFillsFromDb = function (searchFilter, callBack) {
             var result = {
                 'success': false,
                 'error': err,
-                'status':512
+                'status': 512
             };
             callBack(result);
         } else {
@@ -130,7 +127,7 @@ gdaxFillsDAL.searchFillsFromDb = function (searchFilter, callBack) {
                 var result = {
                     'success': false,
                     'error': 'No result found',
-                    'status':404
+                    'status': 404
                 };
                 return callBack(result);
             }
@@ -245,46 +242,54 @@ gdaxFillsDAL.getDataForTradePositionsFromDb = function (searchFilter, callBack) 
 module.exports = gdaxFillsDAL;
 
 /* save to fills DB by preference[Start]  */
-var saveToDb = function (gdaxFillsDB, gdaxUserDB, fillsData, callBack) {
+var saveToDb = function (apiKey, fillsData, callBack) {
+    // Preparing Db instance
+    var gdaxFillsDB = new GdaxFillsDB();
+    var gdaxUserDB = new GdaxUserDB();
+
+    // Inserting fills in to fill DB
     gdaxFillsDB.collection.insertMany(fillsData, function (err, data) {
         if (err) {
             var result = {
                 'success': false,
                 'error': err
             };
-            callBack(result);
-        } else {
-            gdaxFillsDB.collection.findOne({
-                userKey: 'd4fa46cb54128a56400886b9e9e2839a'
-            }, {
-                sort: {
-                    'created_at': -1
-                }
-            }, function (err, doc) {
-                // Updating in to gdax User
-                var gdaxUserDB = new GdaxUserDB();
-                gdaxUserDB.collection.findOneAndUpdate({
-                    apiKey: 'd4fa46cb54128a56400886b9e9e2839a'
-                }, {
-                    $set: {
-                        latestTrade: doc
-                    }
-                }, {
-                    new: true
-                }, function (err, updateddoc) {
-                    if (err) {
-                        console.log("Something wrong when updating data!");
-                    }
-
-                    console.log(doc);
-                });
-            });
-            var result = {
-                'success': true,
-                'data': 'Rate successfully saved'
-            };
-            callBack(result);
+            return callBack(result);
         }
+
+        // Finding the last inserted fill
+        gdaxFillsDB.collection.findOne({
+            userKey: apiKey
+        }, {
+            sort: {
+                'created_at': -1
+            }
+        }, function (err, doc) {
+            // Updating in to gdax User
+            gdaxUserDB.collection.findOneAndUpdate({
+                apiKey: apiKey
+            }, {
+                $set: {
+                    latestTrade: doc
+                }
+            }, {
+                new: true
+            }, function (err, updateddoc) {
+                if (err) {
+                    console.log("Something wrong when updating data!");
+                    return;
+                }
+
+                console.log(updateddoc);
+                var result = {
+                    'success': true,
+                    'data': 'fills successfully saved'
+                };
+                callBack(result);
+
+            });
+        });
+
     });
 };
 /* save to fills DB by preference[Start]  */

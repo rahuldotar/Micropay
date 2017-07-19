@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var gdaxUserSchema = new Schema({
     userId:String,
-    password:String
+    password:String,
     apiKey : String,
     apiSecret : String,
     passPhrase :String,

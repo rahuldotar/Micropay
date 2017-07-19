@@ -5,25 +5,20 @@ var groupArray = require('group-array');
 var gdaxAccountDAL = require('../DAL/gdax_accounts_dal')
 var gdaxTransferDAL = require('../DAL/gdax_transfer_dal')
 var CronJob = require('cron').CronJob;
-/* Gdax init[Start]  */
-
-// Authenticating with gdax app credentials
-var apiURI = 'https://api.gdax.com';
-var gdaxKey = 'd4fa46cb54128a56400886b9e9e2839a';
-var gdaxSecret = '8ZYj4x07zChiiOnIc5v1aFQ8IA29G05ZGLEtjPPjn4XN0y8v0bMmlWkYWq1VFtCSlOuzREaFY57sabryVzlP1A==';
-var gdaxPhrase = '1768eswbz29';
-/* Gdax init [end] */
+var config = require('../config/config.js')
 
 var gdaxTransferSVC = {};
 var queryParamsTrsansfers = {};
 queryParamsTrsansfers.limit = '100';
 
-/* API Handler Getting Account History from Gdax API[Start] */
-gdaxTransferSVC.getTransferFromGdax = function (req, res) {
-    var authedClient = new Gdax.AuthenticatedClient(
-        gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
+/* Getting Account History from Gdax API[Start] */
+gdaxTransferSVC.getTransferFromGdax = function (apiData,currency) {
 
-    var currency = req.body.currency.split("-")[0];
+    // Init gdax client
+    var authedClient = new Gdax.AuthenticatedClient(
+         apiData.apiKey, apiData.apiSecret, apiData.passphrase, config.gdaxApiUrl);
+
+    var currency = currency;
 
     // getting account for the reqeusted currency    
     gdaxAccountDAL.getAnAccount(currency, function (result) {
@@ -34,7 +29,7 @@ gdaxTransferSVC.getTransferFromGdax = function (req, res) {
             }
             if (!error & response.statusCode === 200) {
                 data.forEach(function (value) {
-                    value.userKey = gdaxKey;
+                    value.userKey = apiData.apiKey;
                     value.created_at_unix = moment(value.created_at).unix();
                     value.account_id = accntID
                     value.account_currency = result.data.currency;
@@ -47,9 +42,9 @@ gdaxTransferSVC.getTransferFromGdax = function (req, res) {
                     } else {
                         if (data.length === 100) {
                             queryParamsTrsansfers.after = response.headers['cb-after'];
-                            gdaxTransferSVC.getTransferFromGdax(req, res);
+                            gdaxTransferSVC.getTransferFromGdax(apiData,currency);
                         } else {
-                            //  job.start();
+                            
                         }
                         console.log('Saving Account History Success')
                     }
@@ -58,7 +53,7 @@ gdaxTransferSVC.getTransferFromGdax = function (req, res) {
         })
     });
 }
-/* API HANDLER Getting Account History from Gdax API[End] */
+/* Getting Account History from Gdax API[End] */
 
 /* API Handler Getting Latest ETH Account History from Gdax API[Start] */
 gdaxTransferSVC.getLatestETHTransferFromGdax = function () {

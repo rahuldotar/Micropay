@@ -57,9 +57,9 @@ var job = new CronJob({
   cronTime: '*/100 * * * * *',
   onTick: function() {
   // geminiExchangeService.saveCurrentExchangeRates();
-   gdaxFillsService.getLatestFillsFromGdax ();
-   gdaxTransferService.getLatestBTCTransferFromGdax();
-   gdaxTransferService.getLatestETHTransferFromGdax();
+//    gdaxFillsService.getLatestFillsFromGdax ();
+//    gdaxTransferService.getLatestBTCTransferFromGdax();
+//    gdaxTransferService.getLatestETHTransferFromGdax();
   },
   start: false,
   timeZone: 'America/Los_Angeles'
@@ -70,7 +70,8 @@ job.start();
 /* Implementing cron Job for evaluating exchange rates[Start] */
 
 
-require("./routes/routes.js")(app);
+require("./routes/routes")(app);
+require("./routes/unauthed_routes")(app);
 app.listen(8888);
 console.log("Server started at port 8888");
 

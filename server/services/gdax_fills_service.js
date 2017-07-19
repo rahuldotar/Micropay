@@ -4,48 +4,34 @@ var Gdax = require('gdax');
 var groupArray = require('group-array');
 var gdaxFillsDAL = require('../DAL/gdax_fills_dal')
 var CronJob = require('cron').CronJob;
+var config = require('../config/config.js')
 
-/* Gdax init[Start]  */
-// Authenticating with gdax app credentials
-var apiURI = 'https://api.gdax.com';
-var gdaxKey = 'd4fa46cb54128a56400886b9e9e2839a';
-var gdaxSecret = '8ZYj4x07zChiiOnIc5v1aFQ8IA29G05ZGLEtjPPjn4XN0y8v0bMmlWkYWq1VFtCSlOuzREaFY57sabryVzlP1A==';
-var gdaxPhrase = '1768eswbz29';
-/* Gdax init [end] */
-
-// // Authenticating with gdax app credentials
-// var apiURI = 'https://api.gdax.com';
-// var gdaxKey = 'ffabb7b72d5b11b3bbe1a978ef011a55';
-// var gdaxSecret = '0YvjBc4XqbI6f+vdnH7FyWRzuY7ms8co82K7ojf5m57oCcqiKFAGr9YcoTwoEIHCKW7Ka1m8LUd3o2rYbZC4Og==';
-// var gdaxPhrase = 'qn2w4a5dw3f';
-// /* Gdax init [end] */
-
+// initializing objects needed
 var gdaxFillSVC = {};
 var queryParamsFills = {};
 
 /* Getting Fills from Gdax API[Start] */
-gdaxFillSVC.getFillsFromGdax = function () {
-    var authedClient = new Gdax.AuthenticatedClient(
-        gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
+gdaxFillSVC.getFillsFromGdax = function (apiData) {
 
+    // Init gdax authentication client
+    var authedClient = new Gdax.AuthenticatedClient(
+        apiData.apiKey, apiData.apiSecret, apiData.passphrase, config.gdaxApiUrl);
+    // setting limit 
     queryParamsFills.limit = '100';
 
     authedClient.getFills(queryParamsFills, function (error, response, data) {
         if (!error & response.statusCode === 200) {
             data.forEach(function (value) {
-                value.userKey = gdaxKey;
+                value.userKey = apiData.apiKey;
             });
-            gdaxFillsDAL.saveFills(data, function (result) {
+            gdaxFillsDAL.saveFills(apiData.apiKey,data, function (result) {
                 if (!result.success) {
                     console.log('Saving fils Error')
                 } else {
                     if (data.length === 100) {
                         queryParamsFills.after = response.headers['cb-after'];
-                        gdaxFillSVC.getFillsFromGdax();
-                    } else {
-                        job.start();
-                    }
-
+                        gdaxFillSVC.getFillsFromGdax(apiData);
+                    } 
                     console.log('Saving Fills Success')
                 }
 
@@ -56,7 +42,7 @@ gdaxFillSVC.getFillsFromGdax = function () {
 }
 /* Getting Fills from Gdax API[End] */
 
-/* Getting latest Fills from Gdax API[Start] */
+/* Getting latest Fills from Gdax if there is any for each account API[Start] */
 gdaxFillSVC.getLatestFillsFromGdax = function () {
     var authedClient = new Gdax.AuthenticatedClient(
         gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
