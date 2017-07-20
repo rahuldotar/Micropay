@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>G_DAX</title>
+    <title>GDAX REPORT</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="img/fav_icon.png">
+    <link href="css/angular-toastr.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link href="css/login.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
@@ -15,32 +16,32 @@
     <![endif]-->
 </head>
 
-<body>
- <div class="outer">
+<body ng-app="miropayApp">
+ <div class="outer" ng-controller="signUpCtrl">
      <div class="form_part">
         <div class="logo_sign_up"><h1>GDAX REPORT</h1></div>
          <form>
              <div class="form_field api_key">
-                 <input type="text" class="input_field" placeholder="Username">
+                 <input type="text" class="input_field" ng-model="data.userID" placeholder="Username">
              </div>
              <div class="form_field password">
-                 <input type="password" class="input_field" placeholder="Password">
+                 <input type="password" class="input_field" ng-model="data.password" placeholder="Password">
              </div>
              <div class="form_field conf_password">
-                 <input type="password" class="input_field" placeholder="Confirm Password">
+                 <input type="password" class="input_field" ng-model="validate.confirmPassword" placeholder="Confirm Password">
              </div>
              <div class="form_field api_key">
-                 <input type="text" class="input_field" placeholder="Api Key">
+                 <input type="text" class="input_field"ng-model="data.apiKey" placeholder="Api Key">
              </div>
              <div class="form_field purchase">
-                 <input type="text" class="input_field" placeholder="Api Secret">
+                 <input type="text" class="input_field" ng-model="data.apiSecret" placeholder="Api Secret">
              </div>
              <div class="form_field purchase">
-                 <input type="text" class="input_field" placeholder="Passphrase">
+                 <input type="text" class="input_field" ng-model="data.passphrase" placeholder="Passphrase">
              </div>
              <div class="form_field sign_in">
                  <div class="log_btn inline">
-                    <input type="submit" class="input_field" value="SIGN UP">
+                    <input type="submit" class="input_field" ng-click="doSignUp()" value="SIGN UP">
                  </div>
              </div>
          </form>
@@ -52,5 +53,11 @@
 
      </div>
  </div>
+
+  <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>  
+  <script type="text/javascript" src="lib/angular.min.js"></script>
+  <script type="text/javascript" src="lib/angular-toastr.tpls.min.js"></script>
+  <script type="text/javascript" src="sign_up.js"></script>
+
 </body>
 </html>

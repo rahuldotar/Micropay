@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>G_DAX</title>
+    <title>GDAX REPORT</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="img/fav_icon.png">
+    <link href="css/angular-toastr.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link href="css/login.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
@@ -15,31 +17,40 @@
     <![endif]-->
 </head>
 
-<body>
- <div class="outer">
-     <div class="form_part form_log">
-        <div class="logo"><h1>GDAX REPORT</h1></div>
-         <form>
-             <div class="form_field api_key">
-                 <input type="text" class="input_field" placeholder="User ID">
-             </div>
-             <div class="form_field purchase">
-                 <input type="text" class="input_field" placeholder="Password">
-             </div>
-             <div class="form_field log_in">
-                 <!-- <div class="forgt_pass inline"><a>Forgot Passphrase ?</a></div> -->
-                 <div class="log_btn inline">
-                    <input type="submit" class="input_field" value="LOGIN">
-                 </div>
-             </div>
-         </form>
-         <div class="not_user">
-             <p>Not a user ? <a>Sign Up</a></p>
-         </div>
-     </div>
-     <div class="bg_part">
+<body ng-app="miropayApp">
+    <div class="outer" ng-controller="loginCtrl">
+        <div class="form_part form_log">
+            <div class="logo">
+                <h1>GDAX REPORT</h1>
+            </div>
+            <form>
+                <div class="form_field purchase">
+                    <input type="text" class="input_field" ng-model="data.userID" placeholder="User ID">
+                </div>
+                <div class="form_field api_key" >
+                    <input type="password" class="input_field" ng-model="data.password" placeholder="Password">
+                </div>
+                <div class="form_field log_in">
+                    <!-- <div class="forgt_pass inline"><a>Forgot Passphrase ?</a></div> -->
+                    <div class="log_btn inline">
+                        <input type="submit" class="input_field" ng-click="login()" value="LOGIN">
+                    </div>
+                </div>
+            </form>
+            <div class="not_user">
+                <p>Not a user ? <a>Sign Up</a></p>
+            </div>
+        </div>
+        <div class="bg_part">
 
-     </div>
- </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="lib/angular-toastr.tpls.min.js"></script>
+    <script type="text/javascript" src="lib/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="login.js"></script>
+
 </body>
+
 </html>

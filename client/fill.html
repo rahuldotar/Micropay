@@ -29,9 +29,9 @@
                 <div class="hd_lft_wrap">
                     <div class="lft_wrp_1" ng-hide="data.position_view">
                         <div class="pr_nm">Product :</div>
-                        <div class="prd_all_wrp">
+                        <div  class="prd_all_wrp">
                             <div class="prd_dt"></div>
-                            <div class="prd_st">ETH-USD</div>
+                            <div id="selPrdt" class="prd_st">ETH-USD</div>
 
                             <ul class="prd_optns">
                                 <li class="options" ng-click="productOnChange('ETH-USD')">ETH-USD</li>
@@ -48,7 +48,7 @@
                         <div class="pr_nm">Status :</div>
                         <div class="prd_all_wrp prd_wrp_2">
                             <div class="prd_dt"></div>
-                            <div class="prd_st">All</div>
+                            <div id="selSide" class="prd_st">All</div>
 
                             <ul class="prd_optns" ng-if="data.fill_view">
                                 <!--<li class="options" ng-click=>Transfer In</li>
@@ -61,9 +61,9 @@
                             <ul class="prd_optns" ng-if="data.transfer_view">
                                 <!--<li class="options" ng-click=>Transfer In</li>
                                 <li class="options">Transfer Out</li>-->
-                                <li class="options" ng-click="trnsfrTypeOnChange('deposit')">Deposit</li>
-                                <li class="options" ng-click="trnsfrTypeOnChange('withdraw')">Withdraw</li>
-                                <li class="options" ng-click="trnsfrTypeOnChange('all')">All</li>
+                                <li class="options" ng-click="trnsfrTypeOnChange('DEposit')">Deposit</li>
+                                <li class="options" ng-click="trnsfrTypeOnChange('Withdraw')">Withdraw</li>
+                                <li class="options" ng-click="trnsfrTypeOnChange('Withdraw')">All</li>
                             </ul>
                             <div class="prd_all_bt">
                                 <img src="img/down-arrow_white.png">
@@ -534,6 +534,7 @@
     <script type="text/javascript" src="lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="lib/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="lib/angular-toastr.tpls.min.js"></script>
+    <script type="text/javascript" src="lib/angular-cookies.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="fill.js"></script>
 

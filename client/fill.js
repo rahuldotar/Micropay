@@ -1,7 +1,7 @@
 /**
  * Created by Dell on 25-07-2016.
  */
-var micropayApp = angular.module('miropayApp', ['ngSanitize', 'toastr', 'ui.bootstrap'])
+var micropayApp = angular.module('miropayApp', ['ngSanitize', 'toastr', 'ui.bootstrap', 'ngCookies'])
 
 /* config for toastr[Start] */
 micropayApp.config(function (toastrConfig) {
@@ -80,7 +80,7 @@ micropayApp.filter('sumProductColumn', function () {
 /* Area For Filters[End] */
 
 
-micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, $http) {
+micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, $http, $cookieStore) {
 
     /* INIT scope valiables[Start] */
     var reset = function () {
@@ -130,7 +130,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             //     angular.element('#' + clmId).removeClass('act')
             //     return;
             // }
-            if(angular.element('#' + clmId).hasClass('act')) {
+            if (angular.element('#' + clmId).hasClass('act')) {
                 if (angular.element('.filt_chck.act').length > 5) {
                     angular.element('#' + clmId).removeClass('act')
                     toastr.error('Only 5 fields are allowed in display', '');
@@ -165,9 +165,12 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         //show Loader
         $scope.view.showLoader = true;
         reset();
+    //    $scope.productOnChange();
         $scope.data.fill_view = true;
         $scope.data.position_view = false;
         $scope.data.transfer_view = false;
+        angular.element(document.querySelector('#selPrdt')).html("ETH-USD")
+        angular.element(document.querySelector('#selSide')).html('All')
         getFills();
     };
     $scope.tabViewPosition = function () {
@@ -187,6 +190,9 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         $scope.data.fill_view = false;
         $scope.data.position_view = false;
         $scope.data.transfer_view = true;
+       // $scope.productOnChange();
+        angular.element(document.querySelector('#selSide')).html('All')
+        angular.element(document.querySelector('#selPrdt')).html("ETH-USD")
         getTransfers();
 
     };
@@ -208,6 +214,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
     /* Using side Filter[Start] */
     $scope.sideOnChange = function (side) {
+        angular.element(document.querySelector('#selSide')).html(side)
         $scope.data.selSide = side;
         if ($scope.data.fill_view) {
             searchFills();
@@ -298,8 +305,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             method: 'POST',
             url: '/api/gdaxFillsFromDb',
             data: {
-                userKey: 'd4fa46cb54128a56400886b9e9e2839a',
-                prodId: $scope.data.selProduct,
+                token: $cookieStore.get('userToken'),
+                prodId: (angular.element('#selPrdt')[0].innerText).trim()
             }
         };
 
@@ -321,7 +328,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         //show Loader
         $scope.view.showLoader = true;
         var postData = {
-            userKey: 'd4fa46cb54128a56400886b9e9e2839a',
+            token: $cookieStore.get('userToken'),
             prodId: $scope.data.selProduct,
             side: $scope.data.selSide === 'all' ? '' : $scope.data.selSide,
             startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime).unix() : '',
@@ -364,7 +371,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             return;
         }
         var postData = {
-            userKey: 'd4fa46cb54128a56400886b9e9e2839a'
+            token: $cookieStore.get('userToken'),
         }
 
         // var postData = $scope.reqData;
@@ -402,7 +409,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         }
 
         var postData = {
-            userKey: 'd4fa46cb54128a56400886b9e9e2839a',
+            token: $cookieStore.get('userToken'),
             prodId: $scope.data.selProduct,
             side: $scope.data.selSide === 'all' ? '' : $scope.data.selSide,
             startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime.setHours(23, 59, 59, 999)).unix() : '',
@@ -442,7 +449,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     /* Getting Transfers[Start] */
     /* Using side Filter[Start] */
     $scope.trnsfrTypeOnChange = function (type) {
-        $scope.data.selTrnsfrtype = type;
+        angular.element(document.querySelector('#selSide')).html(type)
+        $scope.data.selTrnsfrtype = type.toLowerCase();
         searchTransfers()
 
     };
@@ -454,7 +462,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             method: 'POST',
             url: '/api/getGdaxTransfersFromDB',
             data: {
-                userKey: 'd4fa46cb54128a56400886b9e9e2839a',
+                token: $cookieStore.get('userToken'),
                 prodId: $scope.data.selProduct,
             }
         };
@@ -476,7 +484,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         //show Loader
         $scope.view.showLoader = true;
         var postData = {
-            userKey: 'd4fa46cb54128a56400886b9e9e2839a',
+            token: $cookieStore.get('userToken'),
             prodId: $scope.data.selProduct,
             type: $scope.data.selTrnsfrtype === 'all' ? '' : $scope.data.selTrnsfrtype,
             startDate: $scope.data.filterStartDateTime ? moment($scope.data.filterStartDateTime).unix() : '',
