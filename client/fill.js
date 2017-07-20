@@ -176,6 +176,34 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     $scope.tabViewPosition = function () {
         //    reset();
         //show Loader
+    //    function pieChart() {
+            var chart = new CanvasJS.Chart("chartContainer",
+                {
+                    theme: "theme2",
+                    title:{
+                        text: ""
+                    },
+                    data: [
+                        {
+                            type: "pie",
+                            showInLegend: false,
+                            toolTipContent: "{y} - #percent %",
+                            yValueFormatString: "#0.#,,. Million",
+//                                legendText: "{indexLabel}",
+                            dataPoints: [
+                                {  y: 4181563, indexLabel: "PlayStation 3" },
+                                {  y: 2175498, indexLabel: "Wii" },
+                                {  y: 3125844, indexLabel: "Xbox 360" },
+                                {  y: 1176121, indexLabel: "Nintendo DS"},
+                                {  y: 1727161, indexLabel: "PSP" },
+                                {  y: 4303364, indexLabel: "Nintendo 3DS"},
+                                {  y: 1717786, indexLabel: "PS Vita"}
+                            ]
+                        }
+                    ]
+                });
+            chart.render();
+     //   }
         $scope.view.showLoader = true;
         $scope.data.fill_view = false;
         $scope.data.position_view = true;

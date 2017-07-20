@@ -22,6 +22,7 @@ img
 .gd_head
 {
     background-color: #3e4e56;
+    position: relative;
 }
 .gd_wrap
 {
@@ -29,6 +30,33 @@ img
     padding-bottom: 10px;
     margin: 0 auto;
     width: 80%;
+
+}
+.logout
+{
+    position: absolute;
+    right: 18px;
+    top: 24px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all ease 0.5s;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+}
+.logout img
+{
+    padding: 10%;
+}
+.logout:hover
+{
+    box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.62);
+    transition: all ease 0.5s;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
 }
 .position_wrap
 {
