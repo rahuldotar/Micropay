@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(bodyParser.json()); // for parsing application/json
 /* Initial Setup[End] */
 
+
 // Serving static file to browser
 app.use(express.static(__dirname + '/../client'));
 app.get('/*', function(req, res, next) {

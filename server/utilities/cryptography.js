@@ -9,7 +9,7 @@ this.encrypt = function(password)
 
 this.decrypt = function(cipherText)
 {
-    var bytes  = CryptoJS.AES.decrypt(cipherText.toString(),key);
+    var bytes  = CryptoJS.AES.decrypt(cipherText.toString(),config.passKey);
     var plaintext = bytes.toString(CryptoJS.enc.Utf8);
     return plaintext;
 };

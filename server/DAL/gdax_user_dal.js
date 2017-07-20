@@ -16,25 +16,25 @@ gdaxUserDAL.saveNewUser = function (userSignupData, callBack) {
     });
 
 
-    errorHandler.validateIfExists(gdaxUserDB, userSignupData.userID, 'userId', function (err, isExisting,data) {
+    errorHandler.validateIfExists(gdaxUserDB, userSignupData.userID, 'userId', function (err, isExisting, data) {
         if (err) {
             var result = {
                 'success': false,
                 'error': err,
                 'status': 512
             };
-           return callBack(result);
+            return callBack(result);
         }
 
-        if(isExisting){
+        if (isExisting) {
             var result = {
                 'success': false,
                 'error': 'User ID already exists',
                 'status': 409
             };
-           return callBack(result);
+            return callBack(result);
         }
-       
+
         gdaxUserDB.save(function (err, data) {
             if (err) {
                 var result = {
@@ -42,13 +42,13 @@ gdaxUserDAL.saveNewUser = function (userSignupData, callBack) {
                     'error': err,
                     'status': 512
                 };
-                callBack(result);
+                callBack(result,null);
             } else {
                 var result = {
                     'success': true,
                     'data': 'User successfully saved'
                 };
-                callBack(result);
+                callBack(result, (data._doc._id).toString());
             }
         });
     });

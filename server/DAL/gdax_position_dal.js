@@ -23,7 +23,7 @@ gdaxPositionDAL.getDataForTradePositionsFromDb = function (searchFilter, callBac
             },
             {
                 $match: {
-                    userKey: 'd4fa46cb54128a56400886b9e9e2839a',
+                    userID: searchFilter.sessionValue,
                     created_at_unix: {
                         $lte: searchFilter.startDate
                     }
@@ -79,7 +79,7 @@ gdaxPositionDAL.getDataForTradePositionsFromDb = function (searchFilter, callBac
 gdaxPositionDAL.getCurrentPosFromDb = function (request, callBack) {
     var gdaxAccountsDB = new GdaxAccountDB();
     gdaxAccountsDB.collection.find({
-        userKey: request.userKey
+        userID: request.sessionValue
     }).toArray(function (err, data) {
         if (err) {
             var result = {

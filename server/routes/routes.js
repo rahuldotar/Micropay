@@ -6,8 +6,10 @@ var gdaxFillsService = require('../services/gdax_fills_service')
 var gdaxAccountService = require('../services/gdax_accounts_service')
 var gdaxTransferService = require('../services/gdax_transfer_service')
 var gdaxPositionService = require('../services/gdax_position_service')
+var sessionHandler = require('../utilities/session_handler')
 
 module.exports = function (app) {
+    app.use(sessionHandler.validateSession);
     // app.post("/api/convertToEther", exchangeService.convertToEther)
     app.post("/api/getIavToken", paymentService.getIavToken)
     app.post("/api/doPayment", paymentService.doPayment)
@@ -18,14 +20,14 @@ module.exports = function (app) {
  
     // API routes for GDAx user
     //app.post("/api/gdaxUserSignUp", gdaxUserService.userSignUp)
-    app.post("/api/gdaxFills", gdaxFillsService.getFillsFromGdax)
+    //app.post("/api/gdaxFills", gdaxFillsService.getFillsFromGdax)
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
     app.post("/api/gdaxSearchFillsFromDb", gdaxFillsService.searchFillsFromDb)
    // app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
     
     // API Routes for Gdax transfers
-    app.post("/api/getGdaxAccounts", gdaxAccountService.getAccounts)
-    app.post("/api/getGdaxTransfers", gdaxTransferService.getTransferFromGdax)
+    // app.post("/api/getGdaxAccounts", gdaxAccountService.getAccounts)
+    // app.post("/api/getGdaxTransfers", gdaxTransferService.getTransferFromGdax)
     app.post("/api/getGdaxTransfersFromDB", gdaxTransferService.getTransferFromDB)
     app.post("/api/searchGdaxTransfersFromDB", gdaxTransferService.searchTransferFromDB)
     app.post("/api/getLatestETHTransferFromGdax", gdaxTransferService.getLatestETHTransferFromGdax)

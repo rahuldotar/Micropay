@@ -59,7 +59,7 @@ gdaxFillsDAL.saveLatestFills = function (fillsData, callBack) {
 gdaxFillsDAL.getfillsFromDb = function (reqParams, callBack) {
     var gdaxFillsDB = new GdaxFillsDB();
     var queryObj = {
-        userKey: reqParams.userKey,
+        userID: reqParams.sessionValue,
         product_id: reqParams.prodId
     }
 
@@ -113,6 +113,8 @@ gdaxFillsDAL.searchFillsFromDb = function (searchFilter, callBack) {
             }
         }
     });
+
+    queryObj.userId = searchFilter.sessionValue;
 
     gdaxFillsDB.collection.find(queryObj).toArray(function (err, data) {
         if (err) {

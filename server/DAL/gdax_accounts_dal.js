@@ -26,9 +26,9 @@ gdaxAccountsDAL.saveAccounts = function (fillsData, callBack) {
 
 
 /* API Handler to get an Account[Start]  */
-gdaxAccountsDAL.getAnAccount = function (currType, callBack) {
+gdaxAccountsDAL.getAnAccount = function (currType,userID, callBack) {
     var gdaxAccountsDB = new GdaxAccountsDB();
-    gdaxAccountsDB.collection.findOne({userKey: 'd4fa46cb54128a56400886b9e9e2839a',currency:currType}, function (err, data) {
+    gdaxAccountsDB.collection.findOne({userID: userID,currency:currType}, function (err, data) {
         if (err) {
             var result = {
                 'success': false,

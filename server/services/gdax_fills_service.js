@@ -11,7 +11,7 @@ var gdaxFillSVC = {};
 var queryParamsFills = {};
 
 /* Getting Fills from Gdax API[Start] */
-gdaxFillSVC.getFillsFromGdax = function (apiData) {
+gdaxFillSVC.getFillsFromGdax = function (apiData,userID) {
 
     // Init gdax authentication client
     var authedClient = new Gdax.AuthenticatedClient(
@@ -22,7 +22,7 @@ gdaxFillSVC.getFillsFromGdax = function (apiData) {
     authedClient.getFills(queryParamsFills, function (error, response, data) {
         if (!error & response.statusCode === 200) {
             data.forEach(function (value) {
-                value.userKey = apiData.apiKey;
+                value.userId = userID;
             });
             gdaxFillsDAL.saveFills(apiData.apiKey,data, function (result) {
                 if (!result.success) {
@@ -71,6 +71,7 @@ gdaxFillSVC.getLatestFillsFromGdax = function () {
 
 /* Getting Gdax fills from database[Start] */
 gdaxFillSVC.getfillsFromDb = function (req, res) {
+
     gdaxFillsDAL.getfillsFromDb(req.body, function (result) {
         if (!result.success) {
             res.status(512).json({

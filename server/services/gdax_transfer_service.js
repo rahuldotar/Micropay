@@ -12,7 +12,7 @@ var queryParamsTrsansfers = {};
 queryParamsTrsansfers.limit = '100';
 
 /* Getting Account History from Gdax API[Start] */
-gdaxTransferSVC.getTransferFromGdax = function (apiData,currency) {
+gdaxTransferSVC.getTransferFromGdax = function (apiData,currency,userID) {
 
     // Init gdax client
     var authedClient = new Gdax.AuthenticatedClient(
@@ -21,7 +21,7 @@ gdaxTransferSVC.getTransferFromGdax = function (apiData,currency) {
     var currency = currency;
 
     // getting account for the reqeusted currency    
-    gdaxAccountDAL.getAnAccount(currency, function (result) {
+    gdaxAccountDAL.getAnAccount(currency,userID, function (result) {
         var accntID = result.data.id;
         authedClient.getAccountHistory(accntID, queryParamsTrsansfers, function (error, response, data) {
             if (data.length === 0) {
@@ -29,7 +29,7 @@ gdaxTransferSVC.getTransferFromGdax = function (apiData,currency) {
             }
             if (!error & response.statusCode === 200) {
                 data.forEach(function (value) {
-                    value.userKey = apiData.apiKey;
+                    value.userID = userID;
                     value.created_at_unix = moment(value.created_at).unix();
                     value.account_id = accntID
                     value.account_currency = result.data.currency;
@@ -42,7 +42,7 @@ gdaxTransferSVC.getTransferFromGdax = function (apiData,currency) {
                     } else {
                         if (data.length === 100) {
                             queryParamsTrsansfers.after = response.headers['cb-after'];
-                            gdaxTransferSVC.getTransferFromGdax(apiData,currency);
+                            gdaxTransferSVC.getTransferFromGdax(apiData,currency,userID);
                         } else {
                             
                         }
@@ -130,11 +130,11 @@ gdaxTransferSVC.getTransferFromDB = function (req, res) {
     var currency = req.body.prodId.split("-")[0];
 
     // getting account for the reqeusted currency    
-    gdaxAccountDAL.getAnAccount(currency, function (result) {
+    gdaxAccountDAL.getAnAccount(currency, req.body.sessionValue, function (result) {
         var accntID = result.data.id;
 
         // Getting trnsfers for respective currency     
-        gdaxTransferDAL.getTransfers(accntID, function (result) {
+        gdaxTransferDAL.getTransfers(accntID,req.body.sessionValue, function (result) {
             if (!result.success) {
                 res.status(result.status).json({
                     success: false,
@@ -157,7 +157,7 @@ gdaxTransferSVC.searchTransferFromDB = function (req, res) {
     var currency = req.body.prodId.split("-")[0];
 
     // getting account for the reqeusted currency    
-    gdaxAccountDAL.getAnAccount(currency, function (result) {
+    gdaxAccountDAL.getAnAccount(currency, req.body.sessionValue,function (result) {
         var accntID = result.data.id;
 
         // Getting trnsfers for respective currency     

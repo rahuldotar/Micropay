@@ -129,10 +129,11 @@ gdaxTransferDAL.saveLatestBTCAccountHistory = function (trnsfrData, accountid, c
 /* DAL Handler to save latest BTC Account History[End]  */
 
 /* DAL to get Account History[Start]  */
-gdaxTransferDAL.getTransfers = function (accountId, callBack) {
+gdaxTransferDAL.getTransfers = function (accountId,userId, callBack) {
     var gdaxTransferDB = new GdaxTransferDB();
     var queryObj = {};
     queryObj.account_id = accountId;
+    queryObj.userID = userId;
     queryObj.type = 'transfer';
 
     gdaxTransferDB.collection.find(queryObj).toArray(function (err, data) {
@@ -191,6 +192,7 @@ gdaxTransferDAL.searchTransfers = function (accountId, searchFilter, callBack) {
         }
     });
     queryObj.account_id = accountId;
+    queryObj.userID = searchFilter.sessionValue;
     queryObj.type = 'transfer';
 
     gdaxTransferDB.collection.find(queryObj).toArray(function (err, data) {
