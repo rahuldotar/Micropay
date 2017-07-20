@@ -89,7 +89,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="logout">
+                    <img src="img/logout.png" alt="logout">
+                </div>
                 <div style="clear: both;"></div>
             </div>
             <div class="resp_btn">
@@ -480,6 +482,9 @@
         </div>
 
         <div ng-show="data.position_view">
+            <div class="pie_wrap">
+                <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+            </div>
             <div class="position_wrap">
                 <!--<div ng-if="data.selProduct=='ETH-USD'">
                     <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.positionDetails.reqCurr.balance}}</div>
@@ -536,9 +541,11 @@
     <script type="text/javascript" src="lib/angular-toastr.tpls.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="fill.js"></script>
+    <script type="text/javascript">
 
-    <script>
     </script>
+    <script src="canvasjs.min.js"></script>
+
 
 </body>
 
