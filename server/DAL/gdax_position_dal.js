@@ -146,6 +146,12 @@ var getApproximatePrice = function (date, callBack) {
                 'end': endDateISO,
                 'granularity': 5000
             }, function (err, res, data) {
+                if(err){
+                    return;
+                }
+              
+                console.log(err);
+                console.log(res.statusCode);
                 var totalRecords = data.length;
                 var totalOfhighAndLow = 0;
                 var avg = 0;

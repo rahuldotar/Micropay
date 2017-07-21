@@ -101,12 +101,12 @@
                     </div>
                     Filter
                 </div>
-                <div class="resp_disp">
+                <!-- <div class="resp_disp">
                     <div class="filt_ico">
                         <img src="img/down-arrow_white.png">
                     </div>
                     Display
-                </div>
+                </div> -->
 
                 <div class="display_filt">
                     <div ng-click="diplayColumn('chkSize')" class="filt_row">
@@ -482,8 +482,8 @@
         </div>
 
         <div ng-show="data.position_view">
-            <div class="pie_wrap" ng-show="!data.details_view">
-                <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+            <div class="pie_wrap">
+                <div id="chartContainer"  ng-show="data.chart_view" style="height: 400px; width: 100%;"></div>
                 <button type="button" ng-click="detailsViewPie();" class="details_btn">
                     Details
                 </button>
@@ -522,7 +522,7 @@
                 </div>
 
                 <div class="pos_cards">
-                    <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.currPosUSD}}</div>
+                    <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.currPosUSD | number:2}}</div>
 
                 </div>
                 <div style="clear: both"></div>

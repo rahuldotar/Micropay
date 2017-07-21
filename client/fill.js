@@ -98,17 +98,19 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             positionDetails: '',
             transfers: [],
             selTrnsfrtype: 'all',
-            details_view:false,
+            details_view: true,
             currPosBTC: 0,
             currPosETH: 0,
             currPosLTC: 0,
             currPosUSD: 0,
-            priceDetails: {}
+            priceDetails: {},
+            chart_view:true
             //   selRow:-1
             //clsMbl: true
         };
     };
     $scope.view = {};
+    $scope.mobView = {}
     $scope.view.showLoader = false;
 
     /* AREA FOR MOBILE VIEW[START] */
@@ -176,62 +178,13 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     };
     $scope.tabViewPosition = function () {
         $scope.data.position_view = true;
-        //    reset();
-        //show Loader
-        //    function pieChart() {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            theme: "theme2",
-            title: {
-                text: ""
-            },
-            data: [{
-                type: "pie",
-                showInLegend: false,
-                toolTipContent: "{y} - #percent %",
-                yValueFormatString: "#0.#,,. Million",
-                animationEnabled:true,
-                //                                legendText: "{indexLabel}",
-                dataPoints: [{
-                        y: 4181563,
-                        indexLabel: "PlayStation 3"
-                    },
-                    {
-                        y: 2175498,
-                        indexLabel: "Wii"
-                    },
-                    {
-                        y: 3125844,
-                        indexLabel: "Xbox 360"
-                    },
-                    {
-                        y: 1176121,
-                        indexLabel: "Nintendo DS"
-                    },
-                    {
-                        y: 1727161,
-                        indexLabel: "PSP"
-                    },
-                    {
-                        y: 4303364,
-                        indexLabel: "Nintendo 3DS"
-                    },
-                    {
-                        y: 1717786,
-                        indexLabel: "PS Vita"
-                    }
-                ]
-            }]
-        });
-       // $scope.$apply();
-        //   }
+        
+        
         $scope.view.showLoader = true;
         $scope.data.fill_view = false;
         $scope.data.transfer_view = false;
         filterPosition();
-        $timeout(function(){
-             chart.render();
-        },1000)
-       
+      
     };
 
     $scope.tabViewTrnsfr = function () {
@@ -247,11 +200,13 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         getTransfers();
 
     };
-    $scope.detailsViewPie =function () {
+    $scope.detailsViewPie = function () {
         $scope.data.details_view = true;
+        $scope.data.chart_view = false;
     };
-    $scope.detailsClosePie =function () {
+    $scope.detailsClosePie = function () {
         $scope.data.details_view = false;
+        $scope.data.chart_view = true;
     };
 
     /* Using product Filter[Start] */
@@ -420,6 +375,49 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     /* AREA FOR POSITION TAB[START] */
 
     /* Getting current Position position[Start] */
+    var chartManagement = function(position,curPrice){
+         var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "theme2",
+            title: {
+                text: ""
+            },
+            data: [{
+                type: "pie",
+                showInLegend: false,
+                toolTipContent: "#percent %",
+                yValueFormatString: "#0.#,,. Million",
+                animationEnabled: true,
+                //                                legendText: "{indexLabel}",
+                dataPoints: [{
+                        y: position.BTC?parseFloat(position.BTC[0].balance) * parseFloat(curPrice['BTC-USD']):0,
+                        indexLabel: position.BTC?"BTC[" + position.BTC[0].balance + "]":"BTC[0]"
+                    },
+                    {
+                        y: position.ETH?parseFloat(position.ETH[0].balance) * parseFloat(curPrice['ETH-USD']):0,
+                        indexLabel: position.ETH?"ETH[" + position.ETH[0].balance + "]":"ETH[0]"
+                    },
+                    {
+                        y: position.LTC?parseFloat(position.LTC[0].balance) * parseFloat(curPrice['LTC-USD']):0,
+                        indexLabel: position.LTC?"LTC[" + position.LTC[0].balance + "]":"LTC[0]"
+                    },
+                    {
+                        y: position.USD?parseFloat(position.USD[0].balance):0,
+                        indexLabel: position.USD?"USD[" + (parseFloat(position.USD[0].balance).toFixed(2)).toString() + "]":"USD[0]"
+                    }
+                    
+                ]
+            }]
+        });
+
+          $timeout(function () {
+            chart.render();
+             $scope.view.showLoader = false;
+        }, 1000)
+
+
+
+    };
+
     var getCurrentPosition = function () {
         //show Loader
         $scope.view.showLoader = true;
@@ -440,13 +438,15 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
         $http(requestObj).success(function (data) {
             var posDetails = data.result.currPos;
+            var currPrices = data.result.currPrices
+            chartManagement(posDetails,currPrices)
             $scope.data.currPosBTC = posDetails.BTC[0].balance;
             $scope.data.currPosETH = posDetails.ETH[0].balance;
             $scope.data.currPosLTC = posDetails.LTC[0].balance;
             $scope.data.currPosUSD = posDetails.USD[0].balance;
-            $scope.data.priceDetails = data.result.currPrices;
+            $scope.data.priceDetails = currPrices;
             //hide Loader
-            $scope.view.showLoader = false;
+           
         }).error(function (data, err) {
             //hide Loader
             $scope.view.showLoader = false;
@@ -482,13 +482,16 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
         $http(requestObj).success(function (data) {
             var posDetails = data.result.currPos;
+             var currPrices = data.result.currPrices
+            chartManagement(posDetails,currPrices)
             $scope.data.currPosBTC = posDetails.BTC ? posDetails.BTC[0].balance : 0;
             $scope.data.currPosETH = posDetails.ETH ? posDetails.ETH[0].balance : 0;
             $scope.data.currPosLTC = posDetails.LTC ? posDetails.LTC[0].balance : 0;
             $scope.data.currPosUSD = posDetails.USD ? posDetails.USD[0].balance : 0;
             $scope.data.priceDetails = data.result.currPrices;
+           // chartManagement(posDetails)
             //hide Loader
-            $scope.view.showLoader = false;
+         //   $scope.view.showLoader = false;
         }).error(function (data, err) {
             //hide Loader
             $scope.view.showLoader = false;
@@ -497,6 +500,15 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
 
     };
     /* Filter position[End] */
+    $timeout(function () {
+        var media = window.matchMedia("(max-width: 767px)");
+        if (media.matches) {
+            $scope.data.details_view = false;
+            $scope.data.chart_view = true;
+        }
+
+    }, 1000)
+
 
     /* AREA FOR POSITION TAB[END] */
 
