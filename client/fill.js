@@ -379,7 +379,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
          var chart = new CanvasJS.Chart("chartContainer", {
             theme: "theme2",
             title: {
-                text: ""
+                text: "PIE CHART IN DOLLARS($)"
             },
             data: [{
                 type: "pie",
