@@ -60,6 +60,7 @@ img
 }
 .position_wrap
 {
+    position: relative;
     padding-top: 30px;
     padding-bottom: 10px;
     margin: 0 auto;
@@ -75,6 +76,7 @@ img
     display: inline-block;
     margin-right: 2%;
     margin-bottom: 6%;
+    min-height: 190px;
 }
 .eth_head
 {
@@ -588,6 +590,14 @@ img
     vertical-align: inherit;
     margin-right: 1px;
 }
+.details_btn
+{
+    display: none;
+}
+.details_close_btn
+{
+    display: none;
+}
 .leg_sell
 {
     width: 10px;
@@ -721,7 +731,7 @@ img
     }
     .gd_wrap
     {
-        width: 95%;
+        width: 86%;
     }
     .gd_tab_menu
     {
@@ -846,8 +856,82 @@ img
     }
 
 }
-@media only screen and (max-width:758px)
+@media only screen and (max-width:767px)
 {
+    .pie_wrap {
+        position: relative;
+        display: block;
+        overflow: hidden;
+    }
+    .details_btn {
+        position: absolute;
+        display: inline-block;
+        width: 70px;
+        height: 30px;
+        border-radius: 4px;
+        background-color: #3e4e56;
+        z-index: 1000;
+        color: #fff;
+        font-size: 13px;
+        line-height: 28px;
+        text-align: center;
+        right: 10px;
+        top: 10px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        transition: all ease 0.5s;
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+    }
+    .details_btn:hover {
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.32);
+        transition: all ease 0.5s;
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+    }
+    .details_close_btn {
+        position: absolute;
+        display: inline-block;
+        width: 35px;
+        height: 30px;
+        border-radius: 4px;
+        background-color: #3e4e56;
+        z-index: 1000;
+        color: #fff;
+        font-size: 13px;
+        line-height: 28px;
+        text-align: center;
+        right: -12px;
+        top: 8px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        transition: all ease 0.5s;
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+    }
+    .details_close_btn:hover {
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.32);
+        transition: all ease 0.5s;
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+    }
+    button.details_close_btn img {
+        height: 15px;
+        max-width: 15px;
+        border: 0;
+        vertical-align: text-top;
+        -ms-interpolation-mode: bicubic;
+    }
     .tbl_wrp
     {
         width: 100%;
@@ -857,10 +941,13 @@ img
     {
         display: block;
         position: relative;
-        width: 95%;
+        width: 80%;
         margin: 0 auto;
         padding-top: 14px;
         padding-bottom: 10px;
+    }
+    .logout {
+        top: 14px;
     }
     .resp_filt
     {
@@ -964,6 +1051,17 @@ img
         padding-top: 4%;
         padding-bottom: 4%;
         font-size: 12px;
+    }
+    .pos_cards {
+        width: 45%;
+        text-align: left;
+        padding: 20px;
+        box-shadow: 0px 0px 15px 0px #c1c0c0;
+        border-radius: 5px;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 2%;
+        margin-bottom: 6%;
     }
 }
 
@@ -1160,9 +1258,33 @@ img
     {
         margin-left: 10px;
     }
+    .resp_btn {
+        width: 75%;
+        margin: 0 0 0 5%;
+    }
+    .details_close_btn {
+        width: 28px;
+        height: 23px;
+        right: -3px;
+        top: 4px;
+        transition: all ease 0.5s;
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+    }
+    button.details_close_btn img {
+        height: 10px;
+        max-width: 10px;
+        border: 0;
+        vertical-align: text-top;
+        -ms-interpolation-mode: bicubic;
+    }
 }
 @media only screen and (max-width:383px)
 {
+    .logout {
+
+    }
     .sb_hd:nth-child(4)
     {
         display: none;

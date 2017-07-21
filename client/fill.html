@@ -25,6 +25,9 @@
 
 
         <div class="gd_head">
+            <div class="logout" ng-click="doLogout();">
+                <img src="img/logout.png" alt="logout">
+            </div>
             <div class="gd_wrap">
                 <div class="hd_lft_wrap">
                     <div class="lft_wrp_1" ng-hide="data.position_view">
@@ -88,9 +91,6 @@
                                 data-language="en" readonly data-language="en">
                         </div>
                     </div>
-                </div>
-                <div class="logout" ng-click="doLogout();">
-                    <img src="img/logout.png" alt="logout">
                 </div>
                 <div style="clear: both;"></div>
             </div>
@@ -482,10 +482,16 @@
         </div>
 
         <div ng-show="data.position_view">
-            <div class="pie_wrap">
+            <div class="pie_wrap" ng-show="!data.details_view">
                 <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+                <button type="button" ng-click="detailsViewPie();" class="details_btn">
+                    Details
+                </button>
             </div>
-            <div class="position_wrap">
+            <div class="position_wrap" ng-show="data.details_view">
+                <button type="button" ng-click="detailsClosePie();" class="details_close_btn">
+                    <img src="img/close.png" alt="close">
+                </button>
                 <!--<div ng-if="data.selProduct=='ETH-USD'">
                     <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.positionDetails.reqCurr.balance}}</div>
 

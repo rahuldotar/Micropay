@@ -98,6 +98,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             positionDetails: '',
             transfers: [],
             selTrnsfrtype: 'all',
+            details_view:false,
             currPosBTC: 0,
             currPosETH: 0,
             currPosLTC: 0,
@@ -245,6 +246,12 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         angular.element(document.querySelector('#selPrdt')).html("ETH-USD")
         getTransfers();
 
+    };
+    $scope.detailsViewPie =function () {
+        $scope.data.details_view = true;
+    };
+    $scope.detailsClosePie =function () {
+        $scope.data.details_view = false;
     };
 
     /* Using product Filter[Start] */
