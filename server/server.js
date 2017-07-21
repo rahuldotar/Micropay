@@ -31,7 +31,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(express.static(__dirname + '/../client'));
 app.get('/*', function(req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
-    res.sendFile('demo.html', { root: __dirname + '/../client' });
+    res.sendFile('login.html', { root: __dirname + '/../client' });
 });
 
 /* Managing DB connection[Start] */
