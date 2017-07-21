@@ -2,24 +2,25 @@ var async = require('async')
 var GdaxFillsDB = require('../models/gdax_fills_model')
 var GdaxUserDB = require('../models/gdax_user_model')
 var moment = require('moment');
+var mongoose = require('mongoose');
 
 var gdaxFillsDAL = {};
 
 /* API Handler to save Fills[Start]  */
-gdaxFillsDAL.saveFills = function (apiKey, fillsData, callBack) {
+gdaxFillsDAL.saveFills = function (userID, fillsData, callBack) {
     // Converting created at date to time stamp and store it new variable
     fillsData.forEach(function (value) {
         value.created_at_unix = moment(value.created_at).unix();
     });
 
-    saveToDb(apiKey, fillsData, function (result) {
+    saveToDb(userID, fillsData, function (result) {
         callBack(result)
     });
 }
 /* API Handler to save Fills[End]  */
 
-/* API Handler to save Latest Fills[Start]  */
-gdaxFillsDAL.saveLatestFills = function (fillsData, callBack) {
+/* DAL Handler to save Latest Fills[Start]  */
+gdaxFillsDAL.saveLatestFills = function (fillsData, userDet, callBack) {
     var gdaxFillsDB = new GdaxFillsDB();
     var gdaxUserDB = new GdaxUserDB();
 
@@ -29,30 +30,23 @@ gdaxFillsDAL.saveLatestFills = function (fillsData, callBack) {
     });
 
 
-    gdaxUserDB.collection.findOne({
-        apiKey: 'd4fa46cb54128a56400886b9e9e2839a'
-    }, function (err, data) {
-        if (err) {
-            console.log(err);
-            return;
+    var newFillData = []
+
+    // checking is there any new trade using created date
+    fillsData.forEach(function (value) {
+        if ((moment(value.created_at)).diff(moment(userDet.latestTrade.created_at)) > 0) {
+            console.log('new trade found')
+            newFillData.push(value)
         }
+    });
 
-        var newFillData = []
+    // Checking for new trade calling function accordingly
+    newFillData.length > 0 ? saveToDb(newFillData, function (result) {
+        callBack(result)
+    }) : '';
 
-        // checking is there any new trade using created date
-        fillsData.forEach(function (value) {
-            if ((moment(value.created_at)).diff(moment(data.latestTrade.created_at)) > 0) {
-                newFillData.push(value)
-            }
-        });
-
-        // Checking for new trade calling function accordingly
-        newFillData.length > 0 ? saveToDb(gdaxFillsDB, gdaxUserDB, newFillData, function (result) {
-            callBack(result)
-        }) : '';
-    })
 }
-/* API Handler to save Fills[End]  */
+/* DAL Handler to save Fills[End]  */
 
 
 /* API handler to get fills from DB[Start] */
@@ -244,7 +238,7 @@ gdaxFillsDAL.getDataForTradePositionsFromDb = function (searchFilter, callBack) 
 module.exports = gdaxFillsDAL;
 
 /* save to fills DB by preference[Start]  */
-var saveToDb = function (apiKey, fillsData, callBack) {
+var saveToDb = function (userID, fillsData, callBack) {
     // Preparing Db instance
     var gdaxFillsDB = new GdaxFillsDB();
     var gdaxUserDB = new GdaxUserDB();
@@ -261,7 +255,7 @@ var saveToDb = function (apiKey, fillsData, callBack) {
 
         // Finding the last inserted fill
         gdaxFillsDB.collection.findOne({
-            userKey: apiKey
+            userId: userID
         }, {
             sort: {
                 'created_at': -1
@@ -269,7 +263,7 @@ var saveToDb = function (apiKey, fillsData, callBack) {
         }, function (err, doc) {
             // Updating in to gdax User
             gdaxUserDB.collection.findOneAndUpdate({
-                apiKey: apiKey
+                _id: mongoose.Types.ObjectId(userID)
             }, {
                 $set: {
                     latestTrade: doc

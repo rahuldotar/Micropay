@@ -165,7 +165,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         //show Loader
         $scope.view.showLoader = true;
         reset();
-    //    $scope.productOnChange();
+        //    $scope.productOnChange();
         $scope.data.fill_view = true;
         $scope.data.position_view = false;
         $scope.data.transfer_view = false;
@@ -174,41 +174,63 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         getFills();
     };
     $scope.tabViewPosition = function () {
+        $scope.data.position_view = true;
         //    reset();
         //show Loader
-    //    function pieChart() {
-            var chart = new CanvasJS.Chart("chartContainer",
-                {
-                    theme: "theme2",
-                    title:{
-                        text: ""
+        //    function pieChart() {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "theme2",
+            title: {
+                text: ""
+            },
+            data: [{
+                type: "pie",
+                showInLegend: false,
+                toolTipContent: "{y} - #percent %",
+                yValueFormatString: "#0.#,,. Million",
+                animationEnabled:true,
+                //                                legendText: "{indexLabel}",
+                dataPoints: [{
+                        y: 4181563,
+                        indexLabel: "PlayStation 3"
                     },
-                    data: [
-                        {
-                            type: "pie",
-                            showInLegend: false,
-                            toolTipContent: "{y} - #percent %",
-                            yValueFormatString: "#0.#,,. Million",
-//                                legendText: "{indexLabel}",
-                            dataPoints: [
-                                {  y: 4181563, indexLabel: "PlayStation 3" },
-                                {  y: 2175498, indexLabel: "Wii" },
-                                {  y: 3125844, indexLabel: "Xbox 360" },
-                                {  y: 1176121, indexLabel: "Nintendo DS"},
-                                {  y: 1727161, indexLabel: "PSP" },
-                                {  y: 4303364, indexLabel: "Nintendo 3DS"},
-                                {  y: 1717786, indexLabel: "PS Vita"}
-                            ]
-                        }
-                    ]
-                });
-            chart.render();
-     //   }
+                    {
+                        y: 2175498,
+                        indexLabel: "Wii"
+                    },
+                    {
+                        y: 3125844,
+                        indexLabel: "Xbox 360"
+                    },
+                    {
+                        y: 1176121,
+                        indexLabel: "Nintendo DS"
+                    },
+                    {
+                        y: 1727161,
+                        indexLabel: "PSP"
+                    },
+                    {
+                        y: 4303364,
+                        indexLabel: "Nintendo 3DS"
+                    },
+                    {
+                        y: 1717786,
+                        indexLabel: "PS Vita"
+                    }
+                ]
+            }]
+        });
+       // $scope.$apply();
+        //   }
         $scope.view.showLoader = true;
         $scope.data.fill_view = false;
-        $scope.data.position_view = true;
         $scope.data.transfer_view = false;
         filterPosition();
+        $timeout(function(){
+             chart.render();
+        },1000)
+       
     };
 
     $scope.tabViewTrnsfr = function () {
@@ -218,7 +240,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         $scope.data.fill_view = false;
         $scope.data.position_view = false;
         $scope.data.transfer_view = true;
-       // $scope.productOnChange();
+        // $scope.productOnChange();
         angular.element(document.querySelector('#selSide')).html('All')
         angular.element(document.querySelector('#selPrdt')).html("ETH-USD")
         getTransfers();
@@ -541,6 +563,26 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
     /* Getting Transfers[END] */
 
     /*  AREA OF TRANSFER TAB[END] */
+
+    /* do logout[Start] */
+    $scope.doLogout = function () {
+        var requestObj = {
+            method: 'POST',
+            url: '/api/logout',
+            data: {
+                token: $cookieStore.get('userToken'),
+            }
+        };
+
+        $http(requestObj).success(function (data) {
+            $cookieStore.remove('isLogedin');
+            $cookieStore.remove('userToken');
+            location.assign("login.html");
+        }).error(function (data, err) {
+            toastr.error('Could not logout from the app. Please check your connectivity.', '');
+        });
+    }
+    /* do logout[End] */
 
     /* Initial Execution [Start] */
     reset();

@@ -17,14 +17,14 @@ module.exports = function (app) {
     app.post("/api/sellCrypto", geminiExchngService.sellCrypto)
     app.post("/api/saveCrypto", geminiExchngService.saveCurrentExchangeRates)
     app.post("/api/genAccess", paymentService.getAccessToken)
- 
+
     // API routes for GDAx user
     //app.post("/api/gdaxUserSignUp", gdaxUserService.userSignUp)
     //app.post("/api/gdaxFills", gdaxFillsService.getFillsFromGdax)
     app.post("/api/gdaxFillsFromDb", gdaxFillsService.getfillsFromDb)
     app.post("/api/gdaxSearchFillsFromDb", gdaxFillsService.searchFillsFromDb)
-   // app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
-    
+    // app.post("/api/gdaxTradePosition", gdaxFillsService.getDataForTradePositions)
+
     // API Routes for Gdax transfers
     // app.post("/api/getGdaxAccounts", gdaxAccountService.getAccounts)
     // app.post("/api/getGdaxTransfers", gdaxTransferService.getTransferFromGdax)
@@ -33,6 +33,13 @@ module.exports = function (app) {
     app.post("/api/getLatestETHTransferFromGdax", gdaxTransferService.getLatestETHTransferFromGdax)
     app.post("/api/filterGdaxPosition", gdaxPositionService.getGdaxPosition)
     app.post("/api/getCurrentPosition", gdaxPositionService.getCurrentPosition)
+
+    app.post('/api/logout', sessionHandler.removeSession, function (req, res) {
+        res.status(200).json({
+            success: true,
+            result: 'Succefully logged out'
+        });
+    });
 
 
 }

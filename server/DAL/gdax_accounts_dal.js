@@ -46,7 +46,7 @@ gdaxAccountsDAL.getAnAccount = function (currType,userID, callBack) {
 }
 /* API Handler to get an Account[End]  */
 
-/* API Handler to get an Account[Start]  */
+/* API Handler to get  Accounts[Start]  */
 gdaxAccountsDAL.getAccounts = function (callBack) {
     var gdaxAccountsDB = new GdaxAccountsDB();
     gdaxAccountsDB.collection.find({userKey: 'd4fa46cb54128a56400886b9e9e2839a'}).toArray(function (err, data) {
@@ -65,6 +65,6 @@ gdaxAccountsDAL.getAccounts = function (callBack) {
         }
     })
 }
-/* API Handler to get an Account[End]  */
+/* API Handler to get Accounts[End]  */
 
 module.exports = gdaxAccountsDAL;

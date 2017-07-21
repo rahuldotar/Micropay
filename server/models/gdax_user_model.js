@@ -10,6 +10,7 @@ var gdaxUserSchema = new Schema({
     apiSecret : String,
     passPhrase :String,
     latestTrade:{},
+    crptoAccounts:[]
 });
 
 var gdaxUserDb = mongoose.model('gdaxUsers',gdaxUserSchema);

@@ -24,15 +24,17 @@ gdaxFillSVC.getFillsFromGdax = function (apiData,userID) {
             data.forEach(function (value) {
                 value.userId = userID;
             });
-            gdaxFillsDAL.saveFills(apiData.apiKey,data, function (result) {
+            gdaxFillsDAL.saveFills(userID,data, function (result) {
                 if (!result.success) {
                     console.log('Saving fils Error')
                 } else {
                     if (data.length === 100) {
                         queryParamsFills.after = response.headers['cb-after'];
                         gdaxFillSVC.getFillsFromGdax(apiData);
+                        console.log('Saving Fills Success')
+                        return;
                     } 
-                    console.log('Saving Fills Success')
+                    
                 }
 
             })
@@ -41,33 +43,6 @@ gdaxFillSVC.getFillsFromGdax = function (apiData,userID) {
     });
 }
 /* Getting Fills from Gdax API[End] */
-
-/* Getting latest Fills from Gdax if there is any for each account API[Start] */
-gdaxFillSVC.getLatestFillsFromGdax = function () {
-    var authedClient = new Gdax.AuthenticatedClient(
-        gdaxKey, gdaxSecret, gdaxPhrase, apiURI);
-
-    authedClient.getFills({
-        limit: '100'
-    }, function (error, response, data) {
-        if (!error && response.statusCode === 200) {
-            data.forEach(function (value) {
-                value.userKey = gdaxKey;
-            });
-            gdaxFillsDAL.saveLatestFills(data, function (result) {
-                if (!result.success) {
-                    console.log('Saving fils Error')
-                } else {
-                    console.log('Saving Fills Success')
-                }
-
-            })
-
-        }
-    });
-}
-/* Getting latest from Gdax API[End] */
-
 
 /* Getting Gdax fills from database[Start] */
 gdaxFillSVC.getfillsFromDb = function (req, res) {
@@ -113,7 +88,7 @@ gdaxFillSVC.searchFillsFromDb = function (req, res) {
 
 /* Implementing cron Job for getting new gdax trades[Start] */
 var job = new CronJob({
-    cronTime: '*/60 * * * * *',
+    cronTime: '*/300 * * * * *',
     onTick: function () {
         // geminiExchangeService.saveCurrentExchangeRates();
         gdaxFillSVC.getLatestFillsFromGdax()

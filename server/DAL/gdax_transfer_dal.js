@@ -26,10 +26,10 @@ gdaxTransferDAL.saveAccountHistory = function (fillsData, callBack) {
 /* DAL Handler to save Account History[End]  */
 
 /* DAL to save latest ETH Account History[Start]  */
-gdaxTransferDAL.saveLatestETHAccountHistory = function (trnsfrData, accountid, callBack) {
+gdaxTransferDAL.saveLatestAccountHistory = function (trnsfrData, accountid, callBack) {
     var gdaxTransferDB = new GdaxTransferDB();
 
-    gdaxTransferDB.collection.find({
+    gdaxTransferDB.collection.findOne({
         account_id: accountid
     }).sort({
         created_at_unix: -1
@@ -41,7 +41,7 @@ gdaxTransferDAL.saveLatestETHAccountHistory = function (trnsfrData, accountid, c
             };
             callBack(result);
         } else {
-            var latestRecord = data[0];
+            var latestRecord = data;
             var newTrnsfrData = []
 
             // checking is there any new trade using created date
@@ -76,57 +76,6 @@ gdaxTransferDAL.saveLatestETHAccountHistory = function (trnsfrData, accountid, c
 }
 /* DAL Handler to save latest ETH Account History[End]  */
 
-/* DAL to save latest BTC Account History[Start]  */
-gdaxTransferDAL.saveLatestBTCAccountHistory = function (trnsfrData, accountid, callBack) {
-    var gdaxTransferDB = new GdaxTransferDB();
-
-    gdaxTransferDB.collection.find({
-        account_id: accountid
-    }).sort({
-        created_at_unix: -1
-    }).toArray(function (err, data) {
-        if (err) {
-            var result = {
-                'success': false,
-                'error': err
-            };
-            callBack(result);
-        } else {
-            var latestRecord = data[0];
-            var newTrnsfrData = []
-
-            // checking is there any new trade using created date
-            trnsfrData.forEach(function (value) {
-                if ((moment(value.created_at)).diff(moment(latestRecord.created_at)) > 0) {
-                    newTrnsfrData.push(value)
-                }
-            });
-
-            if (newTrnsfrData.length > 0) {
-                gdaxTransferDB.collection.insertMany(trnsfrData, function (err, data) {
-                    if (err) {
-                        var result = {
-                            'success': false,
-                            'error': err
-                        };
-                        callBack(result);
-                    } else {
-                        var result = {
-                            'success': true,
-                            'data': 'Transfer successfully saved'
-                        };
-                        callBack(result);
-                    }
-                })
-
-            }
-        }
-
-    });
-
-}
-
-/* DAL Handler to save latest BTC Account History[End]  */
 
 /* DAL to get Account History[Start]  */
 gdaxTransferDAL.getTransfers = function (accountId,userId, callBack) {

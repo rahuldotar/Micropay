@@ -5,14 +5,15 @@ var errorHandler = require('../utilities/error_handler');
 var gdaxUserDAL = {};
 
 /* Data Acces Layesr for saving new User [Start] */
-gdaxUserDAL.saveNewUser = function (userSignupData, callBack) {
+gdaxUserDAL.saveNewUser = function (userSignupData, accounts, callBack) {
     // Preparing model instance
     var gdaxUserDB = new GdaxUserDB({
         userId: userSignupData.userID,
         password: Crypto.encrypt(userSignupData.password),
         apiKey: userSignupData.apiKey,
         apiSecret: userSignupData.apiSecret,
-        passPhrase: userSignupData.passphrase
+        passPhrase: userSignupData.passphrase,
+        crptoAccounts: accounts
     });
 
 
@@ -42,7 +43,7 @@ gdaxUserDAL.saveNewUser = function (userSignupData, callBack) {
                     'error': err,
                     'status': 512
                 };
-                callBack(result,null);
+                callBack(result, null);
             } else {
                 var result = {
                     'success': true,
@@ -54,5 +55,37 @@ gdaxUserDAL.saveNewUser = function (userSignupData, callBack) {
     });
 }
 /* Data Acces Layesr for saving new User [END] */
+
+/* Data access layer to get all  users[Start] */
+gdaxUserDAL.getAllUsers = function (callBack) {
+    var gdaxUserDB = new GdaxUserDB()
+
+    gdaxUserDB.collection.find().toArray(function (err, data) {
+        if (err) {
+            var result = {
+                'success': false,
+                'error': err,
+            };
+            callBack(result);
+        } else {
+            if (data.length === 0) {
+                var result = {
+                    'success': false,
+                    'error': 'No user found'
+               };
+                return callBack(result);
+            }
+            var result = {
+                'success': true,
+                'data': data
+            };
+            callBack(result);
+        }
+    })
+
+
+
+};
+/*Data access layer to get all  users[End] */
 
 module.exports = gdaxUserDAL;

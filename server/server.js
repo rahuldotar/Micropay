@@ -12,6 +12,7 @@ var config = require('./config/config.js')
 var geminiExchangeService = require('./services/gemini_exchange_service')
 var gdaxFillsService = require('./services/gdax_fills_service')
 var gdaxTransferService = require('./services/gdax_transfer_service')
+var cronService = require('./services/cron_service')
 
 /* Importing required modules[End] */
 
@@ -55,13 +56,11 @@ mongoose.connection.on('disconnected', function () {
 
 /* Implementing cron Job for evaluating exchange rates[Start] */
 var job = new CronJob({
-  cronTime: '*/100 * * * * *',
+  cronTime: '*/300 * * * * *',
   onTick: function() {
-  // geminiExchangeService.saveCurrentExchangeRates();
-//    gdaxFillsService.getLatestFillsFromGdax ();
-//    gdaxTransferService.getLatestBTCTransferFromGdax();
-//    gdaxTransferService.getLatestETHTransferFromGdax();
-  },
+      cronService.getLatestFillsFromGdax();
+      cronService.getLatestaccountHistory();
+ },
   start: false,
   timeZone: 'America/Los_Angeles'
 });

@@ -33,9 +33,9 @@ this.addSession = (id, callBack = () => {}) => {
 
 /* Handler to validate session[Start] */
 this.validateSession = (req, res, next) => {
-     if(unAuthedRoutes.indexOf(req.originalUrl) !== -1){
-         return next();
-     }
+    if (unAuthedRoutes.indexOf(req.originalUrl) !== -1) {
+        return next();
+    }
 
     var client = new redis({
         port: config.redisPort,
@@ -43,8 +43,8 @@ this.validateSession = (req, res, next) => {
     });
 
     var token = req.body.token;
-    
-   client.get(token, (error, data) => {
+
+    client.get(token, (error, data) => {
         if (error) {
             res.send({
                 success: false,
@@ -88,6 +88,31 @@ this.validateSession = (req, res, next) => {
     })
 };
 /* Handler to validate session[END] */
+
+/* Handler to kill session[Start] */
+this.removeSession = (req, res, next) => {
+    console.log(req.body)
+    var client = new redis({
+        port: config.redisPort,
+        host: config.redisUrl
+    });
+
+    var token = req.body.token;
+    client.del(token, (error, data) => {
+        client.disconnect();
+        if (error) {
+            res.send({
+                success: false,
+                error: error
+            })
+        } else {
+            next();
+        }
+    })
+}
+
+
+/* Handler to kill session[End] */
 
 // routes do not need session
 var unAuthedRoutes = [

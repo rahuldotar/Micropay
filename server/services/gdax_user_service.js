@@ -46,9 +46,8 @@ gdaxUserSVC.userSignUp = function (req, res) {
         }
         // validating API credentials[End]
 
-
         // If validated saving the new user  
-        gdaxUserDAL.saveNewUser(signUpData, function (result,userID) {
+        gdaxUserDAL.saveNewUser(signUpData,data, function (result,userID) {
             if (!result.success) {
                 return res.status(result.status).json({
                     success: false,
