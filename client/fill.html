@@ -505,20 +505,20 @@
                 <div class="pos_cards">
                     <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.currPosETH}}</div>
 
-                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['ETH-USD']}}</div>
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['ETH-USD'] | number: 2}}</div>
                     <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['ETH-USD'] * data.currPosETH}}</div>
                 </div>
                 <div class="pos_cards">
                     <div class="eth_wrap"><span class="eth_head">BTC</span><br>{{data.currPosBTC}}</div>
 
-                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['BTC-USD']}}</div>
-                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['BTC-USD'] * data.currPosBTC}}</div>
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['BTC-USD'] | number:2 }}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['BTC-USD'] * data.currPosBTC | number: 2}}</div>
                 </div>
                 <div class="pos_cards">
                     <div class="eth_wrap"><span class="eth_head">LTC</span><br>{{data.currPosLTC}}</div>
 
-                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['LTC-USD']}}</div>
-                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['LTC-USD'] * data.currPosLTC}}</div>
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['LTC-USD']  | number: 2}}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['LTC-USD'] * data.currPosLTC  | number: 2}}</div>
                 </div>
 
                 <div class="pos_cards">
