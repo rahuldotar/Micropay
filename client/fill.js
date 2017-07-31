@@ -104,7 +104,8 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
             currPosLTC: 0,
             currPosUSD: 0,
             priceDetails: {},
-            chart_view:true
+            chart_view:true,
+            P_and_L_view: false
             //   selRow:-1
             //clsMbl: true
         };
@@ -171,6 +172,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         //    $scope.productOnChange();
         $scope.data.fill_view = true;
         $scope.data.position_view = false;
+        $scope.data.P_and_L_view = false;
         $scope.data.transfer_view = false;
         angular.element(document.querySelector('#selPrdt')).html("ETH-USD")
         angular.element(document.querySelector('#selSide')).html('All')
@@ -182,9 +184,21 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         
         $scope.view.showLoader = true;
         $scope.data.fill_view = false;
+        $scope.data.P_and_L_view = false;
         $scope.data.transfer_view = false;
         filterPosition();
       
+    };
+    $scope.tabViewPandL = function () {
+        $scope.data.P_and_L_view = true;
+
+
+        $scope.view.showLoader = true;
+        $scope.data.position_view = false;
+        $scope.data.fill_view = false;
+        $scope.data.transfer_view = false;
+        filterPosition();
+
     };
 
     $scope.tabViewTrnsfr = function () {
@@ -193,6 +207,7 @@ micropayApp.controller('fillCtrl', function ($scope, toastr, $timeout, $filter, 
         $scope.view.showLoader = true;
         $scope.data.fill_view = false;
         $scope.data.position_view = false;
+        $scope.data.P_and_L_view = false;
         $scope.data.transfer_view = true;
         // $scope.productOnChange();
         angular.element(document.querySelector('#selSide')).html('All')
