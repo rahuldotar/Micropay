@@ -11,7 +11,7 @@ profitAndLossDal.calculateProfitAndLoss = function (searchFilter, callBack) {
     // Finding records from DB using aggrgate
     gdaxFillsDB.collection.aggregate(
         [{
-              $match: {
+                $match: {
                     userId: searchFilter.sessionValue,
                     product_id: searchFilter.prodId
                 }
@@ -25,7 +25,7 @@ profitAndLossDal.calculateProfitAndLoss = function (searchFilter, callBack) {
                     totalSize: {
                         $sum: "$size"
                     },
-                     totalFee: {
+                    totalFee: {
                         $sum: "$fee"
                     },
 
@@ -42,7 +42,7 @@ profitAndLossDal.calculateProfitAndLoss = function (searchFilter, callBack) {
                 callBack(result);
             } else {
                 //  var reqCurrPosition = groupArray(data, 'currency');
-                calculatePnL(data, function (result) {
+                calculatePnL(data, searchFilter.prodId, function (result) {
                     var currentPrices = data;
                     var result = {
                         'success': true,
@@ -60,19 +60,31 @@ profitAndLossDal.calculateProfitAndLoss = function (searchFilter, callBack) {
 };
 
 /*  Function to calculate profit and loss[Start] */
-var calculatePnL = function(data,callBack){
+var calculatePnL = function (data, prod, callBack) {
     var buyDetails = data[0];
     var sellDeatils = data[1];
 
-    var effectivePricePerUnitBuy =  (buyDetails.totalPrice + buyDetails.totalFee) / buyDetails.totalPrice;
-    var effectivePricePerUnitSell =  (sellDeatils.totalPrice - sellDeatils.totalFee) / sellDeatils.totalPrice;
+    var effetiveTotalBuy = buyDetails.totalPrice + buyDetails.totalFee
+    var effectiveTotalSell = sellDeatils.totalPrice + sellDeatils.totalSize;
 
-    var effetiveTotalBuy  = effectivePricePerUnitBuy * buyDetails.totalSize;
-    var effectiveTotalSell  = effectivePricePerUnitSell * sellDeatils.totalSize;
+    var effectivePricePerUnitBuy = effetiveTotalBuy / buyDetails.totalSize;
+    var effectivePricePerUnitSell = effectiveTotalSell / sellDeatils.totalSize;
+
+    var effetiveTotalBuy = effectivePricePerUnitBuy * buyDetails.totalSize;
+    var effectiveTotalSell = effectivePricePerUnitSell * sellDeatils.totalSize;
 
     var temp = sellDeatils.totalSize * effectivePricePerUnitBuy;
 
-    var recPnL = effectiveTotalSell -  temp 
+    var result  ={};
+
+     result.recPnL = effectiveTotalSell - temp
+
+
+    // searchFilter.prodId
+    // var publicClient = new Gdax.PublicClient(prod);
+    // publicClient.getProductTicker(function (err, res, data) {
+    //     result.unRecPnL  = (data.price * (sellDeatils.totalSize - buyDetails.totalSize)) 
+    // });
 }
 /* Function to calculate profit and loss[End] */
 module.exports = profitAndLossDal;
