@@ -11,9 +11,9 @@ var gdaxFillsSchema = new Schema({
     userId: String,
     profileId: String,
     liquidity: String,
-    price: String,
-    size: String,
-    fee: String,
+    price: {type:Number,default:0.0},
+    size: {type:Number,default:0.0},
+    fee: {type:Number,default:0.0},
     side: String,
     settled: Boolean
 });

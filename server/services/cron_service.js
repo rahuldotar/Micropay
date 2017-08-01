@@ -20,6 +20,9 @@ this.getLatestFillsFromGdax = function () {
             authedClient.getFills({
                 limit: '100'
             }, function (error, response, data) {
+                if(error){
+                    return;
+                }
                 if (!error && response.statusCode === 200) {
                     data.forEach(function (value) {
                         value.userId = user._id;
@@ -58,6 +61,10 @@ this.getLatestaccountHistory = function () {
             
             user.crptoAccounts.forEach(function (account) {
                 authedClient.getAccountHistory(account.id, queryParamsTrsansfers, function (error, response, data) {
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
                     if (data.length === 0) {
                         return;
                     }

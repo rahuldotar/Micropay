@@ -6,6 +6,7 @@ var gdaxFillsService = require('../services/gdax_fills_service')
 var gdaxAccountService = require('../services/gdax_accounts_service')
 var gdaxTransferService = require('../services/gdax_transfer_service')
 var gdaxPositionService = require('../services/gdax_position_service')
+var profiAndLossService = require('../services/pnl_service')
 var sessionHandler = require('../utilities/session_handler')
 
 module.exports = function (app) {
@@ -33,6 +34,8 @@ module.exports = function (app) {
     app.post("/api/getLatestETHTransferFromGdax", gdaxTransferService.getLatestETHTransferFromGdax)
     app.post("/api/filterGdaxPosition", gdaxPositionService.getGdaxPosition)
     app.post("/api/getCurrentPosition", gdaxPositionService.getCurrentPosition)
+
+    app.post("/api/getProfitAndLoss", profiAndLossService.getProfitAndLoss)
 
     app.post('/api/logout', sessionHandler.removeSession, function (req, res) {
         res.status(200).json({

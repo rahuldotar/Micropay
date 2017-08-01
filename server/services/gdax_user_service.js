@@ -38,6 +38,10 @@ gdaxUserSVC.userSignUp = function (req, res) {
         signUpData.apiKey, signUpData.apiSecret, signUpData.passphrase, config.gdaxApiUrl);
 
     authedClient.getAccounts(function (error, response, data) {
+        if(error){
+            console.log(error)
+            return;
+        }
         if (response.statusCode !== 200) {
             return res.status(response.statusCode).json({
                 success: false,

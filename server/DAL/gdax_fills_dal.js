@@ -11,6 +11,9 @@ gdaxFillsDAL.saveFills = function (userID, fillsData, callBack) {
     // Converting created at date to time stamp and store it new variable
     fillsData.forEach(function (value) {
         value.created_at_unix = moment(value.created_at).unix();
+        value.price = parseFloat(value.price);
+        value.size = parseFloat(value.size);
+        value.fee = parseFloat(value.fee);
     });
 
     saveToDb(userID, fillsData, function (result) {
