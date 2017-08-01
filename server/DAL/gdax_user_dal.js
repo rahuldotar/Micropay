@@ -68,6 +68,9 @@ gdaxUserDAL.getAllUsers = function (callBack) {
             };
             callBack(result);
         } else {
+            if(!data){
+                return;
+            }
             if (data.length === 0) {
                 var result = {
                     'success': false,

@@ -9,6 +9,9 @@ this.getLatestFillsFromGdax = function () {
     console.log('checking cron')
     //getting all users
     gdaxUserDAl.getAllUsers(function (result) {
+        if(!result){
+            return;
+        }
         if (result.data.length === 0) {
             return;
         }
