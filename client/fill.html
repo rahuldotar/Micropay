@@ -147,6 +147,7 @@
                     <li ng-click="tabViewFills();" class="act_tab actv_tab">Fills</li>
                     <li ng-click="tabViewTrnsfr();" class="act_tab">Transfers</li>
                     <li ng-click="tabViewPosition();" class="act_tab">Position</li>
+                    <li ng-click="tabViewPandL();" class="act_tab">P & L</li>
                     <li class="rght_li" ng-if="data.fill_view">
                         <div class="legends">
                             <div class="leg_buy">
@@ -502,6 +503,37 @@
                     <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.positionDetails.USD.balance}}</div>
                 </div>-->
 
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.currPosETH}}</div>
+
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['ETH-USD'] | number: 2}}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['ETH-USD'] * data.currPosETH}}</div>
+                </div>
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">BTC</span><br>{{data.currPosBTC}}</div>
+
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['BTC-USD'] | number:2 }}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['BTC-USD'] * data.currPosBTC | number: 2}}</div>
+                </div>
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">LTC</span><br>{{data.currPosLTC}}</div>
+
+                    <div class="eth_wrap"><span class="eth_head">Approximate Price</span><br>{{data.priceDetails['LTC-USD']  | number: 2}}</div>
+                    <div class=""><span class="eth_head">Total Value </span><br>{{data.priceDetails['LTC-USD'] * data.currPosLTC  | number: 2}}</div>
+                </div>
+
+                <div class="pos_cards">
+                    <div class="eth_wrap"><span class="eth_head">USD</span><br>{{data.currPosUSD | number:2}}</div>
+
+                </div>
+                <div style="clear: both"></div>
+
+            </div>
+
+        </div>
+        <div ng-show="data.P_and_L_view">
+
+            <div class="position_wrap">
                 <div class="pos_cards">
                     <div class="eth_wrap"><span class="eth_head">ETH</span><br>{{data.currPosETH}}</div>
 
